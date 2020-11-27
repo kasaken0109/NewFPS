@@ -31,5 +31,6 @@ public class PlayerBulletController : MonoBehaviour
         {
             collision.gameObject.GetComponent<EnemyContoroller>().Hit(m_bulletPower);
         }
+        Destroy(this.gameObject);
     }
 }
