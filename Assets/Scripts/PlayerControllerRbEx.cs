@@ -83,7 +83,7 @@ public class PlayerControllerRbEx : MonoBehaviour
             m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
         }
 
-        while(Input.GetButtonDown("Crouch"))
+        if(Input.GetButtonDown("Crouch"))
         {
             m_anim.SetTrigger("CrouchFlag");
         }
