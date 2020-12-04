@@ -87,15 +87,22 @@ public class PlayerControllerRbEx : MonoBehaviour
         {
             m_anim.SetTrigger("CrouchFlag");
         }
-
-        if (IsRunning() == true)
+        if (v == 0 && h == 0)
         {
-            m_anim.SetFloat("Speed", m_runningSpeed);
+            m_anim.SetFloat("Speed", 0);
         }
         else
         {
-            m_anim.SetFloat("Speed", m_movingSpeed);
+            if (IsRunning() == true)
+            {
+                m_anim.SetFloat("Speed", m_runningSpeed);
+            }
+            else
+            {
+                m_anim.SetFloat("Speed", m_movingSpeed);
+            }
         }
+        
     }
 
     /// <summary>
