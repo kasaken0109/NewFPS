@@ -47,21 +47,29 @@ public class PlayerControllerRbEx : MonoBehaviour
 
         // 入力方向のベクトルを組み立てる
         dir = Vector3.forward * v + Vector3.right * h;
+        dirBody = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;    // メインカメラを基準に入力方向のベクトルを変換する
+                                                                                                    // 入力方向に滑らかに回転させる
+        if (dirBody != Vector3.zero)
+        {
+            this.transform.rotation = Quaternion.LookRotation(dirBody);
+        }
 
         if (dir == Vector3.zero)
         {
             // 方向の入力がニュートラルの時は、y 軸方向の速度を保持するだけ
             m_rb.velocity = new Vector3(0f, m_rb.velocity.y, 0f);
+            
+
         }
         else
         {
             // カメラを基準に入力が上下=奥/手前, 左右=左右にキャラクターを向ける
-            dirBody = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;    // メインカメラを基準に入力方向のベクトルを変換する
-                                                                                                            // 入力方向に滑らかに回転させる
-            if (dirBody != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(dirBody);
-            }
+            dir = Camera.main.transform.TransformDirection(dir);    // メインカメラを基準に入力方向のベクトルを変換する
+            dir.y = 0;  // y 軸方向はゼロにして水平方向のベクトルにする
+
+            // 入力方向に滑らかに回転させる
+            Quaternion targetRotation = Quaternion.LookRotation(dir);
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * m_turnSpeed);  // Slerp を使うのがポイント
 
             Vector3 velo = dir.normalized * m_movingSpeed; // 入力した方向に移動する
             velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
