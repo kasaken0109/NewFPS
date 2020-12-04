@@ -18,6 +18,8 @@ public class PlayerControllerRbEx : MonoBehaviour
 {
     /// <summary>動く速さ</summary>
     [SerializeField] float m_movingSpeed = 5f;
+    /// <summary> 走る速さ</summary>
+    [SerializeField] float m_runningSpeed = 8f;
     /// <summary>ターンの速さ</summary>
     [SerializeField] float m_turnSpeed = 3f;
     /// <summary>ジャンプ力</summary>
@@ -28,6 +30,8 @@ public class PlayerControllerRbEx : MonoBehaviour
     [SerializeField] GameObject m_player = null;
     [SerializeField] Animator m_anim =null;
     Rigidbody m_rb;
+    Vector3 dir;
+    Vector3 velo;
 
     void Start()
     {
@@ -43,7 +47,7 @@ public class PlayerControllerRbEx : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
 
         // 入力方向のベクトルを組み立てる
-        Vector3 dir = Vector3.forward * v + Vector3.right * h;
+        dir = Vector3.forward * v + Vector3.right * h;
         Vector3 dirBody = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;    // メインカメラを基準に入力方向のベクトルを変換する
                                                                                                     // 入力方向に滑らかに回転させる
         if (dirBody != Vector3.zero)
@@ -67,8 +71,7 @@ public class PlayerControllerRbEx : MonoBehaviour
             // 入力方向に滑らかに回転させる
             Quaternion targetRotation = Quaternion.LookRotation(dir);
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * m_turnSpeed);  // Slerp を使うのがポイント
-
-            Vector3 velo = dir.normalized * m_movingSpeed; // 入力した方向に移動する
+            IsRunning(); // 入力した方向に移動する
             velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
             m_rb.velocity = velo;   // 計算した速度ベクトルをセットする
         }
@@ -78,6 +81,11 @@ public class PlayerControllerRbEx : MonoBehaviour
         {
             m_anim.SetTrigger("JumpFlag");
             m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
+        }
+
+        if (Input.GetButtonDown("Crouch"))
+        {
+            m_anim.SetTrigger("CrouchFlag");
         }
     }
 
@@ -93,5 +101,19 @@ public class PlayerControllerRbEx : MonoBehaviour
         Debug.DrawLine(start, end); // 動作確認用に Scene ウィンドウ上で線を表示する
         bool isGrounded = Physics.Linecast(start, end); // 引いたラインに何かがぶつかっていたら true とする
         return isGrounded;
+    }
+
+    bool IsRunning()
+    {
+        if (Input.GetButton("Splint"))
+        {
+            velo = dir.normalized * m_runningSpeed;
+            return true;
+        }
+        else
+        {
+            velo = dir.normalized * m_movingSpeed;
+            return false;
+        }
     }
 }
