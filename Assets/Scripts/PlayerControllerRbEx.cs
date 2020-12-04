@@ -26,28 +26,25 @@ public class PlayerControllerRbEx : MonoBehaviour
     [SerializeField] float m_isGroundedLength = 1.1f;
     [SerializeField] CinemachineVirtualCamera m_virtualCamera;
     [SerializeField] GameObject m_player = null;
-    public float v;
-    public float h;
-    public Vector3 dir;
-    public Vector3 dirBody;
-
+    [SerializeField] Animator m_anim =null;
     Rigidbody m_rb;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
         m_virtualCamera = GetComponent<CinemachineVirtualCamera>();
+        m_anim = GetComponent<Animator>();
     }
 
     void Update()
     {
         //方向の入力を取得し、方向を求める
-       v = Input.GetAxisRaw("Vertical");
-        h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
+        float h = Input.GetAxisRaw("Horizontal");
 
         // 入力方向のベクトルを組み立てる
-        dir = Vector3.forward * v + Vector3.right * h;
-        dirBody = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;    // メインカメラを基準に入力方向のベクトルを変換する
+        Vector3 dir = Vector3.forward * v + Vector3.right * h;
+        Vector3 dirBody = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;    // メインカメラを基準に入力方向のベクトルを変換する
                                                                                                     // 入力方向に滑らかに回転させる
         if (dirBody != Vector3.zero)
         {
@@ -79,6 +76,7 @@ public class PlayerControllerRbEx : MonoBehaviour
         // ジャンプの入力を取得し、接地している時に押されていたらジャンプする
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
+            m_anim.SetTrigger("JumpFlag");
             m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
         }
     }
