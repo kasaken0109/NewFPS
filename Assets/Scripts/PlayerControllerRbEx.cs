@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 /// <summary>
 /// Rigidbody を使ってプレイヤーを動かすコンポーネント
@@ -23,24 +24,29 @@ public class PlayerControllerRbEx : MonoBehaviour
     [SerializeField] float m_jumpPower = 5f;
     /// <summary>接地判定の際、中心 (Pivot) からどれくらいの距離を「接地している」と判定するかの長さ</summary>
     [SerializeField] float m_isGroundedLength = 1.1f;
+    [SerializeField] CinemachineVirtualCamera m_virtualCamera;
+    [SerializeField] GameObject m_player = null;
     public float v;
     public float h;
+    public Vector3 dir;
+    public Vector3 dirBody;
 
     Rigidbody m_rb;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
+        m_virtualCamera = GetComponent<CinemachineVirtualCamera>();
     }
 
     void Update()
     {
-        // 方向の入力を取得し、方向を求める
-        v = Input.GetAxisRaw("Vertical");
+        //方向の入力を取得し、方向を求める
+       v = Input.GetAxisRaw("Vertical");
         h = Input.GetAxisRaw("Horizontal");
 
         // 入力方向のベクトルを組み立てる
-        Vector3 dir = Vector3.forward * v + Vector3.right * h;
+        dir = Vector3.forward * v + Vector3.right * h;
 
         if (dir == Vector3.zero)
         {
@@ -50,12 +56,12 @@ public class PlayerControllerRbEx : MonoBehaviour
         else
         {
             // カメラを基準に入力が上下=奥/手前, 左右=左右にキャラクターを向ける
-            dir = Camera.main.transform.TransformDirection(dir);    // メインカメラを基準に入力方向のベクトルを変換する
-            dir.y = 0;  // y 軸方向はゼロにして水平方向のベクトルにする
-
-            // 入力方向に滑らかに回転させる
-            Quaternion targetRotation = Quaternion.LookRotation(dir);
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * m_turnSpeed);  // Slerp を使うのがポイント
+            dirBody = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;    // メインカメラを基準に入力方向のベクトルを変換する
+                                                                                                            // 入力方向に滑らかに回転させる
+            if (dirBody != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(dirBody);
+            }
 
             Vector3 velo = dir.normalized * m_movingSpeed; // 入力した方向に移動する
             velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する

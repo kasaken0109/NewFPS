@@ -11,18 +11,19 @@ public class PlayerBulletController : MonoBehaviour
     Rigidbody m_rb;
     [SerializeField] float m_bulletPower = 12f;
     GameObject m_player;
+    PlayerControllerRbEx v_speed;
+    PlayerControllerRbEx h_speed;
+    Vector3 h_vector;
 
     void Start()
     {
-        //m_player = GameObject.FindWithTag("Player");
         m_rb = GetComponent<Rigidbody>();
+        //h_vector = v_speed.dir;
         this.m_rb.velocity = Camera.main.transform.forward * m_bulletSpeed;
-        //this.m_rb.velocity = m_player.transform.forward * m_bulletSpeed;
-
     }
     void Update()
     {
-
+        
     }
 
     private void OnCollisionEnter(Collision collision)
