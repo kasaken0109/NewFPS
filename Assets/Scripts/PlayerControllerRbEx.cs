@@ -83,9 +83,18 @@ public class PlayerControllerRbEx : MonoBehaviour
             m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
         }
 
-        if (Input.GetButtonDown("Crouch"))
+        while(Input.GetButtonDown("Crouch"))
         {
             m_anim.SetTrigger("CrouchFlag");
+        }
+
+        if (IsRunning() == true)
+        {
+            m_anim.SetFloat("Speed", m_runningSpeed);
+        }
+        else
+        {
+            m_anim.SetFloat("Speed", m_movingSpeed);
         }
     }
 
@@ -109,11 +118,13 @@ public class PlayerControllerRbEx : MonoBehaviour
         {
             velo = dir.normalized * m_runningSpeed;
             return true;
+            
         }
         else
         {
             velo = dir.normalized * m_movingSpeed;
             return false;
+            
         }
     }
 }
