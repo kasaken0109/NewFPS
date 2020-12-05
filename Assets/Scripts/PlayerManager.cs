@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField]
-    float m_hp = 100;
+    [SerializeField] float m_hp = 100;
+    [SerializeField] GameObject m_charactor;
     void Start()
     {
         
