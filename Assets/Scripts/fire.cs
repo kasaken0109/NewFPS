@@ -7,7 +7,7 @@ public class fire : MonoBehaviour
 
     [SerializeField] GameObject m_bulletPrefab = null;
     /// <summary>弾の発射位置</summary>
-    [SerializeField] Transform m_muzzle = null;
+    [SerializeField] Transform m_muzzle;
     /// <summary>一画面の最大段数 (0 = 無制限)</summary>
     [SerializeField, Range(0, 10)] int m_bulletLimit = 0;
 
@@ -19,6 +19,10 @@ public class fire : MonoBehaviour
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
+        if (m_muzzle == null)
+        {
+            m_muzzle = GameObject.FindGameObjectWithTag("Muzzle").transform;
+        }
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
