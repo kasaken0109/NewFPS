@@ -11,15 +11,15 @@ public class WeaponManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var children = GetComponentInChildren<Transform>(true);
+        //var children = GetComponentInChildren<Transform>(true);
 
-        foreach (GameObject v  in children)
-        {
-            if (v.gameObject.name == weaponTempleteName)
-            {
-                m_weaponTemplete = transform.gameObject;
-            }
-        }
+        //foreach (GameObject v  in children)
+        //{
+        //    if (v.gameObject.name == weaponTempleteName)
+        //    {
+        //        m_weaponTemplete = transform.gameObject;
+        //    }
+        //}
     }
 
     // Update is called once per frame
