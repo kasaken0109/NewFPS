@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4126125628351210019}
   - component: {fileID: 4126125628352245461}
   - component: {fileID: 4126125628354313013}
+  - component: {fileID: -5300095912380279960}
   m_Layer: 0
   m_Name: PlayerCannon
   m_TagString: Untagged
@@ -98,3 +99,23 @@ MonoBehaviour:
   m_bulletLimit: 0
   m_fireInterval: 0.5
   m_shootSound: {fileID: 8300000, guid: 43cfa8c3b864b434fb57d57b0ba69583, type: 3}
+  m_shootAnim: {fileID: 0}
+--- !u!95 &-5300095912380279960
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126125628354417045}
+  m_Enabled: 0
+  m_Avatar: {fileID: 9000000, guid: b6c33e1d6632025468fb37a04e312606, type: 3}
+  m_Controller: {fileID: 9100000, guid: 605425eb78a7de74ebaf67a9a47561c5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

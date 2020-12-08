@@ -28,7 +28,7 @@ public class PlayerControllerRbEx : MonoBehaviour
     [SerializeField] float m_isGroundedLength = 1.1f;
     [SerializeField] CinemachineVirtualCamera m_virtualCamera;
     [SerializeField] GameObject m_player = null;
-    [SerializeField] Animator m_anim =null;
+    [SerializeField] Animator m_anim = null;
     Rigidbody m_rb;
     Vector3 dir;
     Vector3 velo;
@@ -102,7 +102,12 @@ public class PlayerControllerRbEx : MonoBehaviour
                 m_anim.SetFloat("Speed", m_movingSpeed);
             }
         }
-        
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            m_anim.SetTrigger("ShootFlag");
+        }
+
     }
 
     /// <summary>
