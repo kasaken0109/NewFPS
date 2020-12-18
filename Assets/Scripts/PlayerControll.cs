@@ -62,12 +62,12 @@ public class PlayerControll : MonoBehaviour
             m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
         }
 
-        if (Input.GetButtonDown("Crouch"))
+        if (Input.GetButton("Crouch"))
         {
             m_anim.SetTrigger("CrouchFlag");
             m_crouchSlow = 0.5f;
         }
-        else
+        else if(Input.GetButtonUp("Crouch"))
         {
             m_crouchSlow = 1f;
         }
@@ -88,7 +88,7 @@ public class PlayerControll : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButton("Fire1"))
         {
             m_anim.SetTrigger("ShootFlag");
         }
