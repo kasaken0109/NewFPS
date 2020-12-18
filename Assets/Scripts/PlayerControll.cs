@@ -18,6 +18,7 @@ public class PlayerControll : MonoBehaviour
     [SerializeField] float m_isGroundedLength = 1.1f;
     [SerializeField] GameObject m_player = null;
     [SerializeField] Animator m_anim = null;
+    [SerializeField] float m_crouchSlow = 1;
     Rigidbody m_rb;
     Vector3 dir;
     Vector3 velo;
@@ -64,10 +65,16 @@ public class PlayerControll : MonoBehaviour
         if (Input.GetButtonDown("Crouch"))
         {
             m_anim.SetTrigger("CrouchFlag");
+            m_crouchSlow = 0.5f;
+        }
+        else
+        {
+            m_crouchSlow = 1f;
         }
         if (v == 0 && h == 0)
         {
             m_anim.SetFloat("Speed", 0);
+
         }
         else
         {
@@ -106,13 +113,13 @@ public class PlayerControll : MonoBehaviour
     {
         if (Input.GetButton("Splint"))
         {
-            velo = dir.normalized * m_runningSpeed;
+            velo = dir.normalized * m_runningSpeed * m_crouchSlow;
             return true;
 
         }
         else
         {
-            velo = dir.normalized * m_movingSpeed;
+            velo = dir.normalized * m_movingSpeed * m_crouchSlow;
             return false;
 
         }

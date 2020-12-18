@@ -46,7 +46,7 @@ public class fire : MonoBehaviour
         {
             if (m_coroutine != null)
             {
-                //StopCoroutine(m_coroutine);
+                StopCoroutine(m_coroutine);
             }
         }
     }
@@ -66,7 +66,7 @@ public class fire : MonoBehaviour
         {
             if (m_bulletPrefab && m_muzzle) // m_bulletPrefab にプレハブが設定されている時 かつ m_muzzle に弾の発射位置が設定されている時
             {
-                //GameObject go = Instantiate(m_bulletPrefab, m_muzzle.position, m_bulletPrefab.transform.rotation);  // インスペクターから設定した m_bulletPrefab をインスタンス化する
+                GameObject go = Instantiate(m_bulletPrefab, m_muzzle.position, m_bulletPrefab.transform.rotation);  // インスペクターから設定した m_bulletPrefab をインスタンス化する
                 Debug.Log("Fire");
                 PlayShootSound();
                 yield return new WaitForSeconds(m_fireInterval);
