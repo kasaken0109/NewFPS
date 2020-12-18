@@ -26,7 +26,6 @@ public class PlayerControllerRbEx : MonoBehaviour
     [SerializeField] float m_jumpPower = 5f;
     /// <summary>接地判定の際、中心 (Pivot) からどれくらいの距離を「接地している」と判定するかの長さ</summary>
     [SerializeField] float m_isGroundedLength = 1.1f;
-    [SerializeField] CinemachineVirtualCamera m_virtualCamera;
     [SerializeField] GameObject m_player = null;
     [SerializeField] Animator m_anim = null;
     Rigidbody m_rb;
@@ -36,7 +35,6 @@ public class PlayerControllerRbEx : MonoBehaviour
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
-        m_virtualCamera = GetComponent<CinemachineVirtualCamera>();
         m_anim = GetComponent<Animator>();
     }
 
