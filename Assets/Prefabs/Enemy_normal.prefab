@@ -1669,7 +1669,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   e_power: 10
-  e_hp: 100
+  e_hp: 50
   deathBody: {fileID: 6799907467163580025, guid: d10d337b4e647ba489bebd8d130b2a1a,
     type: 3}
   e_hit: {fileID: 8300000, guid: 615dd0e0368f0d646b16c6534b90e560, type: 3}
