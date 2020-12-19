@@ -10,10 +10,10 @@ public class PlayerBulletController : MonoBehaviour
     [SerializeField] float m_bulletSpeed = 10f;
     Rigidbody m_rb;
     [SerializeField] float m_bulletPower = 12f;
+    [SerializeField] GameObject m_bounceEffect;
+    [SerializeField]GameObject m_bulletEffect;
     GameObject m_player;
-    PlayerControllerRbEx v_speed;
-    PlayerControllerRbEx h_speed;
-    Vector3 h_vector;
+    bool bounceflag = true;
 
     void Start()
     {
@@ -28,10 +28,25 @@ public class PlayerBulletController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<EnemyContoroller>())
+        if (bounceflag == true)
         {
-            collision.gameObject.GetComponent<EnemyContoroller>().Hit(m_bulletPower);
+            this.m_rb.velocity *= -1;
+            Instantiate(m_bulletEffect, this.gameObject.transform.position, this.transform.rotation);
+            if (collision.gameObject.GetComponent<EnemyContoroller>())
+            {
+                collision.gameObject.GetComponent<EnemyContoroller>().Hit(m_bulletPower);
+            }
+            Debug.Log("bounced");
         }
-        Destroy(this.gameObject);
+        else
+        {
+            if (collision.gameObject.GetComponent<EnemyContoroller>())
+            {
+                collision.gameObject.GetComponent<EnemyContoroller>().Hit(m_bulletPower * 2);
+            }
+            Destroy(this.gameObject);
+            Instantiate(m_bulletEffect, this.gameObject.transform.position, this.transform.rotation);
+            Debug.Log("explosion");
+        }
     }
 }
