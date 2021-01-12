@@ -6,8 +6,8 @@
 ルールは今現在特になし、敵を打つとデバッグログ上に敵のｈｐが表示され、0以下になると倒れる、自分も敵の体に触れるとダメージを負うが、死亡はしない
 自分が作った部分
 1．家以外のステージ
-2."fire","PlayerManager", "PlayerBulletController", "EnemyController", "SpawnManager"（敵の制御、リスポーン、射撃、弾の管理、プレイヤー、敵のｈｐの管理に関するコード）
-3.敵のラグドール
+1."fire","PlayerManager", "PlayerBulletController", "EnemyController", "SpawnManager"（敵の制御、リスポーン、射撃、弾の管理、プレイヤー、敵のｈｐの管理に関するコード）
+1.敵のラグドール
 
 その他
 敵が自分の方を向いて攻撃してくるようにします。
