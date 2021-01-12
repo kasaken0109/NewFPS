@@ -5,13 +5,13 @@ using UnityEngine;
 public class CannonController : MonoBehaviour
 {
     [SerializeField] GameObject m_bounceEffect;
+    [SerializeField] GameObject m_bulletEffect;
     bool bounceflag = true;
-    PlayerBulletController m_playerBullet;
     float m_bulletPower = 10f;
     // Start is called before the first frame update
     void Start()
     {
-        m_playerBullet = GetComponent<PlayerBulletController>();
+        
     }
 
     // Update is called once per frame
@@ -24,11 +24,12 @@ public class CannonController : MonoBehaviour
     {
         if (bounceflag == true)
         {
-            if (collision.collider.gameObject.tag == "Wall")
+            Instantiate(m_bounceEffect, this.gameObject.transform.position, this.transform.rotation);
             if (collision.gameObject.GetComponent<EnemyContoroller>())
             {
                 collision.gameObject.GetComponent<EnemyContoroller>().Hit(m_bulletPower);
             }
+            bounceflag = false;
             Debug.Log("bounced");
         }
         else
@@ -39,7 +40,7 @@ public class CannonController : MonoBehaviour
             }
             Debug.Log("explosion");
             Destroy(this.gameObject);
-            //Instantiate(m_bulletEffect, this.gameObject.transform.position, this.transform.rotation);
+            Instantiate(m_bulletEffect, this.gameObject.transform.position, this.transform.rotation);
 
         }
     }

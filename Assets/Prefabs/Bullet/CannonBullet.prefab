@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8289241599597392343}
   - component: {fileID: 436278016753649058}
   - component: {fileID: 2527243059222272986}
+  - component: {fileID: 5948523512001377140}
   m_Layer: 9
   m_Name: CannonBullet
   m_TagString: Bullet
@@ -109,10 +110,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_bulletSpeed: 30
   m_rb: {fileID: 0}
-  m_bulletPower: 50
-  m_bounceEffect: {fileID: 2810382910589898482, guid: e8e39068e05f4594199f0a1b73aac0da,
-    type: 3}
-  m_bulletEffect: {fileID: 100010, guid: 743de875710131a4eaa4b8dcc51a807f, type: 3}
 --- !u!54 &2527243059222272986
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -129,3 +126,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &5948523512001377140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8289241599597392337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b12c3d8a4f2d39e479df8ec1864b7f13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_bounceEffect: {fileID: 2810382910589898482, guid: e8e39068e05f4594199f0a1b73aac0da,
+    type: 3}
+  m_bulletEffect: {fileID: 100010, guid: 743de875710131a4eaa4b8dcc51a807f, type: 3}

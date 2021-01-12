@@ -25,8 +25,6 @@ public class fire : MonoBehaviour
         {
             m_muzzle = GameObject.FindGameObjectWithTag("Muzzle").transform;
         }
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame

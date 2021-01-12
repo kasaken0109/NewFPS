@@ -8,6 +8,7 @@ TagManager:
   - Bullet
   - Muzzle
   - Wall
+  - Target
   layers:
   - Default
   - TransparentFX
