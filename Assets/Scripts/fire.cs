@@ -14,6 +14,7 @@ public class fire : MonoBehaviour
     [SerializeField] float m_fireInterval = 0.15f;
     [SerializeField] AudioClip m_shootSound = null;
     [SerializeField] Animator m_shootAnim = null;
+    PlayerBulletController bullletNum;
     Coroutine m_coroutine;
     Rigidbody2D m_rb;
     // Start is called before the first frame update
@@ -34,11 +35,7 @@ public class fire : MonoBehaviour
         {
             m_coroutine = StartCoroutine(Fire());
             m_shootAnim.SetTrigger("ShootFlag");
-            
-            //if (m_bulletLimit == 0 || this.GetComponentsInChildren<PlayerBulletController>().Length < m_bulletLimit)    // 画面内の弾数を制限する
-            //{
-            //    Fire1();
-            //}
+            bullletNum.m_bulletNum -= 1;
         }
         else if(Input.GetButtonUp("Fire1"))
         {
@@ -76,6 +73,15 @@ public class fire : MonoBehaviour
     void BulletInstance()
     {
         GameObject go = Instantiate(m_bulletPrefab, m_muzzle.position, m_bulletPrefab.transform.rotation);  // インスペクターから設定した m_bulletPrefab をインスタンス化する
+    }
+
+    bool reload(int magNum)
+    {
+        if (magNum == 0)
+        {
+            return true;
+        }
+        return false;
     }
 
 }
