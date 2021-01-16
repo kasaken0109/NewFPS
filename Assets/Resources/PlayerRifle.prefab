@@ -100,6 +100,9 @@ MonoBehaviour:
   m_fireInterval: 0.15
   m_shootSound: {fileID: 8300000, guid: 1d03157c54b28f143ac92c800e9909a0, type: 3}
   m_shootAnim: {fileID: 0}
+  m_reload: {fileID: 0}
+  m_bulletNum: 0
+  m_bulletMaxNum: 4
 --- !u!95 &-6440649755584760145
 Animator:
   serializedVersion: 3

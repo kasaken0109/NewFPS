@@ -9,7 +9,6 @@ public class PlayerBulletController : MonoBehaviour
     /// <summary>弾の飛ぶ速度</summary>
     [SerializeField] float m_bulletSpeed = 10f;
     public Rigidbody m_rb;
-    [SerializeField] public int m_bulletNum = 10;
     //[SerializeField] float m_bulletPower = 12f;
     //[SerializeField] GameObject m_bounceEffect;
     //[SerializeField]GameObject m_bulletEffect;
