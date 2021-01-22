@@ -74,17 +74,6 @@ public class PlayerControllerRbEx : MonoBehaviour
             m_rb.velocity = velo;   // 計算した速度ベクトルをセットする
         }
 
-        // ジャンプの入力を取得し、接地している時に押されていたらジャンプする
-        if (Input.GetButtonDown("Jump") && IsGrounded())
-        {
-            m_anim.SetTrigger("JumpFlag");
-            m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
-        }
-
-        if(Input.GetButtonDown("Crouch"))
-        {
-            m_anim.SetTrigger("CrouchFlag");
-        }
         if (v == 0 && h == 0)
         {
             m_anim.SetFloat("Speed", 0);
@@ -100,6 +89,19 @@ public class PlayerControllerRbEx : MonoBehaviour
                 m_anim.SetFloat("Speed", m_movingSpeed);
             }
         }
+        // ジャンプの入力を取得し、接地している時に押されていたらジャンプする
+        if (Input.GetButtonDown("Jump") && IsGrounded())
+        {
+            m_anim.SetTrigger("JumpFlag");
+            m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
+        }
+
+        if(Input.GetButton("Crouch"))
+        {
+            m_anim.SetTrigger("CrouchFlag");
+        }
+        
+        
 
         if (Input.GetButtonDown("Fire1"))
         {

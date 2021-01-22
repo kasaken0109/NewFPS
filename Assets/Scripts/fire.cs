@@ -48,8 +48,6 @@ public class fire : MonoBehaviour
             {
                 Debug.Log("リロードしてください");
             }
-
-            
         }
         else if(Input.GetButtonUp("Fire1")|| m_bulletNum <= 0)
         {
