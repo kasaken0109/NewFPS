@@ -22,11 +22,13 @@ public class PlayerControll : MonoBehaviour
     Rigidbody m_rb;
     Vector3 dir;
     Vector3 velo;
+    CapsuleCollider collider;
     
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
         m_anim = GetComponent<Animator>();
+        collider = GetComponent<CapsuleCollider>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -66,10 +68,12 @@ public class PlayerControll : MonoBehaviour
         {
             m_anim.SetTrigger("CrouchFlag");
             m_crouchSlow = 0.5f;
+            collider.height = 0.7f;
         }
         else if(Input.GetButtonUp("Crouch"))
         {
             m_crouchSlow = 1f;
+            collider.height = 1f;
         }
         if (v == 0 && h == 0)
         {

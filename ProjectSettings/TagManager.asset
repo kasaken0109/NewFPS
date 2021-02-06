@@ -9,6 +9,7 @@ TagManager:
   - Muzzle
   - Wall
   - Target
+  - aim
   layers:
   - Default
   - TransparentFX
