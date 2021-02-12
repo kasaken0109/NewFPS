@@ -13,7 +13,9 @@ public class fire : MonoBehaviour
     [SerializeField, Range(0, 10)] int m_bulletLimit = 0;
 
     [SerializeField] float m_fireInterval = 0.15f;
-    [SerializeField] AudioClip m_shootSound = null;
+    [SerializeField] AudioClip []m_shootSound = null;
+    //[SerializeField] AudioClip m_airSound = null;
+
     [SerializeField] Animator m_shootAnim = null;
     [SerializeField] Animation m_reload = null;
 
@@ -46,6 +48,7 @@ public class fire : MonoBehaviour
             }
             else
             {
+                AudioSource.PlayClipAtPoint(m_shootSound[1], m_muzzle.position);
                 Debug.Log("リロードしてください");
             }
         }
@@ -58,15 +61,16 @@ public class fire : MonoBehaviour
         }
         if (Input.GetButtonDown("Reload"))
         {
+            AudioSource.PlayClipAtPoint(m_shootSound[2], m_muzzle.position);
             Reload();
         }
     }
 
     void PlayShootSound()
     {
-        if (m_shootSound)
+        if (m_shootSound[0])
         {
-            AudioSource.PlayClipAtPoint(m_shootSound, m_muzzle.position);
+            AudioSource.PlayClipAtPoint(m_shootSound[0], m_muzzle.position);
         }
     }
 

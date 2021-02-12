@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5871333284554599624}
   - component: {fileID: 5871333285546354887}
   - component: {fileID: -6440649755584760145}
+  - component: {fileID: -6345301046286295369}
   m_Layer: 0
   m_Name: PlayerRifle
   m_TagString: Untagged
@@ -88,7 +89,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5871333284556541852}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f693b41865413b947882a74ab4c9e1fe, type: 3}
   m_Name: 
@@ -98,7 +99,11 @@ MonoBehaviour:
   m_muzzle: {fileID: 0}
   m_bulletLimit: 0
   m_fireInterval: 0.15
-  m_shootSound: {fileID: 8300000, guid: 1d03157c54b28f143ac92c800e9909a0, type: 3}
+  m_shootSound:
+  - {fileID: 8300000, guid: 1d03157c54b28f143ac92c800e9909a0, type: 3}
+  - {fileID: 8300000, guid: 64ee1d5225627d84cb7cd16697384705, type: 3}
+  - {fileID: 8300000, guid: 6628f457ad1e3ae4a90cc58878fe40d0, type: 3}
+  - {fileID: 8300000, guid: e95270d8de658bd4b8bbaf58c1ff8e6f, type: 3}
   m_shootAnim: {fileID: 0}
   m_reload: {fileID: 0}
   m_bulletNum: 0
@@ -122,3 +127,25 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-6345301046286295369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5871333284556541852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741da964628a2842b4e7a8a372676dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_crosshairUi: {fileID: 1343895795437436170, guid: d41b8d4b0460d8d4690b0d4f399358e2,
+    type: 3}
+  m_muzzle: {fileID: 0}
+  m_line: {fileID: 0}
+  m_shootRange: 15
+  m_layerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_shootSound: {fileID: 8300000, guid: 1d03157c54b28f143ac92c800e9909a0, type: 3}
+  m_hitSound: {fileID: 8300000, guid: 202b951c1661d6e4589f332b48beaff3, type: 3}
