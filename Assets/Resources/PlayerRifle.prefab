@@ -146,6 +146,7 @@ MonoBehaviour:
   m_shootRange: 50
   m_layerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 7735
   m_shootSound: {fileID: 8300000, guid: 1d03157c54b28f143ac92c800e9909a0, type: 3}
   m_hitSound: {fileID: 8300000, guid: 202b951c1661d6e4589f332b48beaff3, type: 3}
+  m_debugText: {fileID: 0}

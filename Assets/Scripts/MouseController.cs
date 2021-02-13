@@ -42,7 +42,6 @@ public class MouseController: MonoBehaviour
             {
                 if(minYAngle >= nowAngle) 
                 {
-                    Debug.Log("a");
                     //pivot.transform.Rotate(-Y_Rotation, 0, 0);
                     Camera.main.transform.LookAt(pivot, Vector3.up);
                     Camera.main.transform.position += new Vector3(0, -Y_Rotation * Time.deltaTime * 3, 0);
