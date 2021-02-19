@@ -151,13 +151,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4126125628354417045}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e741da964628a2842b4e7a8a372676dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_crosshairUi: {fileID: 1343895795437436170, guid: d41b8d4b0460d8d4690b0d4f399358e2,
-    type: 3}
   m_muzzle: {fileID: 0}
   m_line: {fileID: 0}
   m_shootRange: 50
@@ -166,3 +164,4 @@ MonoBehaviour:
     m_Bits: 2048
   m_shootSound: {fileID: 8300000, guid: 43cfa8c3b864b434fb57d57b0ba69583, type: 3}
   m_hitSound: {fileID: 8300000, guid: 202b951c1661d6e4589f332b48beaff3, type: 3}
+  m_debugText: {fileID: 0}

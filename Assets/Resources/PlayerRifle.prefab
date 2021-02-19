@@ -116,7 +116,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5871333284556541852}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: b6c33e1d6632025468fb37a04e312606, type: 3}
   m_Controller: {fileID: 9100000, guid: 605425eb78a7de74ebaf67a9a47561c5, type: 2}
   m_CullingMode: 0
@@ -139,8 +139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e741da964628a2842b4e7a8a372676dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_crosshairUi: {fileID: 1343895795437436170, guid: d41b8d4b0460d8d4690b0d4f399358e2,
-    type: 3}
   m_muzzle: {fileID: 0}
   m_line: {fileID: 0}
   m_shootRange: 50

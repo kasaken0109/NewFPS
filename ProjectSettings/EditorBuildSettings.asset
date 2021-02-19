@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Crazy Shoots!.unity
     guid: 4ab6d56b16e710c4f85265f3799be9d7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Crazy Shoots! level1.unity
     guid: fc71fccb44f916d4c9af549b25b9ba8d
   m_configObjects: {}
