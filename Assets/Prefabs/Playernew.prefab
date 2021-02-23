@@ -1690,7 +1690,11 @@ MonoBehaviour:
   m_muzzle: {fileID: 0}
   m_bulletLimit: 0
   m_fireInterval: 0.15
-  m_shootSound: {fileID: 8300000, guid: 1d03157c54b28f143ac92c800e9909a0, type: 3}
+  m_shootSound: []
+  m_shootAnim: {fileID: 0}
+  m_reload: {fileID: 0}
+  m_bulletNum: 0
+  m_bulletMaxNum: 4
 --- !u!114 &8230295608424897478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1704,6 +1708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_hp: 100
+  m_charactor: {fileID: 0}
 --- !u!114 &8230295608424897497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1719,8 +1724,7 @@ MonoBehaviour:
   m_movingSpeed: 5
   m_runningSpeed: 8
   m_turnSpeed: 3
-  m_jumpPower: 5
+  m_jumpPower: 10
   m_isGroundedLength: 1.1
-  m_virtualCamera: {fileID: 0}
   m_player: {fileID: 8230295608162345273}
   m_anim: {fileID: 8230295608152822617}
