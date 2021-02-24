@@ -22,6 +22,9 @@ public class FireLine : MonoBehaviour
     [SerializeField] AudioClip m_shootSound = null;
     /// <summary>命中した時の音</summary>
     [SerializeField] AudioClip m_hitSound = null;
+    /// <summary>マガジン内の弾数</summary>
+    public int m_bulletNum;
+    [SerializeField] public int m_bulletMaxNum = 4;
     TargetManager targetManager;
     [SerializeField] Text m_debugText = null;
 
@@ -64,7 +67,8 @@ public class FireLine : MonoBehaviour
             DrawLaser(hitPosition); // レーザーの終点は「Ray が当たっている時は当たった場所、当たっていない時は前方・射程距離ぶんの長さ」になる
             PlayShootSound(m_line.transform.position);  // レーザーの発射点で射撃音を鳴らす
             bool IsHit = Physics.Raycast(ray, out hit, m_shootRange, m_layerMask);
-            
+            m_bulletNum -= 1;
+
             if (IsHit)
             {
                 Debug.Log("Hit!!");
@@ -82,6 +86,11 @@ public class FireLine : MonoBehaviour
         else
         {
             DrawLaser(m_line.transform.position);   // 撃っていない時は、Line の終点と始点を同じ位置にすることで Line を消す
+        }
+        if (Input.GetButtonDown("Reload"))
+        {
+            //AudioSource.PlayClipAtPoint(m_shootSound[2], m_muzzle.position);
+            Reload();
         }
     }
 
@@ -141,5 +150,11 @@ public class FireLine : MonoBehaviour
         Vector3[] positions = { m_line.transform.position, destination };   // レーザーの始点は常に Muzzle にする
         m_line.positionCount = positions.Length;   // Line を終点と始点のみに制限する
         m_line.SetPositions(positions);
+    }
+    public void Reload()
+    {
+        Debug.Log("リロード中");
+        m_bulletNum = m_bulletMaxNum;
+        //m_reload.Play();
     }
 }
