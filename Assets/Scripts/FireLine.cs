@@ -102,6 +102,10 @@ public class FireLine : MonoBehaviour
         {
             hitObject.GetComponent<TargetManager>().HitObject();
         }
+        else if (hitObject.tag == "Enemy")
+        {
+            hitObject.GetComponent<EnemyNewController>().Hit();
+        }
     }
 
     /// <summary>
