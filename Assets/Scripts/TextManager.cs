@@ -7,7 +7,9 @@ public class TextManager : MonoBehaviour
 {
     [SerializeField] public Text gameText;
     GameObject[] target;
+    GameObject[] enemy;
     public int targetNum;
+    public int enemyNum;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +20,9 @@ public class TextManager : MonoBehaviour
     void Update()
     {
         target = GameObject.FindGameObjectsWithTag("Target");
+        enemy = GameObject.FindGameObjectsWithTag("Enemy");
         targetNum = target.Length;
-        gameText.text = "Target Remained :" + targetNum;
+        enemyNum = enemy.Length;
+        gameText.text = "Target Remained :" + (targetNum + enemyNum);
     }
 }
