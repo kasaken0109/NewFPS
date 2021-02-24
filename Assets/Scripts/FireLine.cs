@@ -24,9 +24,12 @@ public class FireLine : MonoBehaviour
     [SerializeField] AudioClip m_hitSound = null;
     /// <summary>マガジン内の弾数</summary>
     public int m_bulletNum;
+    AudioSource audio;
     [SerializeField] public int m_bulletMaxNum = 4;
     TargetManager targetManager;
     [SerializeField] Text m_debugText = null;
+    bool IsSounded = false;
+    bool IsHitSound = false;
 
     void Start()
     {
@@ -35,6 +38,7 @@ public class FireLine : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         m_muzzle = GameObject.FindWithTag("Muzzle");
         m_line = m_muzzle.GetComponent<LineRenderer>();
+        audio = GetComponent<AudioSource>();
         //m_debugText = GameObject.Find("DebugText").GetComponent<Text>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
     }
@@ -65,7 +69,11 @@ public class FireLine : MonoBehaviour
         if (Input.GetButton("Fire1"))
         {
             DrawLaser(hitPosition); // レーザーの終点は「Ray が当たっている時は当たった場所、当たっていない時は前方・射程距離ぶんの長さ」になる
-            PlayShootSound(m_line.transform.position);  // レーザーの発射点で射撃音を鳴らす
+            if (!IsSounded)
+            {
+                PlayShootSound();  // レーザーの発射点で射撃音を鳴らす
+                IsSounded = true;
+            }
             bool IsHit = Physics.Raycast(ray, out hit, m_shootRange, m_layerMask);
             m_bulletNum -= 1;
 
@@ -80,12 +88,22 @@ public class FireLine : MonoBehaviour
             if (hitObject)
             {
                 Hit(hitObject);
-                PlayHitSound(hitPosition);  // レーザーが当たった場所でヒット音を鳴らす
+                if (!IsHitSound)
+                {
+                    PlayHitSound(hitPosition);  // レーザーが当たった場所でヒット音を鳴らす
+                    IsHitSound = true;
+                }
+                
+            }
+            else
+            {
+                IsHitSound = false;
             }
         }
         else
         {
             DrawLaser(m_line.transform.position);   // 撃っていない時は、Line の終点と始点を同じ位置にすることで Line を消す
+            IsSounded = false;
         }
         if (Input.GetButtonDown("Reload"))
         {
@@ -121,11 +139,11 @@ public class FireLine : MonoBehaviour
     /// 射撃音を鳴らす
     /// </summary>
     /// <param name="position">音を鳴らす場所</param>
-    void PlayShootSound(Vector3 position)
+    void PlayShootSound()
     {
         if (m_shootSound)
         {
-            AudioSource.PlayClipAtPoint(m_shootSound, position);
+            audio.PlayOneShot(m_shootSound);
         }
     }
 
