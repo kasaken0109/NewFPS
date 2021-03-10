@@ -10,6 +10,7 @@ public class TextManager : MonoBehaviour
     GameObject[] enemy;
     public int targetNum;
     public int enemyNum;
+    public int enemyFullNum;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +24,7 @@ public class TextManager : MonoBehaviour
         enemy = GameObject.FindGameObjectsWithTag("Enemy");
         targetNum = target.Length;
         enemyNum = enemy.Length;
+        enemyFullNum = targetNum + enemyNum;
         gameText.text = "Target Remained :" + (targetNum + enemyNum);
     }
 }

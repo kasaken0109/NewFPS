@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class fire : MonoBehaviour
 {
@@ -11,16 +12,18 @@ public class fire : MonoBehaviour
     [SerializeField] Transform m_muzzle;
     /// <summary>一画面の最大段数 (0 = 無制限)</summary>
     [SerializeField, Range(0, 10)] int m_bulletLimit = 0;
+    GameObject m_reload = null;
 
     [SerializeField] float m_fireInterval = 0.15f;
     [SerializeField] AudioClip []m_shootSound = null;
     //[SerializeField] AudioClip m_airSound = null;
 
     [SerializeField] Animator m_shootAnim = null;
-    [SerializeField] Animation m_reload = null;
 
     public int m_bulletNum;
+    [SerializeField] Text m_text;
     [SerializeField] public int m_bulletMaxNum = 4;
+    GameObject m_textBox;
     Coroutine m_coroutine;
     Rigidbody2D m_rb;
     // Start is called before the first frame update
@@ -28,7 +31,10 @@ public class fire : MonoBehaviour
     {
         m_rb = GetComponent<Rigidbody2D>();
         m_shootAnim = GetComponent<Animator>();
-        m_reload = GetComponent<Animation>();
+        m_textBox = GameObject.Find("BulletText");
+        m_text = m_textBox.GetComponent<Text>();
+        m_reload = GameObject.Find("Reload");
+        m_reload.SetActive(false);
         m_bulletNum = m_bulletMaxNum;
         if (m_muzzle == null)
         {
@@ -39,8 +45,10 @@ public class fire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
+
         if (Input.GetButtonDown("Fire1"))
-        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {
             if (m_bulletNum > 0)
             {
                 m_shootAnim.SetTrigger("ShootFlag");
@@ -50,6 +58,8 @@ public class fire : MonoBehaviour
             {
                 AudioSource.PlayClipAtPoint(m_shootSound[1], m_muzzle.position);
                 Debug.Log("リロードしてください");
+                m_reload.SetActive(true);
+
             }
         }
         else if(Input.GetButtonUp("Fire1")|| m_bulletNum <= 0)
@@ -63,6 +73,7 @@ public class fire : MonoBehaviour
         {
             AudioSource.PlayClipAtPoint(m_shootSound[2], m_muzzle.position);
             Reload();
+            m_reload.SetActive(false);
         }
     }
 
@@ -100,7 +111,6 @@ public class fire : MonoBehaviour
     {
         Debug.Log("リロード中");
         m_bulletNum = m_bulletMaxNum;
-        m_reload.Play();
     }
 
 }

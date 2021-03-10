@@ -22,10 +22,15 @@ public class FireLine : MonoBehaviour
     [SerializeField] AudioClip m_shootSound = null;
     /// <summary>命中した時の音</summary>
     [SerializeField] AudioClip m_hitSound = null;
+    [SerializeField] AudioClip m_reloadSound = null;
+    [SerializeField] AudioClip m_airshoot = null;
+    [SerializeField] GameObject m_reload = null;
+    [SerializeField] Text m_text;
     /// <summary>マガジン内の弾数</summary>
     public int m_bulletNum;
     AudioSource audio;
     [SerializeField] public int m_bulletMaxNum = 4;
+    GameObject m_textBox;
     TargetManager targetManager;
     [SerializeField] Text m_debugText = null;
     bool IsSounded = false;
@@ -37,28 +42,28 @@ public class FireLine : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         m_muzzle = GameObject.FindWithTag("Muzzle");
+        m_textBox = GameObject.Find("BulletText");
+        m_text = m_textBox.GetComponent<Text>();
         m_line = m_muzzle.GetComponent<LineRenderer>();
+        m_reload = GameObject.Find("Reload");
+        m_reload.SetActive(false);
         audio = GetComponent<AudioSource>();
-        //m_debugText = GameObject.Find("DebugText").GetComponent<Text>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
     }
 
     void Update()
     {
-        // カメラから照準に向かって Ray を飛ばし、何かに当たっているか調べる
-        //Ray ray = Camera.main.ScreenPointToRay(m_crosshairUi.transform.position);
+        m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
         Ray ray = Camera.main.ScreenPointToRay(m_crosshairUi.position);
 
-        //var front = transform.TransformDirection(Vector3.forward);
-        //Debug.DrawLine(m_muzzle.transform.position, m_muzzle.transform + front * m_shootRange);
         RaycastHit hit;
         Vector3 hitPosition = m_line.transform.position + m_line.transform.forward * m_shootRange;  // hitPosition は Ray が当たった場所。Line の終点となる。何にも当たっていない時は Muzzle から射程距離だけ前方にする。
         GameObject hitObject = null;    // Ray が当たったオブジェクト
+        m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
 
         if (Physics.Raycast(ray, out hit, m_shootRange, m_layerMask))
         {
             Debug.DrawLine(ray.origin, hit.point, Color.red);
-            //m_debugText.text = hit.collider.gameObject.name;
         }
         else
         {
@@ -75,8 +80,6 @@ public class FireLine : MonoBehaviour
                 IsSounded = true;
             }
             bool IsHit = Physics.Raycast(ray, out hit, m_shootRange, m_layerMask);
-            m_bulletNum -= 1;
-
             if (IsHit)
             {
                 Debug.Log("Hit!!");
@@ -100,15 +103,25 @@ public class FireLine : MonoBehaviour
                 IsHitSound = false;
             }
         }
+        if (Input.GetButtonUp("Fire1"))
+        {
+            m_bulletNum -= 1;
+        }
         else
         {
             DrawLaser(m_line.transform.position);   // 撃っていない時は、Line の終点と始点を同じ位置にすることで Line を消す
             IsSounded = false;
         }
+        if (m_bulletNum <= 0)
+        {
+            m_reload.SetActive(true);
+        }
         if (Input.GetButtonDown("Reload"))
         {
-            //AudioSource.PlayClipAtPoint(m_shootSound[2], m_muzzle.position);
+            AudioSource.PlayClipAtPoint(m_reloadSound, this.transform.position);
+            Debug.Log("Reload");
             Reload();
+            m_reload.SetActive(false);
         }
     }
 
