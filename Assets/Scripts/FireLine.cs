@@ -105,7 +105,10 @@ public class FireLine : MonoBehaviour
         }
         if (Input.GetButtonUp("Fire1"))
         {
-            m_bulletNum -= 1;
+            if (m_bulletNum >= 1)
+            {
+                m_bulletNum -= 1;
+            }
         }
         else
         {

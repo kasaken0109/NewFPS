@@ -106,7 +106,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6628f457ad1e3ae4a90cc58878fe40d0, type: 3}
   - {fileID: 8300000, guid: e95270d8de658bd4b8bbaf58c1ff8e6f, type: 3}
   m_shootAnim: {fileID: 0}
-  m_reload: {fileID: 0}
   m_bulletNum: 0
   m_text: {fileID: 0}
   m_bulletMaxNum: 4
@@ -118,7 +117,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5871333284556541852}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: b6c33e1d6632025468fb37a04e312606, type: 3}
   m_Controller: {fileID: 9100000, guid: 605425eb78a7de74ebaf67a9a47561c5, type: 2}
   m_CullingMode: 0
@@ -151,6 +150,7 @@ MonoBehaviour:
   m_hitSound: {fileID: 8300000, guid: 202b951c1661d6e4589f332b48beaff3, type: 3}
   m_reloadSound: {fileID: 8300000, guid: 6628f457ad1e3ae4a90cc58878fe40d0, type: 3}
   m_airshoot: {fileID: 0}
+  m_reload: {fileID: 0}
   m_text: {fileID: 0}
   m_bulletNum: 4
   m_bulletMaxNum: 4

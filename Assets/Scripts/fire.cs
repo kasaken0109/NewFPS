@@ -34,12 +34,12 @@ public class fire : MonoBehaviour
         m_textBox = GameObject.Find("BulletText");
         m_text = m_textBox.GetComponent<Text>();
         m_reload = GameObject.Find("Reload");
-        m_reload.SetActive(false);
         m_bulletNum = m_bulletMaxNum;
         if (m_muzzle == null)
         {
             m_muzzle = GameObject.FindGameObjectWithTag("Muzzle").transform;
         }
+        m_reload.SetActive(false);
     }
 
     // Update is called once per frame

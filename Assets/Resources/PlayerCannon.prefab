@@ -107,8 +107,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6628f457ad1e3ae4a90cc58878fe40d0, type: 3}
   - {fileID: 8300000, guid: e95270d8de658bd4b8bbaf58c1ff8e6f, type: 3}
   m_shootAnim: {fileID: -5300095912380279960}
-  m_reload: {fileID: 0}
   m_bulletNum: 0
+  m_text: {fileID: 0}
   m_bulletMaxNum: 4
 --- !u!95 &-5300095912380279960
 Animator:
@@ -165,6 +165,10 @@ MonoBehaviour:
     m_Bits: 2048
   m_shootSound: {fileID: 8300000, guid: 43cfa8c3b864b434fb57d57b0ba69583, type: 3}
   m_hitSound: {fileID: 8300000, guid: 202b951c1661d6e4589f332b48beaff3, type: 3}
+  m_reloadSound: {fileID: 0}
+  m_airshoot: {fileID: 0}
+  m_reload: {fileID: 0}
+  m_text: {fileID: 0}
   m_bulletNum: 0
   m_bulletMaxNum: 4
   m_debugText: {fileID: 0}
