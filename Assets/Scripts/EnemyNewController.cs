@@ -10,20 +10,7 @@ public class EnemyNewController : MonoBehaviour
     [SerializeField] AudioClip e_hit;
     bool IsDoolExisted = false;
     // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //if (true)
-        //{
-
-        //}
-    }
-
+   
     public void Hit()
     {
         if (!IsDoolExisted)

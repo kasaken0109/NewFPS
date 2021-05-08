@@ -8,10 +8,6 @@ public class FireLine : MonoBehaviour
     /// <summary>照準</summary>
     RectTransform m_crosshairUi = null;
     [SerializeField] GameObject m_muzzle = null;
-    /// <summary>照準にターゲットが入っていない時の色</summary>
-    //[SerializeField] Color m_crosshairColorOnNoTarget = Color.white;
-    /// <summary>照準にターゲットが入っている時の色</summary>
-    //[SerializeField] Color m_crosshairColorOnTargeted = Color.red;
     /// <summary>LineRenderer 兼 Line の出発点</summary>
     [SerializeField] LineRenderer m_line = null;
     /// <summary>射程距離</summary>

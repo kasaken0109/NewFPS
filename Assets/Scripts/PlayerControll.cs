@@ -61,7 +61,9 @@ public class PlayerControll : MonoBehaviour
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             m_anim.SetTrigger("JumpFlag");
+            m_rb.useGravity = false;
             m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
+            m_rb.useGravity = true;
         }
 
         if (Input.GetButton("Crouch"))

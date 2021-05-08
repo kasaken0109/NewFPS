@@ -14,12 +14,15 @@ public class EnemyContorollerAi : MonoBehaviour
     Vector3 m_cachedTargetPosition;
     /// <summary>キャラクターなどのアニメーションするオブジェクトを指定する</summary>
     [SerializeField] Animator m_animator;
+    float enemyDistance;
     NavMeshAgent m_agent;
 
     void Start()
     {
         e_target = GameObject.FindGameObjectWithTag("Player");
+        enemyDistance = Vector3.Distance(transform.position, e_target.transform.position);
         m_agent = GetComponent<NavMeshAgent>();
+        m_animator = GetComponent<Animator>();
         m_cachedTargetPosition = e_target.transform.position; // 初期位置を保存する（※）
     }
 
@@ -32,7 +35,7 @@ public class EnemyContorollerAi : MonoBehaviour
     {
         if (e_target != null)
         {
-            if (Vector3.Distance(m_cachedTargetPosition, e_target.transform.position) > 0.1f) // m_target が 10cm 以上移動したら
+            if (enemyDistance > 0.1f) // m_target が 10cm 以上移動したら
             {
                 m_cachedTargetPosition = e_target.transform.position; // 移動先の座標を保存する
                 m_agent.SetDestination(m_cachedTargetPosition); // Navmesh Agent に目的地をセットする（Vector3 で座標を設定していることに注意。Transform でも GameObject でもなく、Vector3 で目的地を指定する）
