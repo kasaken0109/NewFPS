@@ -8,11 +8,11 @@ public class SceneLoader : MonoBehaviour
 {
     [SerializeField] string m_LoadSceneName = "SceneNameToBeLoaded";
     bool m_isLoading = false;
+    Rigidbody rigidbody;
     
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -20,8 +20,7 @@ public class SceneLoader : MonoBehaviour
     {
         if (m_isLoading)
         {
-            SceneManager.LoadScene(m_LoadSceneName);
-            
+            SceneManager.LoadScene(m_LoadSceneName);      
         }
     }
 

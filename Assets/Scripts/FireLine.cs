@@ -42,7 +42,7 @@ public class FireLine : MonoBehaviour
         m_text = m_textBox.GetComponent<Text>();
         m_line = m_muzzle.GetComponent<LineRenderer>();
         m_reload = GameObject.Find("Reload");
-        m_reload.SetActive(false);
+        //m_reload.SetActive(false);
         audio = GetComponent<AudioSource>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
     }
@@ -72,17 +72,16 @@ public class FireLine : MonoBehaviour
             DrawLaser(hitPosition); // レーザーの終点は「Ray が当たっている時は当たった場所、当たっていない時は前方・射程距離ぶんの長さ」になる
             if (!IsSounded)
             {
-                PlayShootSound();  // レーザーの発射点で射撃音を鳴らす
+                //PlayShootSound();  // レーザーの発射点で射撃音を鳴らす
                 IsSounded = true;
             }
             bool IsHit = Physics.Raycast(ray, out hit, m_shootRange, m_layerMask);
             if (IsHit)
             {
-                Debug.Log("Hit!!");
                 hitPosition = hit.point;    // Ray が当たった場所
                 hitObject = hit.collider.gameObject;    // Ray が洗ったオブジェクト
                 Debug.Log(hit.collider.name);
-                Hit(hit.collider.gameObject);
+                //Hit(hit.collider.gameObject);
             }
             if (hitObject)
             {

@@ -39,7 +39,7 @@ public class fire : MonoBehaviour
         {
             m_muzzle = GameObject.FindGameObjectWithTag("Muzzle").transform;
         }
-        m_reload.SetActive(false);
+        //m_reload.SetActive(false);
     }
 
     // Update is called once per frame
@@ -58,7 +58,7 @@ public class fire : MonoBehaviour
             {
                 AudioSource.PlayClipAtPoint(m_shootSound[1], m_muzzle.position);
                 Debug.Log("リロードしてください");
-                m_reload.SetActive(true);
+                //m_reload.SetActive(true);
 
             }
         }
@@ -73,7 +73,7 @@ public class fire : MonoBehaviour
         {
             AudioSource.PlayClipAtPoint(m_shootSound[2], m_muzzle.position);
             Reload();
-            m_reload.SetActive(false);
+            //m_reload.SetActive(false);
         }
     }
 

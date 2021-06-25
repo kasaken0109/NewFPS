@@ -16,6 +16,7 @@ public class TimerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_gameClear.SetActive(false);
         m_gameState = GameState.PLAYING;
         m_anim = gameObject.GetComponent<Animation>();
         m_menu = false;
@@ -38,8 +39,9 @@ public class TimerManager : MonoBehaviour
             }
         }
 
-        if (timeLimit >= 0 && textManager.enemyFullNum == 0)
+        if (timeLimit >= 0 && textManager.enemyFullNum < 0)
         {
+            Debug.Log(textManager.enemyFullNum);
             m_gameClear.SetActive(true);
             m_menu = true;
         }

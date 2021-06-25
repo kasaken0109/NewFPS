@@ -1,0 +1,43 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class EnemyManager : MonoBehaviour,IDamage
+{
+    [SerializeField] int m_hp = 100;
+    [SerializeField] int m_attackPower = 10;
+    [SerializeField] Animator m_animator = null;
+    [SerializeField] Text m_HpText = null;
+ 
+    public void AddDamage(float damage)
+    {
+        if(m_hp >= m_attackPower)
+        {
+            m_hp -= m_attackPower;
+            Debug.Log($"Hit!:{m_hp}");
+        }
+        else
+        {
+            m_hp = 0;
+            Debug.Log("EnemyDeath");
+            Destroy(this.gameObject);
+            //m_animator.SetFloat();
+        }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        m_animator = GetComponent<Animator>();
+        //m_HpText = GetComponent<Text>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //m_HpText.text = "HP :" + m_hp;
+    }
+
+
+}

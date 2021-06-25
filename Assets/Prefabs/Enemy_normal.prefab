@@ -1601,6 +1601,7 @@ GameObject:
   - component: {fileID: -8218215642584944106}
   - component: {fileID: 4309727562881460541}
   - component: {fileID: 2525335663847338663}
+  - component: {fileID: 7676939043540094555}
   m_Layer: 11
   m_Name: Enemy_normal
   m_TagString: Enemy
@@ -1640,7 +1641,13 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'RigArmRightFing42'\n\tTransform 'RigLegLeft2'\n\tTransform
+    'RigArmRightFing43'\n\tTransform 'RigArmRightFing12'\n\tTransform 'RigAss'\n\tTransform
+    'RigArmRightFing31'\n\tTransform 'RigArmRight1'\n\tTransform 'RigArmLeft1'\n\tTransform
+    'RigLegRight2'\n\tTransform 'RigArmRight3'\n\tand more ...\n\tFrom animation
+    clip 'Idle HandUp'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -1672,9 +1679,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   e_power: 10
   e_hp: 50
-  deathBody: {fileID: 6799907467163580025, guid: d10d337b4e647ba489bebd8d130b2a1a,
-    type: 3}
-  e_hit: {fileID: 8300000, guid: 615dd0e0368f0d646b16c6534b90e560, type: 3}
 --- !u!195 &1178608107938749319
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1744,3 +1748,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   e_target: {fileID: 0}
   m_animator: {fileID: 0}
+--- !u!114 &7676939043540094555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6718812959342153110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c14ddd8d9ee931409a46d7a55f4b393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_hp: 20
+  m_attackPower: 10

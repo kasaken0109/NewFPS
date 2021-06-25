@@ -15,7 +15,6 @@ public class AudioController : MonoBehaviour
     void Start()
     {
         sourcew = GetComponents<AudioSource>()[0];
-        //sourcer = GetComponents<AudioSource>()[1];
     }
 
     // Update is called once per frame
@@ -41,12 +40,10 @@ public class AudioController : MonoBehaviour
         if (player.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
         {
             sourcew.PlayOneShot(sounds[Random.Range(0, sounds.Length)]);
-            Debug.Log("walk");
         }
         else if (player.GetCurrentAnimatorStateInfo(0).IsName("Run"))
         {
             sourcew.PlayOneShot(sounds[Random.Range(0, sounds.Length)]);
-            Debug.Log("run");
         }
     }
 }

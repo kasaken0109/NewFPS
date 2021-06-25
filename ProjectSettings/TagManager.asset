@@ -10,6 +10,8 @@ TagManager:
   - Wall
   - Target
   - aim
+  - Floor
+  - AttackCollider
   layers:
   - Default
   - TransparentFX

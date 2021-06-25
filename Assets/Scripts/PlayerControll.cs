@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerControll : MonoBehaviour
+public class PlayerControll : ColliderGenerater
 {
     // Start is called before the first frame update
     /// <summary>動く速さ</summary>
@@ -16,14 +16,16 @@ public class PlayerControll : MonoBehaviour
     [SerializeField] float m_jumpPower = 5f;
     /// <summary>接地判定の際、中心 (Pivot) からどれくらいの距離を「接地している」と判定するかの長さ</summary>
     [SerializeField] float m_isGroundedLength = 1.1f;
+    [SerializeField] GameObject m_attackCollider = null;
     [SerializeField] GameObject m_player = null;
     [SerializeField] Animator m_anim = null;
     [SerializeField] float m_crouchSlow = 1;
+    [SerializeField] float m_skillWaitTime = 1;
     Rigidbody m_rb;
     Vector3 dir;
     Vector3 velo;
     CapsuleCollider collider;
-    
+
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
@@ -72,7 +74,7 @@ public class PlayerControll : MonoBehaviour
             m_crouchSlow = 0.5f;
             collider.height = 0.7f;
         }
-        else if(Input.GetButtonUp("Crouch"))
+        else if (Input.GetButtonUp("Crouch"))
         {
             m_crouchSlow = 1f;
             collider.height = 1f;
@@ -97,6 +99,10 @@ public class PlayerControll : MonoBehaviour
         if (Input.GetButton("Fire1"))
         {
             m_anim.SetTrigger("ShootFlag");
+        }
+        if (Input.GetButtonDown("Fire2"))
+        {
+            m_anim.SetTrigger("PunchFlag");
         }
 
     }
@@ -129,5 +135,10 @@ public class PlayerControll : MonoBehaviour
             return false;
 
         }
+    }
+
+    public void GenerateCollider()
+    {
+        StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_attackCollider, m_skillWaitTime));
     }
 }

@@ -709,7 +709,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8230295608162345159}
-  m_LocalRotation: {x: 0.50000006, y: -0.5, z: -0.4999999, w: 0.5}
+  m_LocalRotation: {x: 0.5000001, y: -0.49999997, z: -0.49999997, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1639,7 +1639,16 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'RigArmRightFing23'\n\tTransform 'RigLegRight3'\n\tTransform
+    'RigLegLeft3'\n\tTransform 'RigSpine2'\n\tTransform 'RigLegRight1'\n\tTransform
+    'RigArmLeftFing43'\n\tTransform 'RigArmLeftFing23'\n\tTransform 'RigArmRightFing42'\n\tTransform
+    'RigArmLeftFing22'\n\tTransform 'RigLegLeft2'\n\tand more ...\n\tFrom animation
+    clip 'Idle'\n\tFrom animation clip 'Run Rifle'\n\tFrom animation clip 'Wary'\n\tFrom
+    animation clip 'Jump Rifle'\n\tFrom animation clip 'Walk Rifle'\n\tFrom animation
+    clip 'Fire 1Pistol'\n\tFrom animation clip 'Idle'\n\tFrom animation clip 'Fire
+    1Pistol'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -1692,8 +1701,8 @@ MonoBehaviour:
   m_fireInterval: 0.15
   m_shootSound: []
   m_shootAnim: {fileID: 0}
-  m_reload: {fileID: 0}
   m_bulletNum: 0
+  m_text: {fileID: 0}
   m_bulletMaxNum: 4
 --- !u!114 &8230295608424897478
 MonoBehaviour:
