@@ -4,10 +4,10 @@ using UnityEngine;
 
 interface IDamage
 {
-    void AddDamage(float damage);
+    void AddDamage(int damage);
 }
 
 interface IGetDamage
 {
-    void GetDamage(float damage);
+    void GetDamage(int damage);
 }
