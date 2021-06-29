@@ -10,11 +10,13 @@ public class EnemyManager : MonoBehaviour,IDamage
     [SerializeField] Animator m_animator = null;
     [SerializeField] Text m_HpText = null;
  
-    public void AddDamage(float damage)
+    public void AddDamage(int damage)
     {
-        if(m_hp >= m_attackPower)
+        if(m_hp > m_attackPower)
         {
             m_hp -= m_attackPower;
+            m_animator.SetInteger("HP", 1);
+            m_animator.SetTrigger("Hit");
             Debug.Log($"Hit!:{m_hp}");
         }
         else
@@ -22,21 +24,20 @@ public class EnemyManager : MonoBehaviour,IDamage
             m_hp = 0;
             Debug.Log("EnemyDeath");
             Destroy(this.gameObject);
-            //m_animator.SetFloat();
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        m_animator = GetComponent<Animator>();
-        //m_HpText = GetComponent<Text>();
+        //m_animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //m_HpText.text = "HP :" + m_hp;
+        if (!m_HpText) return;
+        m_HpText.text = "HP :" + m_hp;
     }
 
 
