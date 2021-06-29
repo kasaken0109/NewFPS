@@ -14,7 +14,7 @@ public class FrostBulletController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_player = GameObject.Find("Playernew");
+        m_player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
