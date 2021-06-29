@@ -12,9 +12,9 @@ public class EnemyManager : MonoBehaviour,IDamage
  
     public void AddDamage(int damage)
     {
-        if(m_hp > m_attackPower)
+        if(m_hp > damage)
         {
-            m_hp -= m_attackPower;
+            m_hp -= damage;
             m_animator.SetInteger("HP", 1);
             m_animator.SetTrigger("Hit");
             Debug.Log($"Hit!:{m_hp}");
