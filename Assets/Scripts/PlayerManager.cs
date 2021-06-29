@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] float m_hp = 100;
     [SerializeField] GameObject m_charactor;
+    [SerializeField] Text m_hptext = null;
     /// <summary>
     /// 武器のNo.
     /// </summary>
@@ -34,6 +36,8 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        m_hptext.text = "HP:" + m_hp.ToString();
+
         if (Time.time - keyInterval > 0.5f)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1) == true)
@@ -75,5 +79,10 @@ public class PlayerManager : MonoBehaviour
         }
 
         m_weaponManager.EquipWeapon(m_weaponPath[m_weaponNum]);
+    }
+
+    public void AddDamage(int damage)
+    {
+        throw new System.NotImplementedException();
     }
 }
