@@ -7,6 +7,7 @@ public class MouseController: MonoBehaviour
     // Start is called before the first frame update
     [SerializeField]
     private Transform character;    //キャラクターをInspectorウィンドウから選択してください
+    [SerializeField] GameObject m_muzzle = null;
     [SerializeField]
     private Transform pivot;    //キャラクターの中心にある空のオブジェクトを選択してください
 
@@ -19,9 +20,9 @@ public class MouseController: MonoBehaviour
             pivot = transform;
     }
     //カメラ上下移動の最大、最小角度です。Inspectorウィンドウから設定してください
-    [Range(-0.999f, -0.5f)]
+    [Range(-0.999f, -0.1f)]
     public float maxYAngle = -0.5f;
-    [Range(0.5f, 0.999f)]
+    [Range(0.1f, 0.999f)]
     public float minYAngle = 0.5f;
     // Update is called once per frame
     void Update()
@@ -44,6 +45,7 @@ public class MouseController: MonoBehaviour
                 {
                     //pivot.transform.Rotate(-Y_Rotation, 0, 0);
                     Camera.main.transform.LookAt(pivot, Vector3.up);
+                    //m_muzzle.transform.LookAt(pivot, Vector3.up);
                     Camera.main.transform.position += new Vector3(0, -Y_Rotation * Time.deltaTime * 3, 0);
                 }
                 //pivot.transform.Rotate(-Y_Rotation, 0, 0);
@@ -53,6 +55,7 @@ public class MouseController: MonoBehaviour
                 if (nowAngle >= maxYAngle)
                 {
                     Camera.main.transform.LookAt(pivot, Vector3.up);
+                    //m_muzzle.transform.LookAt(pivot, Vector3.up);
                     Camera.main.transform.position += new Vector3(0, -Y_Rotation * Time.deltaTime * 3, 0);
                 }
                 //pivot.transform.Rotate(-Y_Rotation, 0, 0);
