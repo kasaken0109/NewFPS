@@ -14,6 +14,8 @@ public class EnemyContorollerAi : MonoBehaviour
     Vector3 m_cachedTargetPosition;
     /// <summary>キャラクターなどのアニメーションするオブジェクトを指定する</summary>
     [SerializeField] Animator m_animator;
+    /// <summary>移動をやめ攻撃を開始する距離</summary>
+    [SerializeField] float m_attackDistance = 3f;
     float enemyDistance;
     NavMeshAgent m_agent;
 
@@ -22,7 +24,6 @@ public class EnemyContorollerAi : MonoBehaviour
         e_target = GameObject.FindGameObjectWithTag("Player");
         enemyDistance = Vector3.Distance(transform.position, e_target.transform.position);
         m_agent = GetComponent<NavMeshAgent>();
-        m_animator = GetComponent<Animator>();
         m_cachedTargetPosition = e_target.transform.position; // 初期位置を保存する（※）
     }
 
@@ -33,21 +34,32 @@ public class EnemyContorollerAi : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(enemyDistance);
         if (e_target != null)
         {
-            if (enemyDistance > 0.1f) // m_target が 10cm 以上移動したら
+            if ((enemyDistance > 0.1f || enemyDistance > m_attackDistance) && !m_animator.GetBool("Attack")) // m_target が 10cm 以上移動したら
             {
                 m_cachedTargetPosition = e_target.transform.position; // 移動先の座標を保存する
-                m_agent.SetDestination(m_cachedTargetPosition); // Navmesh Agent に目的地をセットする（Vector3 で座標を設定していることに注意。Transform でも GameObject でもなく、Vector3 で目的地を指定する）
+                m_agent.SetDestination(m_cachedTargetPosition); // Navmesh Agent に目的地をセットする（Vector3 で座標を設定していることに注意。Transform でも GameObject でもなく、Vector3 で目的地を指定する)
+                gameObject.transform.LookAt(e_target.transform);
+                if (m_animator)
+                {
+                    m_animator.SetFloat("Speed", m_agent.velocity.magnitude);
+                }
             }
 
             // m_animator がアサインされていたら Animator Controller にパラメーターを設定する
-            if (m_animator)
-            {
-                m_animator.SetFloat("Speed", m_agent.velocity.magnitude);
-            }
+
         }
-        // m_target が移動したら Navmesh Agent を使って移動させる
     }
-    // m_animator がアサインされていたら Animator Controller にパラメーターを設定す
+
+    private void OnTriggerEnter(Collider other)
+    {
+        m_animator.SetBool("Attack", true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        m_animator.SetBool("Attack", false);
+    }
 }
