@@ -8,6 +8,8 @@ public class FrostWallController : MonoBehaviour
     [SerializeField] GameObject m_effect;
     /// <summary> 破壊するときに発生する攻撃コライダー/// </summary>
     [SerializeField] GameObject m_attackCollider = null;
+    /// <summary> 破壊するFrostWall/// </summary>
+    [SerializeField] GameObject m_frostwall = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,8 +26,8 @@ public class FrostWallController : MonoBehaviour
     {
         if (other.tag == "AttackCollider")
         {
+            m_frostwall.SetActive(false);
             Instantiate(m_effect, this.transform.position,this.transform.rotation);
-            m_attackCollider.SetActive(true);
             StartCoroutine(SetNonActive());
             Destroy(this.gameObject,1);
         }
