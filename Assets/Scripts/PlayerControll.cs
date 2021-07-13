@@ -65,7 +65,12 @@ public class PlayerControll : ColliderGenerater
             m_anim.SetTrigger("JumpFlag");
             m_rb.useGravity = false;
             m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
+            m_rb.constraints = RigidbodyConstraints.FreezeRotation;
             m_rb.useGravity = true;
+        }
+        else if (!IsGrounded())
+        {
+            m_rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         }
 
         if (Input.GetButton("Crouch"))

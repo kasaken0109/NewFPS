@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour,IDamage
 {
     // Start is called before the first frame update
-    [SerializeField] float m_hp = 100;
+    [SerializeField] int m_hp = 100;
     [SerializeField] GameObject m_charactor;
     [SerializeField] Text m_hptext = null;
+    [SerializeField] Animator m_animator = null;
+    [SerializeField] Slider hpslider = null;
     /// <summary>
     /// 武器のNo.
     /// </summary>
     private int m_weaponNum = 0;
     private float keyInterval = 0f;
     private WeaponManager m_weaponManager;
+    private int m_maxhp;
 
     public enum WeaponTypes: int
     {
@@ -31,12 +34,14 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         m_weaponManager = m_charactor.GetComponent<WeaponManager>();
+        m_maxhp = m_hp;
     }
 
     // Update is called once per frame
     void Update()
     {
         m_hptext.text = "HP:" + m_hp.ToString();
+        hpslider.value = (float)m_hp / m_maxhp;
 
         if (Time.time - keyInterval > 0.5f)
         {
@@ -53,7 +58,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void Damage (float damage)
+    public void Damage (int damage)
     {
         m_hp -= damage;
         Debug.Log(m_hp);
@@ -83,6 +88,14 @@ public class PlayerManager : MonoBehaviour
 
     public void AddDamage(int damage)
     {
-        throw new System.NotImplementedException();
+        if (m_hp > damage)
+        {
+            m_hp -= damage;
+            m_animator.SetTrigger("Damage");
+        }
+        else
+        {
+            m_animator.SetBool("DeadFlag", true);
+        }
     }
 }
