@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyContoroller : MonoBehaviour
 {
-    [SerializeField] float e_power = 10;
-    [SerializeField] float e_hp = 100;
+    [SerializeField] int e_power = 10;
+    [SerializeField] int e_hp = 100;
     //[SerializeField] GameObject deathBody;
     //[SerializeField] AudioClip e_hit;
     // Start is called before the first frame update
@@ -32,7 +32,7 @@ public class EnemyContoroller : MonoBehaviour
         }
     }
 
-    public void Hit(float damage){
+    public void Hit(int damage){
         //AudioSource.PlayClipAtPoint(e_hit, this.gameObject.transform.position);
         GameObject inst;
         e_hp -= damage;

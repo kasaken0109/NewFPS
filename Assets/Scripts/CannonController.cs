@@ -7,7 +7,7 @@ public class CannonController : MonoBehaviour
     [SerializeField] GameObject m_bounceEffect;
     [SerializeField] GameObject m_bulletEffect;
     bool bounceflag = true;
-    float m_bulletPower = 10f;
+    int m_bulletPower = 10;
     // Start is called before the first frame update
     void Start()
     {
