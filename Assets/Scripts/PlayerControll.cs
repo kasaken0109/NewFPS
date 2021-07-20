@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+
+//プレイヤーの動きを制御する
 public class PlayerControll : ColliderGenerater
 {
     // Start is called before the first frame update
@@ -16,10 +18,16 @@ public class PlayerControll : ColliderGenerater
     [SerializeField] float m_jumpPower = 5f;
     /// <summary>接地判定の際、中心 (Pivot) からどれくらいの距離を「接地している」と判定するかの長さ</summary>
     [SerializeField] float m_isGroundedLength = 1.1f;
+    /// <summary>攻撃の当たり判定</summary>
     [SerializeField] GameObject m_attackCollider = null;
+    /// <summary>プレイヤーオブジェクト</summary>
     [SerializeField] GameObject m_player = null;
+    /// <summary>スピードアップエフェクト</summary>
+    [SerializeField] GameObject m_speedup = null;
     [SerializeField] Animator m_anim = null;
+    /// <summary>しゃがみ時の減速割合</summary>
     [SerializeField] float m_crouchSlow = 1;
+    /// <summary>スキルクールダウンタイム</summary>
     [SerializeField] float m_skillWaitTime = 1;
     Rigidbody m_rb;
     Vector3 dir;
@@ -54,52 +62,48 @@ public class PlayerControll : ColliderGenerater
         {
             dir = Camera.main.transform.TransformDirection(dir);    // メインカメラを基準に入力方向のベクトルを変換する
             dir.y = 0;  // y 軸方向はゼロにして水平方向のベクトルにする
-            IsRunning(); // 入力した方向に移動する
+            Running(); // 入力した方向に移動する
             velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
             m_rb.velocity = velo;   // 計算した速度ベクトルをセットする
         }
 
-        // ジャンプの入力を取得し、接地している時に押されていたらジャンプする
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        if (IsGrounded())
         {
-            m_anim.SetTrigger("JumpFlag");
-            m_rb.useGravity = false;
-            m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
-            m_rb.constraints = RigidbodyConstraints.FreezeRotation;
-            m_rb.useGravity = true;
-        }
-        else if (!IsGrounded())
-        {
-            m_rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
-        }
-
-        if (Input.GetButton("Crouch"))
-        {
-            m_anim.SetTrigger("CrouchFlag");
-            m_crouchSlow = 0.5f;
-            collider.height = 0.7f;
-        }
-        else if (Input.GetButtonUp("Crouch"))
-        {
-            m_crouchSlow = 1f;
-            collider.height = 1f;
-        }
-        if (v == 0 && h == 0)
-        {
-            m_anim.SetFloat("Speed", 0);
-
-        }
-        else
-        {
-            if (IsRunning() == true)
+            if (Input.GetButtonDown("Jump"))
             {
-                m_anim.SetFloat("Speed", m_runningSpeed);
+                m_anim.SetTrigger("JumpFlag");
+                m_rb.useGravity = false;
+                m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
+                m_rb.constraints = RigidbodyConstraints.FreezeRotation;
+                m_rb.useGravity = true;
+            }
+            if (Input.GetButton("Crouch"))
+            {
+                m_anim.SetTrigger("CrouchFlag");
+                m_crouchSlow = 0.5f;
+                collider.height = 0.7f;
+            }
+            else if (Input.GetButtonUp("Crouch"))
+            {
+                m_crouchSlow = 1f;
+                collider.height = 1f;
+            }
+            if (v == 0 && h == 0)
+            {
+                m_anim.SetFloat("Speed", 0);
+                m_speedup.SetActive(false);
+
             }
             else
             {
-                m_anim.SetFloat("Speed", m_movingSpeed);
+                Running();
             }
         }
+        else
+        {
+            m_anim.SetFloat("Speed", 0);
+        }
+
 
         if (Input.GetButton("Fire1"))
         {
@@ -126,19 +130,25 @@ public class PlayerControll : ColliderGenerater
         return isGrounded;
     }
 
-    bool IsRunning()
+    /// <summary>
+    /// 移動状態を制御する
+    /// </summary>
+    void Running()
     {
         if (Input.GetButton("Splint"))
         {
             velo = dir.normalized * m_runningSpeed * m_crouchSlow;
-            return true;
+            m_anim.SetFloat("Speed", m_runningSpeed);
+            m_speedup.SetActive(true);
+            Camera.main.fieldOfView = 80;
 
         }
         else
         {
             velo = dir.normalized * m_movingSpeed * m_crouchSlow;
-            return false;
-
+            m_anim.SetFloat("Speed", m_movingSpeed);
+            m_speedup.SetActive(false);
+            Camera.main.fieldOfView = 60;
         }
     }
 
