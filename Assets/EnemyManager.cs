@@ -9,6 +9,7 @@ public class EnemyManager : MonoBehaviour,IDamage
     [SerializeField] int m_attackPower = 10;
     [SerializeField] Animator m_animator = null;
     [SerializeField] Text m_HpText = null;
+    ActionCtrl actionCtrl = null;
  
     public void AddDamage(int damage)
     {
@@ -28,9 +29,10 @@ public class EnemyManager : MonoBehaviour,IDamage
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        actionCtrl = new ActionCtrl();
+        actionCtrl.SetCurrent(GetComponentInChildren<IdleState>());
     }
 
     // Update is called once per frame
