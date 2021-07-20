@@ -40,7 +40,7 @@ public class StateBase : MonoBehaviour
         _actionCtrl = ctrl;
     }
 
-    void Awake()
+    protected virtual void Awake()
     {
         if (this.gameObject.name.Contains("Player"))
         {
