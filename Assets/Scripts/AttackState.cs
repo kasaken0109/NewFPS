@@ -21,7 +21,9 @@ public class AttackState : StateBase
         _animator.SetBool("Attack", true);
         if (_opponentTag == "Player")
         {
-            this.transform.LookAt(GameManager.Player.transform.position);
+            Debug.Log(GameManager.Player.transform.position);
+            var e = GetComponentInParent<EnemyManager>();
+            e.transform.LookAt(GameManager.Player.transform.position);
         }
         return 0;
     }
