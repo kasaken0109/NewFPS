@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] Transform m_pivot = null;
-    Transform temp ;
+    [SerializeField]Transform temp = null;
     GameObject m_player;
     //カメラ上下移動の最大、最小角度です。Inspectorウィンドウから設定してください
     [Range(-0.999f, -0.1f)]
@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         m_player = GameManager.Player.gameObject;
-        temp.position = new Vector3(0, 0, 0);
+        temp.position = new Vector3(0, 2f, 0);
     }
 
     // Update is called once per frame
