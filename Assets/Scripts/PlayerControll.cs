@@ -18,6 +18,8 @@ public class PlayerControll : ColliderGenerater
     [SerializeField] float m_jumpPower = 5f;
     /// <summary>突進力</summary>
     [SerializeField] float m_dushPower = 10f;
+    /// <summary>突進攻撃力</summary>
+    [SerializeField] int m_dushAttackPower = 15;
     /// <summary>接地判定の際、中心 (Pivot) からどれくらいの距離を「接地している」と判定するかの長さ</summary>
     [SerializeField] float m_isGroundedLength = 1.1f;
     /// <summary>攻撃の当たり判定</summary>
@@ -187,5 +189,13 @@ public class PlayerControll : ColliderGenerater
     public void GenerateCollider()
     {
         StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_attackCollider, m_skillWaitTime));
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            collision.gameObject.GetComponentInParent<IDamage>().AddDamage(m_dushAttackPower);
+        }
     }
 }
