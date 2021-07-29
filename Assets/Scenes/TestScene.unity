@@ -2563,6 +2563,7 @@ MonoBehaviour:
   m_runningSpeed: 8
   m_turnSpeed: 3
   m_jumpPower: 12
+  m_dushPower: 10
   m_isGroundedLength: 0.3
   m_attackCollider: {fileID: 0}
   m_player: {fileID: 1008358208}
@@ -9910,11 +9911,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_pivot: {fileID: 369489839}
-  m_UpPivot: {fileID: 170513265}
-  m_DownPivot: {fileID: 27908418}
-  m_temp: {x: 0, y: 0, z: 0}
-  maxYAngle: -0.5
-  minYAngle: 0.5
+  m_UpPoint: {fileID: 170513265}
+  m_DownPoint: {fileID: 27908418}
 --- !u!1 &2133099308
 GameObject:
   m_ObjectHideFlags: 0
@@ -10530,6 +10528,11 @@ PrefabInstance:
       propertyPath: m_speedup
       value: 
       objectReference: {fileID: 1827423697}
+    - target: {fileID: 1751380559792518087, guid: 732ab5b2efffaad4abf8ae58209b5c1d,
+        type: 3}
+      propertyPath: m_dushPower
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 1751380559792518093, guid: 732ab5b2efffaad4abf8ae58209b5c1d,
         type: 3}
       propertyPath: player

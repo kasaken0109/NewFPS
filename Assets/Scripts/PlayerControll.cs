@@ -16,6 +16,8 @@ public class PlayerControll : ColliderGenerater
     [SerializeField] float m_turnSpeed = 3f;
     /// <summary>ジャンプ力</summary>
     [SerializeField] float m_jumpPower = 5f;
+    /// <summary>突進力</summary>
+    [SerializeField] float m_dushPower = 10f;
     /// <summary>接地判定の際、中心 (Pivot) からどれくらいの距離を「接地している」と判定するかの長さ</summary>
     [SerializeField] float m_isGroundedLength = 1.1f;
     /// <summary>攻撃の当たり判定</summary>
@@ -29,6 +31,7 @@ public class PlayerControll : ColliderGenerater
     [SerializeField] float m_crouchSlow = 1;
     /// <summary>スキルクールダウンタイム</summary>
     [SerializeField] float m_skillWaitTime = 1;
+    bool IsButtonHold = false;
     Rigidbody m_rb;
     Vector3 dir;
     Vector3 velo;
@@ -109,11 +112,40 @@ public class PlayerControll : ColliderGenerater
         {
             m_anim.SetTrigger("ShootFlag");
         }
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButton("Fire2"))
         {
-            m_anim.SetTrigger("PunchFlag");
+            StartCoroutine(HoldAttack());
+            IsButtonHold = true;
         }
+        else if (Input.GetButtonUp("Fire2"))
+        {
+            IsButtonHold = false;
+        }
+    }
 
+    float timer = 0;
+    IEnumerator HoldAttack()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (IsButtonHold)
+        {
+            timer += 0.1f;
+        }
+        else
+        {
+            if (timer >= 2)
+            {
+                Debug.Log("HoldAttack");
+                m_rb.AddForce(this.gameObject.transform.forward * m_dushPower,ForceMode.Impulse);
+            }
+            else if(timer != 0)
+            {
+                Debug.Log("BasicAttack");
+                m_anim.SetTrigger("PunchFlag");
+            }
+            timer = 0;
+            yield break;
+        }
     }
 
     /// <summary>
