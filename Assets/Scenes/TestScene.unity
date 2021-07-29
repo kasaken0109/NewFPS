@@ -121,6 +121,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: f99ccaa950c3acf4a8b7483a88fffced, type: 2}
+--- !u!1 &27908417
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 27908418}
+  m_Layer: 0
+  m_Name: Down
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &27908418
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27908417}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.8500035, y: -1.145204, z: -1.920006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2132371427}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &39189544
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,6 +187,36 @@ Transform:
   - {fileID: 643960646}
   m_Father: {fileID: 0}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &170513264
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 170513265}
+  m_Layer: 0
+  m_Name: Up
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &170513265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170513264}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.85000056, y: 4.4195485, z: -1.9200115}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2132371427}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &183247383
 Mesh:
@@ -552,6 +612,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1371205782601593702, guid: f314986a28c64164bb517be4e31f09a4,
     type: 3}
   m_PrefabInstance: {fileID: 2117724943}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &369489839 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1751380560490125138, guid: 732ab5b2efffaad4abf8ae58209b5c1d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1751380561430105173}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &472873918
 GameObject:
@@ -9825,6 +9891,30 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 1751380561430105173}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &2132371427 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5263492518453449921, guid: 732ab5b2efffaad4abf8ae58209b5c1d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1751380561430105173}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2132371428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132371417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4af85112df9694646897b50905303524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_pivot: {fileID: 369489839}
+  m_UpPivot: {fileID: 170513265}
+  m_DownPivot: {fileID: 27908418}
+  m_temp: {x: 0, y: 0, z: 0}
+  maxYAngle: -0.5
+  minYAngle: 0.5
 --- !u!1 &2133099308
 GameObject:
   m_ObjectHideFlags: 0
@@ -10410,6 +10500,16 @@ PrefabInstance:
       propertyPath: hpslider
       value: 
       objectReference: {fileID: 694503841}
+    - target: {fileID: 1751380559792518084, guid: 732ab5b2efffaad4abf8ae58209b5c1d,
+        type: 3}
+      propertyPath: maxYAngle
+      value: -0.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 1751380559792518084, guid: 732ab5b2efffaad4abf8ae58209b5c1d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1751380559792518087, guid: 732ab5b2efffaad4abf8ae58209b5c1d,
         type: 3}
       propertyPath: m_player
