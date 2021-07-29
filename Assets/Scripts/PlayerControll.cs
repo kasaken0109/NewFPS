@@ -22,28 +22,39 @@ public class PlayerControll : ColliderGenerater
     [SerializeField] int m_dushAttackPower = 15;
     /// <summary>接地判定の際、中心 (Pivot) からどれくらいの距離を「接地している」と判定するかの長さ</summary>
     [SerializeField] float m_isGroundedLength = 1.1f;
+    /// <summary>照準</summary>
+    RectTransform m_crosshairUi = null;
     /// <summary>攻撃の当たり判定</summary>
     [SerializeField] GameObject m_attackCollider = null;
+    /// <summary>ラッシュ攻撃の当たり判定</summary>
+    [SerializeField] GameObject m_rushAttackCollider = null;
     /// <summary>プレイヤーオブジェクト</summary>
     [SerializeField] GameObject m_player = null;
     /// <summary>スピードアップエフェクト</summary>
     [SerializeField] GameObject m_speedup = null;
+    /// <summary>ラッシュエフェクト</summary>
+    [SerializeField] GameObject m_rush = null;
     [SerializeField] Animator m_anim = null;
     /// <summary>しゃがみ時の減速割合</summary>
     [SerializeField] float m_crouchSlow = 1;
     /// <summary>スキルクールダウンタイム</summary>
     [SerializeField] float m_skillWaitTime = 1;
+    /// <summary>当たるレイヤー</summary>
+    [SerializeField] LayerMask m_layerMask = 0;
     bool IsButtonHold = false;
     Rigidbody m_rb;
     Vector3 dir;
     Vector3 velo;
     CapsuleCollider collider;
+    Ray ray;
+    RaycastHit hit;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
         m_anim = GetComponent<Animator>();
         collider = GetComponent<CapsuleCollider>();
+        m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -56,6 +67,8 @@ public class PlayerControll : ColliderGenerater
 
         // 入力方向のベクトルを組み立てる
         dir = Vector3.forward * v + Vector3.right * h;
+        ray = Camera.main.ScreenPointToRay(m_crosshairUi.position);
+
         if (dir == Vector3.zero)
         {
             // 方向の入力がニュートラルの時は、y 軸方向の速度を保持するだけ
@@ -116,6 +129,7 @@ public class PlayerControll : ColliderGenerater
         }
         if (Input.GetButton("Fire2"))
         {
+            m_rush.SetActive(false);
             StartCoroutine(HoldAttack());
             IsButtonHold = true;
         }
@@ -126,6 +140,7 @@ public class PlayerControll : ColliderGenerater
     }
 
     float timer = 0;
+    GameObject m_hit;
     IEnumerator HoldAttack()
     {
         yield return new WaitForSeconds(0.1f);
@@ -138,7 +153,17 @@ public class PlayerControll : ColliderGenerater
             if (timer >= 2)
             {
                 Debug.Log("HoldAttack");
+                //StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_rushAttackCollider, m_skillWaitTime / 5));
                 m_rb.AddForce(this.gameObject.transform.forward * m_dushPower,ForceMode.Impulse);
+                bool Ishit = Physics.Raycast(ray, out hit, 15f, m_layerMask);
+                Debug.Log(Ishit);
+                if (Ishit)
+                {
+                    Debug.Log("Hit");
+                    m_hit = hit.collider.gameObject;
+                    m_hit.GetComponentInParent<IDamage>().AddDamage(20);
+                }
+                m_rush.SetActive(true);
             }
             else if(timer != 0)
             {
@@ -191,11 +216,11 @@ public class PlayerControll : ColliderGenerater
         StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_attackCollider, m_skillWaitTime));
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            collision.gameObject.GetComponentInParent<IDamage>().AddDamage(m_dushAttackPower);
-        }
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Enemy"))
+    //    {
+    //        collision.gameObject.GetComponentInParent<IDamage>().AddDamage(m_dushAttackPower);
+    //    }
+    //}
 }
