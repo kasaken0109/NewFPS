@@ -17,11 +17,11 @@ public class AttackState : StateBase
 
     int EnterCallback()
     {
-        Debug.Log("EnterCallback");
+        //Debug.Log("EnterCallback");
         _animator.SetBool("Attack", true);
         if (_opponentTag == "Player")
         {
-            Debug.Log(GameManager.Player.transform.position);
+            //Debug.Log(GameManager.Player.transform.position);
             var e = GetComponentInParent<EnemyManager>();
             e.transform.LookAt(GameManager.Player.transform.position);
         }
@@ -30,7 +30,7 @@ public class AttackState : StateBase
 
     int ExitCallback()
     {
-        Debug.Log("ExitCallback");
+        //Debug.Log("ExitCallback");
         _animator.SetBool("Attack", false);
         return 0;
     }
