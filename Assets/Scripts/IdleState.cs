@@ -6,6 +6,7 @@ public class IdleState : StateBase
 {
     // Start is called before the first frame update
     [SerializeField]StateBase _attackState;
+    [SerializeField] StateBase _moveState;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -25,6 +26,16 @@ public class IdleState : StateBase
         if (other.gameObject.CompareTag(_opponentTag))
         {
             _actionCtrl.SetCurrent(_attackState);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (_opponentTag == "") return;
+        if (other.gameObject == null) return;
+        if (other.gameObject.CompareTag(_opponentTag))
+        {
+            _actionCtrl.SetCurrent(_moveState);
         }
     }
 }
