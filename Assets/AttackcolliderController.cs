@@ -16,15 +16,20 @@ public class AttackcolliderController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log(collision.gameObject.name);
-        if (collision.gameObject.tag == "Enemy")collision.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
-
+        if (collision.gameObject.tag == m_opponentTagName && CanHit)
+        {
+            Debug.Log("Direct");
+            collision.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
+            CanHit = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
+        //Debug.Log(other.name);
         if (other.tag == m_opponentTagName && CanHit)
         {
+            //Debug.Log("Direct");
             other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
             CanHit = false;
         }

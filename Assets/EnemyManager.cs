@@ -8,6 +8,7 @@ public class EnemyManager : MonoBehaviour,IDamage
     [SerializeField] int m_hp = 100;
     [SerializeField] int m_attackPower = 10;
     [SerializeField] Animator m_animator = null;
+    [SerializeField] GameObject m_deathBody = null;
     [SerializeField] Text m_HpText = null;
     ActionCtrl actionCtrl = null;
  
@@ -23,7 +24,8 @@ public class EnemyManager : MonoBehaviour,IDamage
         else
         {
             m_hp = 0;
-            Debug.Log("EnemyDeath");
+            //Debug.Log("EnemyDeath");
+            Instantiate(m_deathBody,this.transform.position,this.transform.rotation);
             Destroy(this.gameObject);
         }
     }

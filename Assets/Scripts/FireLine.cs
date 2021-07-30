@@ -74,7 +74,8 @@ public class FireLine : MonoBehaviour
                 hitObject = hit.collider.gameObject;    // Ray が洗ったオブジェクト
                 if (hitObject)
                 {
-                    Debug.Log(hitObject);
+                    //Debug.Log(hitObject.tag);
+                    //Debug.Log(hitObject.name);
                     if (!IsEndHit && m_bulletNum >= 1 && hitObject.tag == "Enemy") hitObject.GetComponentInParent<IDamage>().AddDamage(m_attackpower);
                     if (!IsHitSound)
                     {
