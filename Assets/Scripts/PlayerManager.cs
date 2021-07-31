@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class PlayerManager : MonoBehaviour,IDamage
 {
@@ -91,6 +92,8 @@ public class PlayerManager : MonoBehaviour,IDamage
         if (m_hp > damage)
         {
             m_hp -= damage;
+            
+            hpslider.value = (float)m_hp / m_maxhp;
             m_animator.SetTrigger("Damage");
         }
         else
