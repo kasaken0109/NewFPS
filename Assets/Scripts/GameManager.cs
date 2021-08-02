@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] PlayerManager _player;
+    [SerializeField] GameObject m_bossEnemy = null;
+    [SerializeField] Transform m_bossSpawn = null;
 
     static GameManager _instance = null;
     static public PlayerManager Player => _instance._player;
@@ -13,5 +15,13 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         _instance = this;
+    }
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Spawn"))
+        {
+            Instantiate(m_bossEnemy,m_bossSpawn.position,m_bossSpawn.rotation);
+        }
     }
 }
