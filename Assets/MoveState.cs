@@ -13,6 +13,7 @@ public class MoveState : StateBase
     // Start is called before the first frame update
     protected override void Setup()
     {
+        //IAnimationClipSource;
         _idleState = GetComponent<IdleState>();
         animator = GetComponentInParent<Animator>();
         m_agent = GetComponentInParent<NavMeshAgent>();
