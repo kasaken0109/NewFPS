@@ -17,26 +17,44 @@ public class MoveState : StateBase
         _idleState = GetComponent<IdleState>();
         animator = GetComponentInParent<Animator>();
         m_agent = GetComponentInParent<NavMeshAgent>();
-        animator.SetBool("Move", true);
-        m_cachedTargetPosition = GameManager.Player.transform.position;
+        SetDelegate(Event.Enter, EnterCallback);
+        SetDelegate(Event.Leave, ExitCallback);
     }
 
-    // Update is called once per frame
-    void Update()
+    int EnterCallback()
     {
-        distance = Vector3.Distance(GameManager.Player.transform.position,this.transform.position);
-        m_cachedTargetPosition = GameManager.Player.transform.position;
-        m_agent.SetDestination(m_cachedTargetPosition); // Navmesh Agent に目的地をセットする（Vector3 で座標を設定していることに注意。Transform でも GameObject でもなく、Vector3 で目的地を指定する)
-        gameObject.transform.LookAt(GameManager.Player.transform);
-        animator.SetFloat("Speed", m_agent.velocity.magnitude);
+        StartCoroutine("routine");
+        return 0;
     }
 
-    private void OnTriggerEnter(Collider other)
+    int ExitCallback()
+    {
+        StopCoroutine("routine");
+        animator.SetFloat("Speed", 0);
+        return 0;
+    }
+    IEnumerator routine()
+    {
+        yield return new WaitForFixedUpdate();
+        while (true)
+        {
+            m_cachedTargetPosition = GameManager.Player.transform.position;
+            distance = Vector3.Distance(GameManager.Player.transform.position, this.transform.position);
+            m_agent.SetDestination(m_cachedTargetPosition); // Navmesh Agent に目的地をセットする（Vector3 で座標を設定していることに注意。Transform でも GameObject でもなく、Vector3 で目的地を指定する)
+            gameObject.transform.LookAt(GameManager.Player.transform);
+            animator.SetFloat("Speed", m_agent.velocity.magnitude);
+            yield return new WaitForEndOfFrame();
+        }
+         
+    }
+
+    private void OnTriggerExit(Collider other)
     {
         if (_opponentTag == "") return;
         if (other.gameObject == null) return;
         if (other.gameObject.CompareTag(_opponentTag))
         {
+            Debug.Log("OFF");
             _actionCtrl.SetCurrent(_idleState);
         }
     }
