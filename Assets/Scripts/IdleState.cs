@@ -8,6 +8,11 @@ public class IdleState : StateBase
     [SerializeField]StateBase _attackState;
     [SerializeField] StateBase _moveState;
 
+    protected override void Setup()
+    {
+        Debug.Log("EnterIdle");
+
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (_opponentTag == "") return;
@@ -25,16 +30,7 @@ public class IdleState : StateBase
         if (other.gameObject == null) return;
         if (other.gameObject.CompareTag(_opponentTag))
         {
-            _actionCtrl.SetCurrent(_attackState);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (_opponentTag == "") return;
-        if (other.gameObject == null) return;
-        if (other.gameObject.CompareTag(_opponentTag))
-        {
+            //Debug.Log("Ok");
             _actionCtrl.SetCurrent(_moveState);
         }
     }
