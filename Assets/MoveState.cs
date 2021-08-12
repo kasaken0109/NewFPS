@@ -24,6 +24,7 @@ public class MoveState : StateBase
     int EnterCallback()
     {
         StartCoroutine("routine");
+        Debug.Log("EnterRoutine");
         return 0;
     }
 
@@ -31,6 +32,7 @@ public class MoveState : StateBase
     {
         StopCoroutine("routine");
         animator.SetFloat("Speed", 0);
+        m_agent.SetDestination(this.transform.position);
         return 0;
     }
     IEnumerator routine()
@@ -39,10 +41,14 @@ public class MoveState : StateBase
         while (true)
         {
             m_cachedTargetPosition = GameManager.Player.transform.position;
-            distance = Vector3.Distance(GameManager.Player.transform.position, this.transform.position);
+            //Debug.Log("Step1");
             m_agent.SetDestination(m_cachedTargetPosition); // Navmesh Agent に目的地をセットする（Vector3 で座標を設定していることに注意。Transform でも GameObject でもなく、Vector3 で目的地を指定する)
+            //Debug.Log("Step2");
             gameObject.transform.LookAt(GameManager.Player.transform);
+            //Debug.Log("Step4");
             animator.SetFloat("Speed", m_agent.velocity.magnitude);
+            //Debug.Log("Step5");
+            Debug.Log(GameManager.Player.transform.position);
             yield return new WaitForEndOfFrame();
         }
          
@@ -54,7 +60,6 @@ public class MoveState : StateBase
         if (other.gameObject == null) return;
         if (other.gameObject.CompareTag(_opponentTag))
         {
-            Debug.Log("OFF");
             _actionCtrl.SetCurrent(_idleState);
         }
     }
