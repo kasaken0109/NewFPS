@@ -5,15 +5,19 @@ using UnityEngine.AI;
 
 public class MoveState : StateBase
 {
-    StateBase _idleState;
+    /// <summary>発生エフェクト</summary>
+    [SerializeField] GameObject m_roarEffect = null;
+    /// <summary>エフェクト発生地点</summary>
+    [SerializeField] Transform m_spawnEffect = null;
+    [SerializeField] StateBase _attackState;
+    /// <summary>移動対象</summary>
     Vector3 m_cachedTargetPosition;
+    StateBase _idleState;
     Animator animator;
-    float distance;
     NavMeshAgent m_agent;
-    // Start is called before the first frame update
+
     protected override void Setup()
     {
-        //IAnimationClipSource;
         _idleState = GetComponent<IdleState>();
         animator = GetComponentInParent<Animator>();
         m_agent = GetComponentInParent<NavMeshAgent>();
@@ -41,19 +45,36 @@ public class MoveState : StateBase
         while (true)
         {
             m_cachedTargetPosition = GameManager.Player.transform.position;
-            //Debug.Log("Step1");
+            float distance = Vector3.Distance(m_cachedTargetPosition, transform.position);
             m_agent.SetDestination(m_cachedTargetPosition); // Navmesh Agent に目的地をセットする（Vector3 で座標を設定していることに注意。Transform でも GameObject でもなく、Vector3 で目的地を指定する)
-            //Debug.Log("Step2");
             gameObject.transform.LookAt(GameManager.Player.transform);
-            //Debug.Log("Step4");
             animator.SetFloat("Speed", m_agent.velocity.magnitude);
-            //Debug.Log("Step5");
-            Debug.Log(GameManager.Player.transform.position);
+            if (distance <= m_agent.stoppingDistance  )
+            {
+                animator.Play("Roar");
+                yield return new WaitForSeconds(2f);
+                _actionCtrl.SetCurrent(_attackState);
+
+            }
             yield return new WaitForEndOfFrame();
         }
          
     }
 
+    public void SpawnEffect()
+    {
+        StartCoroutine("SpawnWait");
+    }
+
+    IEnumerator SpawnWait()
+    {
+        Instantiate(m_roarEffect, m_spawnEffect.transform.position, m_spawnEffect.transform.rotation);
+        yield return new WaitForSeconds(0.3f);
+        Instantiate(m_roarEffect, m_spawnEffect.transform.position, m_spawnEffect.transform.rotation);
+        yield return new WaitForSeconds(0.3f);
+        Instantiate(m_roarEffect, m_spawnEffect.transform.position, m_spawnEffect.transform.rotation);
+        yield return new WaitForSeconds(2f);
+    }
     private void OnTriggerExit(Collider other)
     {
         if (_opponentTag == "") return;
