@@ -10,6 +10,7 @@ public class EnemyManager : MonoBehaviour,IDamage
     [SerializeField] Animator m_animator = null;
     [SerializeField] GameObject m_deathBody = null;
     [SerializeField] Text m_HpText = null;
+    [SerializeField] MoveState _moveState = null;
     ActionCtrl actionCtrl = null;
  
     public void AddDamage(int damage)
@@ -42,6 +43,11 @@ public class EnemyManager : MonoBehaviour,IDamage
     {
         if (!m_HpText) return;
         m_HpText.text = "HP :" + m_hp;
+    }
+
+    public void SpawnEffects()
+    {
+        _moveState.SpawnEffect();
     }
 
 
