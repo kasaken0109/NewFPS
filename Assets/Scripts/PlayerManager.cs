@@ -92,13 +92,14 @@ public class PlayerManager : MonoBehaviour,IDamage
         if (m_hp > damage)
         {
             m_hp -= damage;
+            m_animator.Play("Damage", 0);
+            GetComponent<PlayerControll>().
             DOTween.To(
                 () =>hpslider.value, // getter
                 x => hpslider.value = x, // setter
                 (float)(float)m_hp / m_maxhp, // ターゲットとなる値
                 1f  // 時間（秒）
                 ).SetEase(Ease.OutCubic);
-            m_animator.SetTrigger("Damage");
         }
         else
         {
