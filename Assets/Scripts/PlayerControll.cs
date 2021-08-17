@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody))]
 
@@ -156,7 +157,7 @@ public class PlayerControll : ColliderGenerater
                 //StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_rushAttackCollider, m_skillWaitTime / 5));
                 m_rb.AddForce(this.gameObject.transform.forward * m_dushPower,ForceMode.Impulse);
                 bool Ishit = Physics.Raycast(ray, out hit, 15f, m_layerMask);
-                Debug.Log(Ishit);
+                //Debug.Log(Ishit);
                 if (Ishit)
                 {
                     Debug.Log("Hit");
@@ -167,7 +168,7 @@ public class PlayerControll : ColliderGenerater
             }
             else if(timer != 0)
             {
-                Debug.Log("BasicAttack");
+                //Debug.Log("BasicAttack");
                 m_anim.SetTrigger("PunchFlag");
             }
             timer = 0;
@@ -216,11 +217,13 @@ public class PlayerControll : ColliderGenerater
         StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_attackCollider, m_skillWaitTime));
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Enemy"))
-    //    {
-    //        collision.gameObject.GetComponentInParent<IDamage>().AddDamage(m_dushAttackPower);
-    //    }
-    //}
+    public void BasicHitAttack()
+    {
+        m_rb.DOMove(this.transform.position - this.transform.forward * 2,1f);
+    }
+
+    public void LargeHitAttack()
+    {
+
+    }
 }
