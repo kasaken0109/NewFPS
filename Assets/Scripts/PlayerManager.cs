@@ -93,7 +93,7 @@ public class PlayerManager : MonoBehaviour,IDamage
         {
             m_hp -= damage;
             m_animator.Play("Damage", 0);
-            GetComponent<PlayerControll>().
+            GetComponent<PlayerControll>().BasicHitAttack();
             DOTween.To(
                 () =>hpslider.value, // getter
                 x => hpslider.value = x, // setter
