@@ -49,14 +49,14 @@ public class MoveState : StateBase
             m_agent.SetDestination(m_cachedTargetPosition); // Navmesh Agent に目的地をセットする（Vector3 で座標を設定していることに注意。Transform でも GameObject でもなく、Vector3 で目的地を指定する)
             gameObject.transform.LookAt(GameManager.Player.transform);
             animator.SetFloat("Speed", m_agent.velocity.magnitude);
-            if (distance <= m_agent.stoppingDistance  )
+            if (distance <= m_agent.stoppingDistance)
             {
                 animator.Play("Roar");
                 yield return new WaitForSeconds(2f);
                 _actionCtrl.SetCurrent(_attackState);
 
             }
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
          
     }
