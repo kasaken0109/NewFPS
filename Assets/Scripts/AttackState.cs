@@ -5,22 +5,31 @@ using UnityEngine;
 public class AttackState : StateBase
 {
     StateBase _idleState;
-    [SerializeField] Animator _animator = null;
-    [SerializeField] Dictionary<string, bool> stateInfo = new Dictionary<string, bool>();
-    Vector3 m_cachedTargetPosition;
+    [SerializeField] Animator m_animator = null;
+    [SerializeField] string m_stateDistance;
+    [SerializeField] StateBase m_moveState;
+    [SerializeField] GameObject m_enemy = null;
+
+    string[] triggersDistances;
+    List<int> triggerDistance;
 
     protected override void Setup()
     {
         _idleState = GetComponent<IdleState>();
+        triggersDistances = m_stateDistance.Split(' ');
+        triggerDistance = new List<int>();
+        foreach (var item in triggersDistances)
+        {
+            triggerDistance.Add(int.Parse(item));
+        }
         SetDelegate(Event.Enter, EnterCallback);
         SetDelegate(Event.Leave, ExitCallback);
     }
 
     int EnterCallback()
     {
-        _animator.SetBool("Attack", true);
-        Debug.Log("EnterAttack");
-        StartCoroutine(nameof(routine));
+        m_animator.SetBool("Attack", true);
+        StartCoroutine(nameof(AttackRoutine));
         if (_opponentTag == "Player")
         {
             var e = GetComponentInParent<EnemyManager>();
@@ -31,48 +40,39 @@ public class AttackState : StateBase
 
     int ExitCallback()
     {
-        _animator.SetBool("Attack", false);
-        StopCoroutine(nameof(routine));
+        m_animator.SetBool("Attack", false);
+        StopCoroutine(nameof(AttackRoutine));
         return 0;
     }
 
-    IEnumerator routine()
+    IEnumerator AttackRoutine()
     {
         yield return new WaitForFixedUpdate();
         while (true)
         {
-            m_cachedTargetPosition = GameManager.Player.transform.position;
-            float distance = Vector3.Distance(m_cachedTargetPosition, transform.position);
-            gameObject.transform.LookAt(GameManager.Player.transform);
-            if (distance <= 10)
+            float distance = Vector3.Distance(GameManager.Player.transform.position, transform.position);
+            m_enemy.transform.LookAt(GameManager.Player.transform);
+            if (distance  <= triggerDistance[0])
             {
-                _animator.Play("Roar");
-                yield return new WaitForSeconds(2f);
+                m_animator.SetInteger("AttackType",0);
+                //yield return new WaitForSeconds(2f);
                 //_actionCtrl.SetCurrent(_attackState);
 
             }
-            yield return new WaitForEndOfFrame();
+            else
+            {
+                if (triggerDistance[1] <= distance)
+                {
+                    //_actionCtrl.SetCurrent(m_moveState);
+                }
+                else
+                {
+                    m_animator.SetInteger("AttackType", 1);
+                }
+                //yield return new WaitForSeconds(2f);
+            }
+            yield return null;
         }
 
     }
-
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    if (_opponentTag == "") return;
-    //    if (collision.gameObject == null) return;
-    //    if (collision.gameObject.CompareTag(_opponentTag))
-    //    {
-    //        _actionCtrl.SetCurrent(_idleState);
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (_opponentTag == "") return;
-    //    if (other.gameObject == null) return;
-    //    if (other.gameObject.CompareTag(_opponentTag))
-    //    {
-    //        _actionCtrl.SetCurrent(_idleState);
-    //    }
-    //}
 }
