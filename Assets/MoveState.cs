@@ -52,6 +52,7 @@ public class MoveState : StateBase
             if (distance <= m_agent.stoppingDistance)
             {
                 animator.Play("Roar");
+                
                 yield return new WaitForSeconds(2f);
                 _actionCtrl.SetCurrent(_attackState);
 
@@ -64,15 +65,16 @@ public class MoveState : StateBase
     public void SpawnEffect()
     {
         StartCoroutine("SpawnWait");
+        GameManager._instance.ShakeCamera();
     }
 
     IEnumerator SpawnWait()
     {
         Instantiate(m_roarEffect, m_spawnEffect.transform.position, m_spawnEffect.transform.rotation);
-        yield return new WaitForSeconds(0.3f);
-        Instantiate(m_roarEffect, m_spawnEffect.transform.position, m_spawnEffect.transform.rotation);
-        yield return new WaitForSeconds(0.3f);
-        Instantiate(m_roarEffect, m_spawnEffect.transform.position, m_spawnEffect.transform.rotation);
+        //yield return new WaitForSeconds(0.3f);
+        //Instantiate(m_roarEffect, m_spawnEffect.transform.position, m_spawnEffect.transform.rotation);
+        //yield return new WaitForSeconds(0.3f);
+        //Instantiate(m_roarEffect, m_spawnEffect.transform.position, m_spawnEffect.transform.rotation);
         yield return new WaitForSeconds(2f);
     }
     private void OnTriggerExit(Collider other)
