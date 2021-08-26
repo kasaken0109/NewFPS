@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class CameraController : MonoBehaviour
 {
+    public static CameraController Instance { get; private set; }
     /// <summary>カメラの回転する中心点</summary>
     [SerializeField] Transform m_pivot = null;
     /// <summary>上の修正点 </summary>
@@ -14,7 +15,13 @@ public class CameraController : MonoBehaviour
     /// <summary>下の修正点 </summary>
     [SerializeField] Transform m_DownPoint = null;
     GameObject m_player;
+    bool m_isMoveActive = true;
+    public void SetMoveActive(bool IsMoveActive) { m_isMoveActive = IsMoveActive; } 
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +31,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!m_isMoveActive) return;
         float hInput = Input.GetAxisRaw("Mouse X");
         float vInput = Input.GetAxisRaw("Mouse Y");
         m_player.transform.Rotate(0, hInput, 0);
