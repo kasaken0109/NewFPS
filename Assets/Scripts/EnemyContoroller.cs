@@ -1,47 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class EnemyContoroller : MonoBehaviour
 {
-    [SerializeField] int e_power = 10;
-    [SerializeField] int e_hp = 100;
-    //[SerializeField] GameObject deathBody;
-    //[SerializeField] AudioClip e_hit;
-    // Start is called before the first frame update
+    Rigidbody m_rb;
+    [SerializeField] GameObject attackCollider;
+    [SerializeField] float m_hitTime = 1f;
+
     void Start()
     {
-
+        m_rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void BasicAttack()
     {
-        //if (true)
-        //{
-
-        //}
+        Debug.Log("Basic");
+        //this.transform.DOMove(this.transform.position + this.transform.forward * 2, 0.2f);
+        m_rb.DOMove(this.transform.position + this.transform.forward * 2, 1f);
+        //m_rb.velocity = this.transform.forward * 100;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void JumpAttack()
     {
-        //Debug.Log("HIT");
-        if (collision.gameObject.GetComponent<PlayerManager>())
-        {
-            collision.gameObject.GetComponent<PlayerManager>().Damage(e_power);
-        }
+        m_rb.DOMove(this.transform.position + this.transform.up * 2, 1f);
     }
 
-    public void Hit(int damage){
-        //AudioSource.PlayClipAtPoint(e_hit, this.gameObject.transform.position);
-        GameObject inst;
-        e_hp -= damage;
-        //Debug.Log(e_hp);
+    public void JumpAttackEffect()
+    {
+        StartCoroutine("WaitNonActive");
+    }
 
-        if (e_hp <= 0)
-        {
-            Destroy(this.gameObject);
-            //inst = Instantiate<GameObject>(deathBody, transform.position, transform.rotation);
-        }
+    IEnumerator WaitNonActive()
+    {
+        //Debug.Log("Star");
+        attackCollider.SetActive(true);
+        yield return new WaitForSeconds(m_hitTime);
+        attackCollider.SetActive(false);
     }
 }
