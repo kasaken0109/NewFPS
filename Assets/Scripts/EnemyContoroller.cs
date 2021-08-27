@@ -30,6 +30,7 @@ public class EnemyContoroller : MonoBehaviour
     public void JumpAttackEffect()
     {
         StartCoroutine("WaitNonActive");
+        //iTween.ShakePosition(Camera.main.gameObject, iTween.Hash("x", 0, "y", 1, "time", 1));
     }
 
     IEnumerator WaitNonActive()
