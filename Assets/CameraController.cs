@@ -30,7 +30,7 @@ public class CameraController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   //if (IsGameStopped) return;
         if (!m_isMoveActive) return;
         float hInput = Input.GetAxisRaw("Mouse X");
         float vInput = Input.GetAxisRaw("Mouse Y");
