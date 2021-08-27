@@ -8,10 +8,15 @@ public class PlayerManager : MonoBehaviour,IDamage
 {
     // Start is called before the first frame update
     [SerializeField] int m_hp = 100;
+    [SerializeField] float m_godTime = 0.4f;
+    [SerializeField] float m_changeTime = 2f;
     [SerializeField] GameObject m_charactor;
+    [SerializeField] GameObject m_invisible;
     [SerializeField] Text m_hptext = null;
     [SerializeField] Animator m_animator = null;
     [SerializeField] Slider hpslider = null;
+    [SerializeField] Material m_change = null;
+    [SerializeField] Material m_origin = null;
     /// <summary>
     /// 武器のNo.
     /// </summary>
@@ -19,6 +24,8 @@ public class PlayerManager : MonoBehaviour,IDamage
     private float keyInterval = 0f;
     private WeaponManager m_weaponManager;
     private int m_maxhp;
+    bool IsInvisible = false;
+    public float m_changeRate = 2f;
 
     public enum WeaponTypes: int
     {
@@ -89,6 +96,11 @@ public class PlayerManager : MonoBehaviour,IDamage
 
     public void AddDamage(int damage)
     {
+        if (IsInvisible)
+        {
+            StartCoroutine("GodTime");
+            return;
+        }
         if (m_hp > damage)
         {
             m_hp -= damage;
@@ -105,5 +117,26 @@ public class PlayerManager : MonoBehaviour,IDamage
         {
             m_animator.SetBool("DeadFlag", true);
         }
+    }
+
+    public void SetInvisible()
+    {
+        StartCoroutine("Invisible");
+    }
+
+    IEnumerator Invisible()
+    {
+        IsInvisible = true;
+        GetComponentInChildren<Renderer>().material = m_change;
+        yield return new WaitForSeconds(m_godTime);
+        GetComponentInChildren<Renderer>().material = m_origin;
+        IsInvisible = false;
+    }
+
+    IEnumerator GodTime()
+    {
+        m_invisible?.SetActive(true);
+        yield return new WaitForSeconds(m_changeTime);
+        m_invisible?.SetActive(false);
     }
 }
