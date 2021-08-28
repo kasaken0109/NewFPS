@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class PlayerManager : MonoBehaviour,IDamage
 {
+    public static PlayerManager Instance { get; private set; }
     // Start is called before the first frame update
     [SerializeField] int m_hp = 100;
     [SerializeField] float m_godTime = 0.4f;
@@ -34,11 +35,25 @@ public class PlayerManager : MonoBehaviour,IDamage
         NUM,
     }
 
+    public enum StanceTypes
+    {
+        NORMAL,
+        GOD,
+    }
+
+    public StanceTypes stanceTypes;
+
     private string[] m_weaponPath = new string[] {
         "PlayerRifle",
         "PlayerCannon"
     };
 
+    private void Awake()
+    {
+        Instance = this;
+        stanceTypes = StanceTypes.NORMAL;
+
+    }
     void Start()
     {
         m_weaponManager = m_charactor.GetComponent<WeaponManager>();
@@ -50,7 +65,8 @@ public class PlayerManager : MonoBehaviour,IDamage
     {
         m_hptext.text = "HP:" + m_hp.ToString();
         hpslider.value = (float)m_hp / m_maxhp;
-
+        if(m_invisible.activeSelf) stanceTypes = StanceTypes.GOD;
+        else stanceTypes = StanceTypes.NORMAL;
         if (Time.time - keyInterval > 0.5f)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1) == true)
