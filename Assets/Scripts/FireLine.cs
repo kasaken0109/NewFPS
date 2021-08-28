@@ -10,6 +10,8 @@ public class FireLine : MonoBehaviour
     [SerializeField] GameObject m_muzzle = null;
     /// <summary>LineRenderer 兼 Line の出発点</summary>
     [SerializeField] LineRenderer m_line = null;
+    /// <summary>リロード時間</summary>
+    [SerializeField] float m_seconds = 2f;
     /// <summary>射程距離</summary>
     [SerializeField] float m_shootRange = 15f;
     /// <summary>当たるレイヤー</summary>
@@ -20,7 +22,7 @@ public class FireLine : MonoBehaviour
     [SerializeField] AudioClip m_hitSound = null;
     [SerializeField] AudioClip m_reloadSound = null;
     [SerializeField] AudioClip m_airshoot = null;
-    [SerializeField] GameObject m_reload = null;
+    GameObject m_reload = null;
     [SerializeField] Text m_text;
     [SerializeField] int m_attackpower = 10;
     /// <summary>マガジン内の弾数</summary>
@@ -43,7 +45,7 @@ public class FireLine : MonoBehaviour
         m_text = m_textBox.GetComponent<Text>();
         m_line = m_muzzle.GetComponent<LineRenderer>();
         m_reload = GameObject.Find("Reload");
-        //m_reload.SetActive(false);
+        m_reload?.SetActive(false);
         audio = GetComponent<AudioSource>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
     }
@@ -178,12 +180,14 @@ public class FireLine : MonoBehaviour
     public void Reload()
     {
         Debug.Log("リロード中");
-        m_bulletNum = m_bulletMaxNum;
-        //m_reload.Play();
+        StartCoroutine("WaitSeconds");
     }
 
-    IEnumerator WaitSeconds(float seconds)
+    IEnumerator WaitSeconds()
     {
-        yield return new WaitForSeconds(seconds);
+        yield return new WaitForSeconds(m_seconds);
+        m_bulletNum = m_bulletMaxNum;
+        //m_reload.Play();
+        m_reload.SetActive(false);
     }
 }
