@@ -29,18 +29,19 @@ public class CutController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(lineRenderer);
+        //Debug.Log(lineRenderer);
         pos = Input.mousePosition;
         m_cutObjects = GameObject.FindGameObjectsWithTag("Cut");
     }
 
-    private void CutObject(bool cutMode)
+    public void CutObject(bool cutMode)
     {
-
+        Debug.Log(m_cutplane.transform.rotation.z);
         Vector3 cut = Vector3.zero;
         if (cutMode)
         {
-            cut = new Vector3(1, -m_cutplane.transform.rotation.z, 0);
+            cut = new Vector3(1, m_cutplane.transform.rotation.z, 0);
+            //cut = m_cutplane.transform.rotation.eulerAngles.;
         }
         else
         {
@@ -49,16 +50,26 @@ public class CutController : MonoBehaviour
                 cut = new Vector3((lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0)).y, -(lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0)).x, 0);
             }
         }
+        if (m_cutObjects == null) return;
         foreach (var item in m_cutObjects)
         {
-            cutObjects = MeshCut.Cut(item, new Vector3(worldPos.x,worldPos.y,0), cut, m_cutMaterial);
+            //cutObjects = MeshCut.Cut(item, item.transform.position, cut, m_cutMaterial);
+            cutObjects = MeshCut.Cut(item, m_cutplane.transform.position, cut, m_cutMaterial);
+            //new Vector3(worldPos.x, worldPos.y, 0)
         }
+        if (cutObjects == null) return;
         foreach (var item in cutObjects)
         {   if(!item.TryGetComponent(out Rigidbody rb))
             {
                 Debug.Log("addrig");
                 rb = item.AddComponent<Rigidbody>();
                 rb.mass = 1;
+            }
+            else
+            {
+                item.TryGetComponent(out Rigidbody rb2);
+                rb2.useGravity = true;
+                Destroy(item.GetComponent<TestMove>());
             }
             if (item.TryGetComponent(out BoxCollider col))
             {
@@ -75,7 +86,7 @@ public class CutController : MonoBehaviour
                 var v = item.AddComponent<MeshCollider>();
                 v.convex = true;
             }
-            rb.AddForce(new Vector3((lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0)).x, (lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0)).y, 0).normalized * m_cutPower,ForceMode.Force);
+            //rb.AddForce(new Vector3((lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0)).x, (lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0)).y, 0).normalized * m_cutPower,ForceMode.Force);
         }
     }
 
