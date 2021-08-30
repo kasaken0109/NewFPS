@@ -10,6 +10,7 @@ public class MoveState : StateBase
     /// <summary>エフェクト発生地点</summary>
     [SerializeField] Transform m_spawnEffect = null;
     [SerializeField] StateBase _attackState;
+    [SerializeField] EnemyManager enemy;
     /// <summary>移動対象</summary>
     Vector3 m_cachedTargetPosition;
     StateBase _idleState;
@@ -34,6 +35,7 @@ public class MoveState : StateBase
 
     int ExitCallback()
     {
+        Debug.Log("ExitRoutine");
         StopCoroutine("routine");
         animator.SetFloat("Speed", 0);
         m_agent.SetDestination(this.transform.position);
@@ -47,7 +49,7 @@ public class MoveState : StateBase
             m_cachedTargetPosition = GameManager.Player.transform.position;
             float distance = Vector3.Distance(m_cachedTargetPosition, transform.position);
             m_agent.SetDestination(m_cachedTargetPosition); // Navmesh Agent に目的地をセットする（Vector3 で座標を設定していることに注意。Transform でも GameObject でもなく、Vector3 で目的地を指定する)
-            gameObject.transform.LookAt(GameManager.Player.transform);
+            enemy.gameObject.transform.LookAt(GameManager.Player.transform);
             animator.SetFloat("Speed", m_agent.velocity.magnitude);
             if (distance <= m_agent.stoppingDistance)
             {
@@ -57,6 +59,21 @@ public class MoveState : StateBase
                 _actionCtrl.SetCurrent(_attackState);
 
             }
+            else
+            {
+                Debug.Log(m_agent.velocity.magnitude);
+                if(distance > 8)
+                {
+                    m_agent.SetDestination(m_cachedTargetPosition);
+                    m_agent.speed = 6;
+                    animator.SetFloat("Speed", 6);
+                }
+                else
+                {
+                    m_agent.SetDestination(m_cachedTargetPosition);
+                    animator.SetFloat("Speed", 3);
+                }
+            }
             yield return null;
         }
          
@@ -65,16 +82,12 @@ public class MoveState : StateBase
     public void SpawnEffect()
     {
         StartCoroutine("SpawnWait");
-        GameManager._instance.ShakeCamera();
+        GameManager.Instance.ShakeCamera();
     }
 
     IEnumerator SpawnWait()
     {
         Instantiate(m_roarEffect, m_spawnEffect.transform.position, m_spawnEffect.transform.rotation);
-        //yield return new WaitForSeconds(0.3f);
-        //Instantiate(m_roarEffect, m_spawnEffect.transform.position, m_spawnEffect.transform.rotation);
-        //yield return new WaitForSeconds(0.3f);
-        //Instantiate(m_roarEffect, m_spawnEffect.transform.position, m_spawnEffect.transform.rotation);
         yield return new WaitForSeconds(2f);
     }
     private void OnTriggerExit(Collider other)
