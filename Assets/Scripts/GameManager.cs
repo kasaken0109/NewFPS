@@ -27,7 +27,11 @@ public class GameManager : MonoBehaviour
     public void ShakeCamera()
     {
         iTween.ShakePosition(Camera.main.gameObject, iTween.Hash("x", 0.5, "y", 0.5, "time", 1));
-        StartCoroutine("SetPlayerCameraInput");
+    }
+
+    public void CinemaMode()
+    {
+        StartCoroutine(nameof(SetPlayerCameraInput));
     }
 
     IEnumerator SetPlayerCameraInput()

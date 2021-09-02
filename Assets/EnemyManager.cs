@@ -57,5 +57,10 @@ public class EnemyManager : MonoBehaviour,IDamage
         _moveState.SpawnEffect();
     }
 
+    public void StopPlayer()
+    {
+        GameManager.Instance.CinemaMode();
+    }
+
 
 }
