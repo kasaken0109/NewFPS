@@ -6,20 +6,27 @@ using UnityEngine.UI;
 public class EnemyManager : MonoBehaviour,IDamage
 {
     [SerializeField] int m_hp = 100;
+    [SerializeField, Range(1, 100)] int m_rate;
     [SerializeField] int m_attackPower = 10;
     [SerializeField] Animator m_animator = null;
     [SerializeField] GameObject m_deathBody = null;
     [SerializeField] Text m_HpText = null;
     [SerializeField] MoveState _moveState = null;
     ActionCtrl actionCtrl = null;
+    int hitRate = 0;
  
     public void AddDamage(int damage)
     {
         if(m_hp > damage)
         {
             m_hp -= damage;
-            m_animator.SetInteger("HP", 1);
-            m_animator.SetTrigger("Hit");
+            hitRate += damage;
+            if(hitRate >= m_rate)
+            {
+                m_animator.SetInteger("HP", 1);
+                m_animator.SetTrigger("Hit");
+                hitRate = 0;
+            }
             Debug.Log($"Hit!:{m_hp}");
         }
         else
