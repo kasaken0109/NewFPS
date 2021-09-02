@@ -7,9 +7,10 @@ public class AttackState : StateBase
     StateBase _idleState;
     [SerializeField] Animator m_animator = null;
     [SerializeField] string m_stateDistance;
+    [SerializeField] int m_maxBreathCount;
     [SerializeField] StateBase m_moveState;
     [SerializeField] GameObject m_enemy = null;
-
+    int breathCount;
     string[] triggersDistances;
     List<int> triggerDistance;
 
@@ -63,7 +64,14 @@ public class AttackState : StateBase
             {
                 if (triggerDistance[1] <= distance)
                 {
-                    //_actionCtrl.SetCurrent(m_moveState);
+                    //if(m_maxBreathCount <= breathCount)
+                    //{
+                    //    Debug.Log("MoVe");
+                    //    breathCount = 0;
+                    //    _actionCtrl.SetCurrent(m_moveState);
+                    //}
+                    m_animator.SetInteger("AttackType", 2);
+                    breathCount++;
                 }
                 else
                 {
