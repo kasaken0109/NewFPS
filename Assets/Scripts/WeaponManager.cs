@@ -5,8 +5,14 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
     [SerializeField] string weaponTempleteName = "RigPistolRight";
-    [SerializeField] GameObject m_weaponTemplete;
-    [SerializeField] GameObject m_weapon = null;
+    [SerializeField] private GameObject m_weaponTemplete;
+    [SerializeField] private GameObject m_weaponSwordTemplete;
+    [SerializeField] private GameObject m_weapon = null;
+
+    public GameObject NowWeapon
+    {
+        get => m_weapon;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -23,8 +29,17 @@ public class WeaponManager : MonoBehaviour
             m_weapon = null;
             Resources.UnloadUnusedAssets();
         }
-
-        m_weapon = Instantiate(Resources.Load(name), m_weaponTemplete.transform.position,m_weaponTemplete.transform.rotation ) as GameObject;
-        m_weapon.transform.parent = m_weaponTemplete.transform;
+        if (name.Equals("Sword"))
+        {
+            m_weapon = Instantiate(Resources.Load(name), m_weaponSwordTemplete.transform.position,m_weaponSwordTemplete.transform.rotation ) as GameObject;
+            m_weapon.transform.parent = m_weaponSwordTemplete.transform;
+        }
+        else
+        {
+            m_weapon = Instantiate(Resources.Load(name), m_weaponTemplete.transform.position, m_weaponTemplete.transform.rotation) as GameObject;
+            m_weapon.transform.parent = m_weaponTemplete.transform;
+        }
+        //m_weapon = Instantiate(Resources.Load(name), m_weaponTemplete.transform.position,m_weaponTemplete.transform.rotation ) as GameObject;
+        
     }
 }
