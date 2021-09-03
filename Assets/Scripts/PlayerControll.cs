@@ -8,6 +8,7 @@ using DG.Tweening;
 //プレイヤーの動きを制御する
 public class PlayerControll : ColliderGenerater
 {
+    public static PlayerControll Instance { get; private set; }
     // Start is called before the first frame update
     /// <summary>動く速さ</summary>
     [SerializeField] float m_movingSpeed = 5f;
@@ -49,11 +50,20 @@ public class PlayerControll : ColliderGenerater
     CapsuleCollider collider;
     Ray ray;
     RaycastHit hit;
+    WeaponManager weaponManager;
+    bool m_isMoveActive = true;
+    float powerUpRate = 2;
+    public void SetMoveActive(bool IsMoveActive) { m_isMoveActive = IsMoveActive; }
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
         m_anim = GetComponent<Animator>();
+        weaponManager = GetComponent<WeaponManager>();
         collider = GetComponent<CapsuleCollider>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
         Cursor.visible = false;
@@ -62,9 +72,16 @@ public class PlayerControll : ColliderGenerater
 
     void Update()
     {
+        if (!m_isMoveActive) return;
         //方向の入力を取得し、方向を求める
         float v = Input.GetAxisRaw("Vertical");
         float h = Input.GetAxisRaw("Horizontal");
+
+        if (PlayerManager.Instance.stanceTypes == PlayerManager.StanceTypes.GOD) powerUpRate = 2f;
+        else
+        {
+            powerUpRate = 1f;
+        }
 
         // 入力方向のベクトルを組み立てる
         dir = Vector3.forward * v + Vector3.right * h;
@@ -92,20 +109,20 @@ public class PlayerControll : ColliderGenerater
             {
                 m_anim.SetTrigger("JumpFlag");
                 m_rb.useGravity = false;
-                m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
+                m_rb.AddForce(Vector3.up * m_jumpPower * powerUpRate, ForceMode.Impulse);
                 m_rb.constraints = RigidbodyConstraints.FreezeRotation;
                 m_rb.useGravity = true;
             }
-            if (Input.GetButton("Crouch"))
+            if (Input.GetButtonUp("Crouch"))
             {
                 m_anim.SetTrigger("CrouchFlag");
-                m_crouchSlow = 0.5f;
-                collider.height = 0.7f;
+                //m_crouchSlow = 0.5f;
+                //collider.height = 0.7f;
             }
             else if (Input.GetButtonUp("Crouch"))
             {
-                m_crouchSlow = 1f;
-                collider.height = 1f;
+                //m_crouchSlow = 1f;
+                //collider.height = 1f;
             }
             if (v == 0 && h == 0)
             {
@@ -121,12 +138,26 @@ public class PlayerControll : ColliderGenerater
         else
         {
             m_anim.SetFloat("Speed", 0);
+            if (Input.GetButtonDown("Fire1"))
+            {
+                m_anim.SetTrigger("SwordFlag");
+            }
         }
 
 
         if (Input.GetButton("Fire1"))
         {
-            m_anim.SetTrigger("ShootFlag");
+            if (!weaponManager.NowWeapon.name.Contains("Sword"))
+            {
+                m_anim.SetTrigger("ShootFlag");
+            }
+        }
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (weaponManager.NowWeapon.name.Contains("Sword"))
+            {
+                m_anim.SetTrigger("SwordFlag");
+            }
         }
         if (Input.GetButton("Fire2"))
         {
@@ -155,7 +186,8 @@ public class PlayerControll : ColliderGenerater
             {
                 Debug.Log("HoldAttack");
                 //StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_rushAttackCollider, m_skillWaitTime / 5));
-                m_rb.AddForce(this.gameObject.transform.forward * m_dushPower,ForceMode.Impulse);
+                m_rb.DOMove(transform.position + this.gameObject.transform.forward * 10, 1);
+                //m_rb.AddForce(this.gameObject.transform.forward * m_dushPower,ForceMode.Impulse);
                 bool Ishit = Physics.Raycast(ray, out hit, 15f, m_layerMask);
                 //Debug.Log(Ishit);
                 if (Ishit)
@@ -170,6 +202,9 @@ public class PlayerControll : ColliderGenerater
             {
                 //Debug.Log("BasicAttack");
                 m_anim.SetTrigger("PunchFlag");
+                m_attackCollider.SetActive(true);
+                yield return new WaitForSeconds(0.5f);
+                m_attackCollider.SetActive(false);
             }
             timer = 0;
             yield break;
@@ -197,29 +232,44 @@ public class PlayerControll : ColliderGenerater
     {
         if (Input.GetButton("Splint"))
         {
-            velo = dir.normalized * m_runningSpeed * m_crouchSlow;
-            m_anim.SetFloat("Speed", m_runningSpeed);
+            velo = dir.normalized * m_runningSpeed * m_crouchSlow * powerUpRate;
+            m_anim.SetFloat("Speed", m_runningSpeed * powerUpRate);
             m_speedup.SetActive(true);
-            Camera.main.fieldOfView = 80;
+            Camera.main.fieldOfView = 100;
 
         }
         else
         {
-            velo = dir.normalized * m_movingSpeed * m_crouchSlow;
-            m_anim.SetFloat("Speed", m_movingSpeed);
+            velo = dir.normalized * m_movingSpeed * m_crouchSlow * powerUpRate;
+            m_anim.SetFloat("Speed", m_movingSpeed * powerUpRate);
             m_speedup.SetActive(false);
-            Camera.main.fieldOfView = 60;
+            Camera.main.fieldOfView = 80;
         }
     }
 
     public void GenerateCollider()
     {
-        StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_attackCollider, m_skillWaitTime));
+        //StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_attackCollider, m_skillWaitTime));
     }
 
     public void BasicHitAttack()
     {
         m_rb.DOMove(this.transform.position - this.transform.forward * 2,1f);
+    }
+
+    public void JumpAttackMove()
+    {
+        m_rb.AddForce(Vector3.down * 10, ForceMode.Impulse);
+    }
+
+    public void BasicWeaponAttack()
+    {
+        weaponManager.NowWeapon.GetComponent<IWeapon>().BasicAttack();
+    }
+
+    public void SpecialWeaponAttack()
+    {
+        weaponManager.NowWeapon.GetComponent<IWeapon>().SpecialAttack();
     }
 
     public void LargeHitAttack()
