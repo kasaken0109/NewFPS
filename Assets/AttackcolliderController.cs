@@ -29,7 +29,7 @@ public class AttackcolliderController : MonoBehaviour
         //Debug.Log(other.name);
         if (other.tag == m_opponentTagName && CanHit)
         {
-            //Debug.Log("Direct");
+            Debug.Log(other.gameObject.name);
             other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
             CanHit = false;
         }
