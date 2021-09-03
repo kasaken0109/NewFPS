@@ -206,6 +206,8 @@ MonoBehaviour:
   m_effect: {fileID: 8795824752677755220, guid: 8bbaf013061af504b979daf430930d99,
     type: 3}
   m_attackCollider: {fileID: 3109481811119451032}
+  m_break: {fileID: 2100000, guid: f5420d8740026f543b6ec34448cfbe33, type: 2}
+  m_hp: 10
   m_frostwall: {fileID: 2862653811940788894}
 --- !u!65 &2374718713935900592
 BoxCollider:
