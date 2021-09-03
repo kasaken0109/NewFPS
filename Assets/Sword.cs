@@ -30,6 +30,6 @@ public class Sword : MonoBehaviour,IWeapon
 
     public void SpecialAttack()
     {
-        ColliderGenerater.Instance.StartActiveCollider(m_activeCollider[1], 1f);
+        ColliderGenerater.Instance.StartActiveCollider(m_activeCollider[1], 2f);
     }
 }
