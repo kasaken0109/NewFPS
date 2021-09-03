@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5821795192967607032}
   - component: {fileID: 8490482969256078464}
   m_Layer: 9
-  m_Name: Bullet
+  m_Name: RifleBullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +34,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0, y: -0, z: 0.8000063}
 --- !u!33 &2724570278060639887
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bulletSpeed: 10
-  m_bulletPower: 12
+  m_rb: {fileID: 0}
 --- !u!54 &8490482969256078464
 Rigidbody:
   m_ObjectHideFlags: 0
