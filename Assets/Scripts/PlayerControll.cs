@@ -113,7 +113,7 @@ public class PlayerControll : ColliderGenerater
                 m_rb.constraints = RigidbodyConstraints.FreezeRotation;
                 m_rb.useGravity = true;
             }
-            if (Input.GetButtonUp("Crouch"))
+            if (Input.GetButtonDown("Crouch"))
             {
                 m_anim.SetTrigger("CrouchFlag");
                 //m_crouchSlow = 0.5f;
@@ -138,7 +138,7 @@ public class PlayerControll : ColliderGenerater
         else
         {
             m_anim.SetFloat("Speed", 0);
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && weaponManager.NowWeapon.name.Contains("Sword"))
             {
                 m_anim.SetTrigger("SwordFlag");
             }
