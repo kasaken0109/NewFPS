@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     [SerializeField] Slider hpslider = null;
     [SerializeField] Material m_change = null;
     [SerializeField] Material m_origin = null;
+    [SerializeField] PostEffect postEffect = null;
     /// <summary>
     /// 武器のNo.
     /// </summary>
@@ -32,6 +33,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     {
         RIFLE,
         CANNON,
+        SWORD,
         NUM,
     }
 
@@ -45,7 +47,8 @@ public class PlayerManager : MonoBehaviour,IDamage
 
     private string[] m_weaponPath = new string[] {
         "PlayerRifle",
-        "PlayerCannon"
+        "PlayerCannon",
+        "Sword",
     };
 
     private void Awake()
@@ -65,9 +68,15 @@ public class PlayerManager : MonoBehaviour,IDamage
     {
         m_hptext.text = "HP:" + m_hp.ToString();
         hpslider.value = (float)m_hp / m_maxhp;
-        if(m_invisible.activeSelf) stanceTypes = StanceTypes.GOD;
-        else stanceTypes = StanceTypes.NORMAL;
-        if (Time.time - keyInterval > 0.5f)
+        if (postEffect.enabled)
+        {
+            stanceTypes = StanceTypes.GOD;
+        }
+        else
+        {
+            stanceTypes = StanceTypes.NORMAL;
+        }
+        if (Time.time - keyInterval > 0.2f)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1) == true)
             {
@@ -114,7 +123,11 @@ public class PlayerManager : MonoBehaviour,IDamage
     {
         if (IsInvisible)
         {
-            StartCoroutine("GodTime");
+            if (!IsActiveCoroutine)
+            {
+                StopCoroutine("GodTime");
+                StartCoroutine("GodTime");
+            }
             return;
         }
         if (m_hp > damage)
@@ -131,7 +144,7 @@ public class PlayerManager : MonoBehaviour,IDamage
         }
         else
         {
-            m_animator.SetBool("DeadFlag", true);
+            m_animator.Play("Dead",0);
         }
     }
 
@@ -148,11 +161,28 @@ public class PlayerManager : MonoBehaviour,IDamage
         GetComponentInChildren<Renderer>().material = m_origin;
         IsInvisible = false;
     }
+    IEnumerator Invisible(float time)
+    {
+        IsInvisible = true;
+        GetComponentInChildren<Renderer>().material = m_change;
+        yield return new WaitForSeconds(time);
+        GetComponentInChildren<Renderer>().material = m_origin;
+        IsInvisible = false;
+    }
 
+    bool IsActiveCoroutine = false;
     IEnumerator GodTime()
     {
-        m_invisible?.SetActive(true);
+        StopCoroutine(nameof(Invisible));
+        IsActiveCoroutine = true;
+        postEffect.enabled = true;
+        IsInvisible = true;
+        GetComponentInChildren<Renderer>().material = m_change;
         yield return new WaitForSeconds(m_changeTime);
-        m_invisible?.SetActive(false);
+        //m_invisible?.SetActive(false);
+        postEffect.enabled = false;
+        GetComponentInChildren<Renderer>().material = m_origin;
+        IsInvisible = false;
+        IsActiveCoroutine = false;
     }
 }
