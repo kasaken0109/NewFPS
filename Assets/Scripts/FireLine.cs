@@ -108,7 +108,7 @@ public class FireLine : MonoBehaviour
             }
             else
             {
-                m_reload.SetActive(true);
+                m_reload?.SetActive(true);
             }
         }
         if (Input.GetButtonDown("Reload"))
@@ -188,6 +188,6 @@ public class FireLine : MonoBehaviour
         yield return new WaitForSeconds(m_seconds);
         m_bulletNum = m_bulletMaxNum;
         //m_reload.Play();
-        m_reload.SetActive(false);
+        m_reload?.SetActive(false);
     }
 }
