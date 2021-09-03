@@ -18,4 +18,9 @@ public class ColliderGenerater : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         hitCollider.SetActive(false);
     }
+
+    public void StartActiveCollider(GameObject hitCollider, float waitTime)
+    {
+        StartCoroutine((GenerateCollider(hitCollider, waitTime)));
+    }
 }
