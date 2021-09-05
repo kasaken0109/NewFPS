@@ -26,12 +26,17 @@ public class AttackcolliderController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Item"))
+        {
+            other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
+        }
         //Debug.Log(other.name);
         if (other.tag == m_opponentTagName && CanHit)
         {
-            Debug.Log(other.gameObject.name);
             other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
             CanHit = false;
         }
     }
+
+    public int AddDamageCount(int addDamage) { return m_attackPower + addDamage; }
 }
