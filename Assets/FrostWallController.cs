@@ -31,7 +31,7 @@ public class FrostWallController : MonoBehaviour,IDamage
         {
             AddDamage(m_hp);
         }
-        else if(other.tag == "Enemy")
+        else if(other.tag == "EnemyFire")
         {
             AddDamage(1);
             Destroy(other.gameObject);
