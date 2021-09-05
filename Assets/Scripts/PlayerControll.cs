@@ -52,7 +52,7 @@ public class PlayerControll : ColliderGenerater
     RaycastHit hit;
     WeaponManager weaponManager;
     bool m_isMoveActive = true;
-    float powerUpRate = 2;
+    float powerUpRate = 3;
     public void SetMoveActive(bool IsMoveActive) { m_isMoveActive = IsMoveActive; }
 
     private void Awake()
@@ -105,6 +105,13 @@ public class PlayerControll : ColliderGenerater
 
         if (IsGrounded())
         {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                if (weaponManager.NowWeapon.name.Contains("Sword"))
+                {
+                    m_anim.Play("Basic");
+                }
+            }
             if (Input.GetButtonDown("Jump"))
             {
                 m_anim.SetTrigger("JumpFlag");
@@ -140,7 +147,7 @@ public class PlayerControll : ColliderGenerater
             m_anim.SetFloat("Speed", 0);
             if (Input.GetButtonDown("Fire1") && weaponManager.NowWeapon.name.Contains("Sword"))
             {
-                m_anim.SetTrigger("SwordFlag");
+                m_anim.Play("JumpAttack");
             }
         }
 
@@ -152,13 +159,7 @@ public class PlayerControll : ColliderGenerater
                 m_anim.SetTrigger("ShootFlag");
             }
         }
-        if (Input.GetButtonDown("Fire1"))
-        {
-            if (weaponManager.NowWeapon.name.Contains("Sword"))
-            {
-                m_anim.SetTrigger("SwordFlag");
-            }
-        }
+        
         if (Input.GetButton("Fire2"))
         {
             m_rush.SetActive(false);
@@ -186,7 +187,8 @@ public class PlayerControll : ColliderGenerater
             {
                 Debug.Log("HoldAttack");
                 //StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_rushAttackCollider, m_skillWaitTime / 5));
-                m_rb.DOMove(transform.position + this.gameObject.transform.forward * 10, 1);
+                m_anim.SetTrigger("FlipTrigger");
+                m_rb.DOMove(transform.position + Camera.main.transform.forward* 10, 1);
                 //m_rb.AddForce(this.gameObject.transform.forward * m_dushPower,ForceMode.Impulse);
                 bool Ishit = Physics.Raycast(ray, out hit, 15f, m_layerMask);
                 //Debug.Log(Ishit);
@@ -259,7 +261,7 @@ public class PlayerControll : ColliderGenerater
 
     public void JumpAttackMove()
     {
-        m_rb.AddForce(Vector3.down * 10, ForceMode.Impulse);
+        //m_rb.AddForce(Vector3.down * 10, ForceMode.Impulse);
     }
 
     public void BasicWeaponAttack()
@@ -270,6 +272,16 @@ public class PlayerControll : ColliderGenerater
     public void SpecialWeaponAttack()
     {
         weaponManager.NowWeapon.GetComponent<IWeapon>().SpecialAttack();
+    }
+
+    public void StartEmit()
+    {
+        weaponManager.NowWeapon.GetComponent<Sword>().StartEmitting();
+    }
+
+    public void StopEmit()
+    {
+        weaponManager.NowWeapon.GetComponent<Sword>().StopEmitting();
     }
 
     public void LargeHitAttack()
