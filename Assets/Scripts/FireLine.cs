@@ -8,6 +8,7 @@ public class FireLine : MonoBehaviour
     /// <summary>照準</summary>
     RectTransform m_crosshairUi = null;
     [SerializeField] GameObject m_muzzle = null;
+    [SerializeField] GameObject m_effect = null;
     /// <summary>LineRenderer 兼 Line の出発点</summary>
     [SerializeField] LineRenderer m_line = null;
     /// <summary>リロード時間</summary>
@@ -78,7 +79,11 @@ public class FireLine : MonoBehaviour
                 {
                     //Debug.Log(hitObject.tag);
                     //Debug.Log(hitObject.name);
-                    if (!IsEndHit && m_bulletNum >= 1 && hitObject.tag == "Enemy") hitObject.GetComponentInParent<IDamage>().AddDamage(m_attackpower);
+                    if (!IsEndHit && m_bulletNum >= 1 && hitObject.tag == "Enemy" || hitObject.tag == "Item")
+                    {
+                        hitObject.GetComponentInParent<IDamage>().AddDamage(m_attackpower);
+                        Instantiate(m_effect, hitPosition, Quaternion.identity);
+                    }
                     if (!IsHitSound)
                     {
                         PlayHitSound(hitPosition);  // レーザーが当たった場所でヒット音を鳴らす
