@@ -7,6 +7,8 @@ public class EnemyContoroller : MonoBehaviour
 {
     Rigidbody m_rb;
     [SerializeField] GameObject attackCollider;
+    [SerializeField] GameObject m_breath;
+    [SerializeField] Transform m_spwanBreath;
     [SerializeField] float m_hitTime = 1f;
 
     void Start()
@@ -25,6 +27,11 @@ public class EnemyContoroller : MonoBehaviour
     public void JumpAttack()
     {
         m_rb.DOMove(this.transform.position + this.transform.up * 2, 1f);
+    }
+
+    public void BreathAttack()
+    {
+        Instantiate(m_breath,m_spwanBreath.position, m_spwanBreath.rotation);
     }
 
     public void JumpAttackEffect()
