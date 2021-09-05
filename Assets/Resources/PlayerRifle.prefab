@@ -394,6 +394,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_muzzle: {fileID: 0}
+  m_effect: {fileID: 8795824752677755220, guid: 8bbaf013061af504b979daf430930d99,
+    type: 3}
   m_line: {fileID: 0}
   m_seconds: 2
   m_shootRange: 50

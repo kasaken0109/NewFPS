@@ -98,6 +98,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_bulletPrefab: {fileID: 8289241599597392337, guid: 5a3a95c0b46906b498ae85caf8d6455a,
     type: 3}
+  m_bigWallPrefab: {fileID: 3687456371936075511, guid: 97c4bc56c230de04aba20fb2cd036054,
+    type: 3}
   m_muzzle: {fileID: 0}
   m_bulletLimit: 0
   m_fireInterval: 0.5
@@ -158,7 +160,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_muzzle: {fileID: 0}
+  m_effect: {fileID: 0}
   m_line: {fileID: 0}
+  m_seconds: 2
   m_shootRange: 50
   m_layerMask:
     serializedVersion: 2
@@ -167,11 +171,10 @@ MonoBehaviour:
   m_hitSound: {fileID: 8300000, guid: 202b951c1661d6e4589f332b48beaff3, type: 3}
   m_reloadSound: {fileID: 0}
   m_airshoot: {fileID: 0}
-  m_reload: {fileID: 0}
   m_text: {fileID: 0}
+  m_attackpower: 10
   m_bulletNum: 0
   m_bulletMaxNum: 4
-  m_debugText: {fileID: 0}
 --- !u!82 &-3673335363486850617
 AudioSource:
   m_ObjectHideFlags: 0
