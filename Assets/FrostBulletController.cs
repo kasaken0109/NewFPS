@@ -36,7 +36,7 @@ public class FrostBulletController : MonoBehaviour
             }
             IsCreateWall = true;
         }
-        else if (collision.collider.tag == "Enemy")
+        else if (collision.collider.tag == "Enemy" || collision.collider.tag == "Item")
         {
             collision.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackpower);
             hitTransform = m_player.transform;
