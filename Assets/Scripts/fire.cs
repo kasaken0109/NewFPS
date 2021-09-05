@@ -7,6 +7,7 @@ public class fire : MonoBehaviour
 {
 
     [SerializeField] GameObject m_bulletPrefab = null;
+    [SerializeField] GameObject m_bigWallPrefab = null;
     GameObject go;
     /// <summary>弾の発射位置</summary>
     [SerializeField] Transform m_muzzle;
@@ -26,6 +27,7 @@ public class fire : MonoBehaviour
     GameObject m_textBox;
     Coroutine m_coroutine;
     Rigidbody2D m_rb;
+    bool IsSpecial = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -52,7 +54,14 @@ public class fire : MonoBehaviour
             if (m_bulletNum > 0)
             {
                 m_shootAnim.SetTrigger("ShootFlag");
-                m_coroutine = StartCoroutine(Fire());
+                if (m_coroutine != null)
+                {
+                    StopCoroutine(m_coroutine);
+                }
+                if (m_bulletNum >= 4)
+                {
+                    StartCoroutine(nameof(BigWall));
+                }
             }
             else
             {
@@ -62,11 +71,17 @@ public class fire : MonoBehaviour
 
             }
         }
-        else if(Input.GetButtonUp("Fire1")|| m_bulletNum <= 0)
+        else if(Input.GetButtonUp("Fire1"))
         {
-            if (m_coroutine != null)
+            if (IsSpecial)
             {
-                StopCoroutine(m_coroutine);
+                StopCoroutine(nameof(BigWall));
+                IsSpecial = false;
+            }
+            else
+            {
+                StartCoroutine(nameof(Fire));
+                StopCoroutine(nameof(BigWall));
             }
         }
         if (Input.GetButtonDown("Reload"))
@@ -88,18 +103,27 @@ public class fire : MonoBehaviour
 
     IEnumerator Fire()
     {
-        while (true)
+        if (m_bulletPrefab && m_muzzle && m_bulletNum >= 1) // m_bulletPrefab にプレハブが設定されている時 かつ m_muzzle に弾の発射位置が設定されている時
         {
-            if (m_bulletPrefab && m_muzzle) // m_bulletPrefab にプレハブが設定されている時 かつ m_muzzle に弾の発射位置が設定されている時
-            {
-                go = Instantiate(m_bulletPrefab, m_muzzle.position, m_bulletPrefab.transform.rotation);  // インスペクターから設定した m_bulletPrefab をインスタンス化する
-                //Debug.Log("Fire");
-                m_bulletNum -= 1;
-                PlayShootSound();
-                yield return new WaitForSeconds(m_fireInterval);
-            }
-            
+            go = Instantiate(m_bulletPrefab, m_muzzle.position, m_bulletPrefab.transform.rotation);  // インスペクターから設定した m_bulletPrefab をインスタンス化す                                                                                         //Debug.Log("Fire");
+            m_bulletNum -= 1;
+            PlayShootSound();
+            yield return new WaitForSeconds(m_fireInterval);
         }
+    }
+
+    IEnumerator BigWall()
+    {
+        yield return new WaitForSeconds(2.5f);
+        IsSpecial = true;
+        var player = GameManager.Instance.m_player.gameObject;
+        var playerCol = player.GetComponent<Collider>();
+        var m = Instantiate(m_bigWallPrefab);
+        m_bulletNum = 0;
+        m.transform.position = new Vector3(player.transform.position.x, playerCol.bounds.min.y, player.transform.position.z);
+        m.transform.rotation = player.transform.rotation;
+
+
     }
 
     void BulletInstance()
