@@ -8,7 +8,7 @@ public class PlayerBulletController : MonoBehaviour
     
     /// <summary>弾の飛ぶ速度</summary>
     [SerializeField] float m_bulletSpeed = 10f;
-    public Rigidbody m_rb;
+    Rigidbody m_rb;
     //[SerializeField] float m_bulletPower = 12f;
     //[SerializeField] GameObject m_bounceEffect;
     //[SerializeField]GameObject m_bulletEffect;
@@ -19,10 +19,4 @@ public class PlayerBulletController : MonoBehaviour
         m_rb = GetComponent<Rigidbody>();
         this.m_rb.velocity = Camera.main.transform.forward * m_bulletSpeed;
     }
-    void Update()
-    {
-        
-    }
-
-    
 }
