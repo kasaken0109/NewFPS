@@ -12,7 +12,10 @@ public class PlayerManager : MonoBehaviour,IDamage
     [SerializeField] float m_godTime = 0.4f;
     [SerializeField] float m_changeTime = 2f;
     [SerializeField] GameObject m_charactor;
+    [SerializeField] GameObject m_healEffect;
     [SerializeField] GameObject m_invisible;
+    [SerializeField] GameObject m_dead;
+    [SerializeField] GameObject[] m_weaponImage;
     [SerializeField] Text m_hptext = null;
     [SerializeField] Animator m_animator = null;
     [SerializeField] Slider hpslider = null;
@@ -66,7 +69,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     // Update is called once per frame
     void Update()
     {
-        m_hptext.text = "HP:" + m_hp.ToString();
+        //m_hptext.text = "HP:" + m_hp.ToString();
         hpslider.value = (float)m_hp / m_maxhp;
         if (postEffect.enabled)
         {
@@ -106,6 +109,7 @@ public class PlayerManager : MonoBehaviour,IDamage
         }
 
         m_weaponManager.EquipWeapon(m_weaponPath[m_weaponNum]);
+        SetWeaponImage(m_weaponNum);
     }
 
     private void NextWeapon()
@@ -117,10 +121,26 @@ public class PlayerManager : MonoBehaviour,IDamage
         }
 
         m_weaponManager.EquipWeapon(m_weaponPath[m_weaponNum]);
+        SetWeaponImage(m_weaponNum);
     }
 
+    void SetWeaponImage(int weaponNum)
+    {
+        for (int i = 0; i < m_weaponImage.Length; i++)
+        {
+            if (i == weaponNum)
+            {
+                m_weaponImage[i].SetActive(true);
+            }
+            else
+            {
+                m_weaponImage[i].SetActive(false);
+            }
+        }
+    }
     public void AddDamage(int damage)
     {
+        Debug.Log(m_hp);
         if (IsInvisible)
         {
             if (!IsActiveCoroutine)
@@ -128,13 +148,22 @@ public class PlayerManager : MonoBehaviour,IDamage
                 StopCoroutine("GodTime");
                 StartCoroutine("GodTime");
             }
-            return;
+            if(damage > 0) return;
         }
         if (m_hp > damage)
         {
             m_hp -= damage;
-            m_animator.Play("Damage", 0);
-            GetComponent<PlayerControll>().BasicHitAttack();
+            if(damage < 0)
+            {
+                if (m_hp >= m_maxhp) m_hp = m_maxhp;
+                Instantiate(m_healEffect, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                m_animator.Play("Damage", 0);
+                GetComponent<PlayerControll>().BasicHitAttack();
+            }
+            
             DOTween.To(
                 () =>hpslider.value, // getter
                 x => hpslider.value = x, // setter
@@ -144,7 +173,10 @@ public class PlayerManager : MonoBehaviour,IDamage
         }
         else
         {
-            m_animator.Play("Dead",0);
+            var m =Instantiate(m_dead);
+            m.transform.position = transform.position;
+            gameObject.SetActive(false);
+
         }
     }
 
