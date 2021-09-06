@@ -29,15 +29,17 @@ public class FireLine : MonoBehaviour
     /// <summary>マガジン内の弾数</summary>
     public int m_bulletNum;
     AudioSource audio;
-    [SerializeField] public int m_bulletMaxNum = 4;
+    public int m_bulletMaxNum = 4;
     GameObject m_textBox;
     bool IsSounded = false;
     bool IsHitSound = false;
     bool IsEndHit = false;
+    bool CanShoot = true;
     Vector3 hitPosition;
 
     void Start()
     {
+        m_bulletNum = PlayerPrefs.GetInt("Bullet1");
         // FPS なのでマウスカーソルを消す。ESC で表示される。
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -49,6 +51,18 @@ public class FireLine : MonoBehaviour
         m_reload?.SetActive(false);
         audio = GetComponent<AudioSource>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
+    }
+
+    private void OnEnable()
+    {
+        m_bulletNum = PlayerPrefs.GetInt("Bullet1");
+        m_muzzle = GameObject.FindWithTag("Muzzle");
+        m_line = m_muzzle.GetComponent<LineRenderer>();
+    }
+
+    private void Awake()
+    {
+        m_bulletNum = PlayerPrefs.GetInt("Bullet1");
     }
 
     void Update()
@@ -63,13 +77,8 @@ public class FireLine : MonoBehaviour
         //hit = DebugDrawLine(ref ray);
 
         // Ray が何かに当たったか・当たっていないかで処理を分ける        
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && CanShoot)
         {
-            if (!IsSounded)
-            {
-                PlayShootSound();  // レーザーの発射点で射撃音を鳴らす
-                IsSounded = true;
-            }
             bool IsHit = Physics.Raycast(ray, out hit, m_shootRange, m_layerMask);
             if (IsHit)
             {
@@ -81,10 +90,15 @@ public class FireLine : MonoBehaviour
                     //Debug.Log(hitObject.name);
                     if (!IsEndHit && m_bulletNum >= 1 && hitObject.tag == "Enemy" || hitObject.tag == "Item")
                     {
+                        if (!IsSounded)
+                        {
+                            PlayShootSound();  // レーザーの発射点で射撃音を鳴らす
+                            IsSounded = true;
+                        }
                         hitObject.GetComponentInParent<IDamage>().AddDamage(m_attackpower);
                         Instantiate(m_effect, hitPosition, Quaternion.identity);
                     }
-                    if (!IsHitSound)
+                    if (!IsHitSound && m_bulletNum >= 1)
                     {
                         PlayHitSound(hitPosition);  // レーザーが当たった場所でヒット音を鳴らす
                         IsHitSound = true;
@@ -140,9 +154,10 @@ public class FireLine : MonoBehaviour
 
     void OnDestroy()
     {
-        // 消したマウスカーソルを元に戻す。
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        PlayerPrefs.SetInt("Bullet1", m_bulletNum);
+        Debug.Log(m_bulletNum);
+        PlayerPrefs.Save();
+        //DrawLaser(m_line.transform.position);
     }
 
     /// <summary>
@@ -153,6 +168,7 @@ public class FireLine : MonoBehaviour
     {
         if (m_shootSound)
         {
+            
             audio.PlayOneShot(m_shootSound);
         }
     }
@@ -165,7 +181,7 @@ public class FireLine : MonoBehaviour
     {
         if (m_hitSound)
         {
-            AudioSource.PlayClipAtPoint(m_hitSound, position);
+            AudioSource.PlayClipAtPoint(m_hitSound, position,0.1f);
         }
     }
 

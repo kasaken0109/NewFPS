@@ -65,7 +65,7 @@ public class fire : MonoBehaviour
             }
             else
             {
-                AudioSource.PlayClipAtPoint(m_shootSound[1], m_muzzle.position);
+                AudioSource.PlayClipAtPoint(m_shootSound[1], m_muzzle.position,0.1f);
                 Debug.Log("リロードしてください");
                 //m_reload.SetActive(true);
 
@@ -96,7 +96,7 @@ public class fire : MonoBehaviour
     {
         if (m_shootSound[0])
         {
-            AudioSource.PlayClipAtPoint(m_shootSound[0], m_muzzle.position);
+            AudioSource.PlayClipAtPoint(m_shootSound[0], m_muzzle.position,0.1f);
         }
     }
 
