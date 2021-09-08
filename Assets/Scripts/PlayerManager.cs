@@ -22,6 +22,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     [SerializeField] Material m_change = null;
     [SerializeField] Material m_origin = null;
     [SerializeField] PostEffect postEffect = null;
+    [SerializeField] bool equipMode = true;
     /// <summary>
     /// 武器のNo.
     /// </summary>
@@ -31,7 +32,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     private int m_maxhp;
     bool IsInvisible = false;
     public float m_changeRate = 2f;
-
+    public bool IsAlive = true;
     public enum WeaponTypes: int
     {
         RIFLE,
@@ -79,17 +80,41 @@ public class PlayerManager : MonoBehaviour,IDamage
         {
             stanceTypes = StanceTypes.NORMAL;
         }
-        if (Time.time - keyInterval > 0.2f)
+        if (equipMode)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1) == true)
+            if (Time.time - keyInterval > 0.2f)
             {
-                keyInterval = Time.time;
-                PrevWeapon();
+                if (Input.GetKeyDown(KeyCode.Alpha1) == true)
+                {
+                    keyInterval = Time.time;
+                    FirstWeapon();
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha2) == true)
+                {
+                    keyInterval = Time.time;
+                    SecondWeapon();
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha3) == true)
+                {
+                    keyInterval = Time.time;
+                    ThirdWeapon();
+                }
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2) == true)
+        }
+        else
+        {
+            if (Time.time - keyInterval > 0.2f)
             {
-                keyInterval = Time.time;
-                NextWeapon();
+                if (Input.GetKeyDown(KeyCode.Alpha1) == true)
+                {
+                    keyInterval = Time.time;
+                    PrevWeapon();
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha2) == true)
+                {
+                    keyInterval = Time.time;
+                    NextWeapon();
+                }
             }
         }
     }
@@ -122,6 +147,24 @@ public class PlayerManager : MonoBehaviour,IDamage
 
         m_weaponManager.EquipWeapon(m_weaponPath[m_weaponNum]);
         SetWeaponImage(m_weaponNum);
+    }
+
+    private void FirstWeapon()
+    {
+        m_weaponManager.EquipWeapon(m_weaponPath[0]);
+        SetWeaponImage(0);
+    }
+
+    private void SecondWeapon()
+    {
+        m_weaponManager.EquipWeapon(m_weaponPath[1]);
+        SetWeaponImage(1);
+    }
+
+    private void ThirdWeapon()
+    {
+        m_weaponManager.EquipWeapon(m_weaponPath[2]);
+        SetWeaponImage(2);
     }
 
     void SetWeaponImage(int weaponNum)
@@ -174,9 +217,9 @@ public class PlayerManager : MonoBehaviour,IDamage
         else
         {
             var m =Instantiate(m_dead);
+            GameManager.Instance.GameStatus = GameManager.GameState.PLAYERLOSE;
             m.transform.position = transform.position;
             gameObject.SetActive(false);
-
         }
     }
 
