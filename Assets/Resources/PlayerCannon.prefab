@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4126125628354313013}
   - component: {fileID: -5300095912380279960}
   - component: {fileID: -1498154522660566169}
-  - component: {fileID: -3675826894559467830}
   - component: {fileID: -3673335363486850617}
   m_Layer: 0
   m_Name: PlayerCannon
@@ -147,34 +146,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &-3675826894559467830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4126125628354417045}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e741da964628a2842b4e7a8a372676dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_muzzle: {fileID: 0}
-  m_effect: {fileID: 0}
-  m_line: {fileID: 0}
-  m_seconds: 2
-  m_shootRange: 50
-  m_layerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  m_shootSound: {fileID: 8300000, guid: 43cfa8c3b864b434fb57d57b0ba69583, type: 3}
-  m_hitSound: {fileID: 8300000, guid: 202b951c1661d6e4589f332b48beaff3, type: 3}
-  m_reloadSound: {fileID: 0}
-  m_airshoot: {fileID: 0}
-  m_text: {fileID: 0}
-  m_attackpower: 10
-  m_bulletNum: 0
-  m_bulletMaxNum: 4
 --- !u!82 &-3673335363486850617
 AudioSource:
   m_ObjectHideFlags: 0
@@ -187,7 +158,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0

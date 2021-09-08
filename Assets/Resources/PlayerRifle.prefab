@@ -263,7 +263,6 @@ GameObject:
   - component: {fileID: 5871333284556790606}
   - component: {fileID: 5871333284555415580}
   - component: {fileID: 5871333284554599624}
-  - component: {fileID: 5871333285546354887}
   - component: {fileID: -6440649755584760145}
   - component: {fileID: -6345301046286295369}
   - component: {fileID: 124950641094215812}
@@ -336,32 +335,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &5871333285546354887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5871333284556541852}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f693b41865413b947882a74ab4c9e1fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_bulletPrefab: {fileID: 2724570278060639883, guid: 2896c2d963348e24b9ab3a4b7cbc7d7a,
-    type: 3}
-  m_muzzle: {fileID: 0}
-  m_bulletLimit: 0
-  m_fireInterval: 0.15
-  m_shootSound:
-  - {fileID: 8300000, guid: 1d03157c54b28f143ac92c800e9909a0, type: 3}
-  - {fileID: 8300000, guid: 64ee1d5225627d84cb7cd16697384705, type: 3}
-  - {fileID: 8300000, guid: 6628f457ad1e3ae4a90cc58878fe40d0, type: 3}
-  - {fileID: 8300000, guid: e95270d8de658bd4b8bbaf58c1ff8e6f, type: 3}
-  m_shootAnim: {fileID: 0}
-  m_bulletNum: 0
-  m_text: {fileID: 0}
-  m_bulletMaxNum: 4
 --- !u!95 &-6440649755584760145
 Animator:
   serializedVersion: 3
@@ -410,6 +383,9 @@ MonoBehaviour:
   m_attackpower: 4
   m_bulletNum: 4
   m_bulletMaxNum: 4
+  m_shield: {fileID: 7028629684490703253, guid: 6d8db77a2e1e4b54185723a889377f31,
+    type: 3}
+  m_chargeTime: 3
 --- !u!82 &124950641094215812
 AudioSource:
   m_ObjectHideFlags: 0
@@ -422,7 +398,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.541
   m_Pitch: 1
   Loop: 0
   Mute: 0
