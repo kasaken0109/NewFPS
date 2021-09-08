@@ -34,34 +34,68 @@ public class MouseController: MonoBehaviour
         character.transform.Rotate(0, X_Rotation, 0);
 
         //次はY軸の設定です。
-        float nowAngle = pivot.transform.localRotation.x;
+        float nowAngle = Camera.main.transform.localRotation.x;
+        Debug.Log(Y_Rotation);
         //最大値、または最小値を超えた場合、カメラをそれ以上動かない用にしています。
         //キャラクターの中身が見えたり、カメラが一回転しないようにするのを防ぎます。
-        if (-Y_Rotation != 0)
+        //if (-Y_Rotation != 0)
+        //{
+        //    if (0 < Y_Rotation)
+        //    {
+        //        if (minYAngle >= nowAngle + Y_Rotation)
+        //        {
+        //            Debug.Log("minYAngle >= nowAngle");
+        //            //pivot.transform.Rotate(-Y_Rotation, 0, 0);
+        //            Camera.main.transform.LookAt(pivot, Vector3.up);
+        //            //m_muzzle.transform.LookAt(pivot, Vector3.up);
+        //            Camera.main.transform.position += new Vector3(0, -Y_Rotation * Time.deltaTime * 3, 0);
+        //        }
+        //        //pivot.transform.Rotate(-Y_Rotation, 0, 0);
+        //    }
+        //    else
+        //    {
+        //        if (nowAngle >= maxYAngle + Y_Rotation)
+        //        {
+        //            Debug.Log("nowAngle >= maxYAngle");
+        //            Camera.main.transform.LookAt(pivot, Vector3.up);
+        //            //m_muzzle.transform.LookAt(pivot, Vector3.up);
+        //            Camera.main.transform.position += new Vector3(0, -Y_Rotation * Time.deltaTime * 3, 0);
+        //        }
+        //        //pivot.transform.Rotate(-Y_Rotation, 0, 0);
+        //    }
+        //}
+        if (minYAngle >= nowAngle && nowAngle >= maxYAngle)
         {
             if (0 < Y_Rotation)
             {
-                if(minYAngle >= nowAngle) 
-                {
-                    //pivot.transform.Rotate(-Y_Rotation, 0, 0);
-                    Camera.main.transform.LookAt(pivot, Vector3.up);
-                    //m_muzzle.transform.LookAt(pivot, Vector3.up);
-                    Camera.main.transform.position += new Vector3(0, -Y_Rotation * Time.deltaTime * 3, 0);
-                }
+                Debug.Log("minYAngle >= nowAngle");
                 //pivot.transform.Rotate(-Y_Rotation, 0, 0);
+                Camera.main.transform.LookAt(pivot, Vector3.up);
+                //m_muzzle.transform.LookAt(pivot, Vector3.up);
+                Camera.main.transform.position += new Vector3(0, -Y_Rotation * Time.deltaTime * 3, 0);
             }
             else
             {
-                if (nowAngle >= maxYAngle)
-                {
-                    Camera.main.transform.LookAt(pivot, Vector3.up);
-                    //m_muzzle.transform.LookAt(pivot, Vector3.up);
-                    Camera.main.transform.position += new Vector3(0, -Y_Rotation * Time.deltaTime * 3, 0);
-                }
-                //pivot.transform.Rotate(-Y_Rotation, 0, 0);
+                Debug.Log("nowAngle >= maxYAngle");
+                Camera.main.transform.LookAt(pivot, Vector3.up);
+                //m_muzzle.transform.LookAt(pivot, Vector3.up);
+                Camera.main.transform.position += new Vector3(0, -Y_Rotation * Time.deltaTime * 3, 0);
+            }
+            pivot.transform.Rotate(-Y_Rotation, 0, 0);
+        }
+        else
+        {
+            Debug.Log("CantMove");
+            if (minYAngle < nowAngle)
+            {
+                nowAngle = minYAngle + 0.05f;
+            }
+            else if (minYAngle < nowAngle)
+            {
+
             }
         }
-       // pivot.transform.Rotate(-Y_Rotation, 0, 0);
+        // pivot.transform.Rotate(-Y_Rotation, 0, 0);
 
     }
 }
