@@ -126,11 +126,6 @@ public class PlayerControll : ColliderGenerater
                 //m_crouchSlow = 0.5f;
                 //collider.height = 0.7f;
             }
-            else if (Input.GetButtonUp("Crouch"))
-            {
-                //m_crouchSlow = 1f;
-                //collider.height = 1f;
-            }
             if (v == 0 && h == 0)
             {
                 m_anim.SetFloat("Speed", 0);
@@ -169,6 +164,8 @@ public class PlayerControll : ColliderGenerater
         else if (Input.GetButtonUp("Fire2"))
         {
             IsButtonHold = false;
+            StopCoroutine(HoldAttack());
+            //m_anim.SetBool("PunchBool", false);
         }
     }
 
@@ -176,6 +173,7 @@ public class PlayerControll : ColliderGenerater
     GameObject m_hit;
     IEnumerator HoldAttack()
     {
+        bool IsFirstAttack = true;
         yield return new WaitForSeconds(0.1f);
         if (IsButtonHold)
         {
@@ -200,13 +198,13 @@ public class PlayerControll : ColliderGenerater
                 }
                 m_rush.SetActive(true);
             }
-            else if(timer != 0)
+            else if(timer != 0 && IsFirstAttack)
             {
-                //Debug.Log("BasicAttack");
                 m_anim.SetTrigger("PunchFlag");
                 m_attackCollider.SetActive(true);
                 yield return new WaitForSeconds(0.5f);
                 m_attackCollider.SetActive(false);
+                IsFirstAttack = false;
             }
             timer = 0;
             yield break;
@@ -283,7 +281,15 @@ public class PlayerControll : ColliderGenerater
     {
         weaponManager.NowWeapon.GetComponent<Sword>().StopEmitting();
     }
+    public void StopFloat()
+    {
+        m_rb.useGravity = true;
+    }
 
+    public void StartFloat()
+    {
+        weaponManager.NowWeapon.GetComponent<Sword>().FloatUp();
+    }
     public void LargeHitAttack()
     {
 
