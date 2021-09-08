@@ -9755,13 +9755,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1937962392}
-  m_LocalRotation: {x: 0.5569433, y: -0.5108378, z: -0.41974857, w: -0.50266296}
+  m_LocalRotation: {x: 0.57341295, y: 0.45338345, z: -0.45432815, w: -0.5091434}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.49999988, z: 0.49999988}
   m_Children: []
   m_Father: {fileID: 7741391342468056568}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: -98.6, y: 342.08167, z: 100.5}
+  m_LocalEulerAnglesHint: {x: -9.9, y: 266, z: 94.1}
 --- !u!1 &16966923188879177
 GameObject:
   m_ObjectHideFlags: 0
@@ -10412,10 +10412,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.1452167
-  m_Height: 1.0045733
+  m_Radius: 0.3
+  m_Height: 1.8320456
   m_Direction: 1
-  m_Center: {x: -0.021717548, y: 0.4772867, z: -0.0268116}
+  m_Center: {x: -0.021717548, y: 0.8910228, z: -0.0268116}
 --- !u!82 &1751380559792518086
 AudioSource:
   m_ObjectHideFlags: 0
@@ -10554,15 +10554,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58fd797b334955a4eae66a2c61738d4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_hp: 200
+  m_hp: 500
   m_godTime: 1
-  m_changeTime: 10
+  m_changeTime: 5
   m_charactor: {fileID: 1376708005636415928}
+  m_healEffect: {fileID: 859265667254208758, guid: 3643d34ee3add704187397d610eea04e,
+    type: 3}
   m_invisible: {fileID: 0}
+  m_dead: {fileID: 6704386515878476898, guid: 7bbb73cf5ed0d74499dfc964cf02864a, type: 3}
+  m_weaponImage:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   m_hptext: {fileID: 0}
   m_animator: {fileID: 6241718060255117515}
   hpslider: {fileID: 0}
-  m_change: {fileID: 2100000, guid: 7840b1d9e317e8e449f7cea4e81af9b5, type: 2}
+  m_change: {fileID: 2100000, guid: d1ff2650e9a10014088e0d2b42173193, type: 2}
   m_origin: {fileID: 2100000, guid: 97e275b1cf7f50e439a881ee7b9e88d7, type: 2}
   postEffect: {fileID: 157926793}
   m_changeRate: 2
@@ -10737,8 +10744,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751380559997174796}
-  m_LocalRotation: {x: -0.008760163, y: -0.00000008652899, z: -0.00000010087645, w: -0.9999617}
-  m_LocalPosition: {x: 0.64, y: 1.756532, z: -1.9200017}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 135.69, y: 177.99, z: -741.23016}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 1751380561507200834}
@@ -10746,7 +10753,7 @@ Transform:
   - {fileID: 462998456}
   m_Father: {fileID: 5263492518453449921}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 1.0038534, y: 360, z: 0.000011647794}
+  m_LocalEulerAnglesHint: {x: -0, y: 0, z: 0}
 --- !u!20 &1751380559997174794
 Camera:
   m_ObjectHideFlags: 0
@@ -10805,7 +10812,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751380559997174796}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
   m_Name: 
@@ -10908,7 +10915,7 @@ MonoBehaviour:
   volumeTrigger: {fileID: 1751380559997174799}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 4128
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
   antialiasingMode: 0
@@ -11747,7 +11754,7 @@ Transform:
   - {fileID: 1937962393}
   m_Father: {fileID: 8745046044600450444}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 359.33386, y: 9.83911, z: 359.21967}
 --- !u!1 &3878875412396347867
 GameObject:
   m_ObjectHideFlags: 0
