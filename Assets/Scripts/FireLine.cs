@@ -30,12 +30,16 @@ public class FireLine : MonoBehaviour
     public int m_bulletNum;
     AudioSource audio;
     public int m_bulletMaxNum = 4;
-    GameObject m_textBox;
+    GameObject m_textBox = null;
+    GameObject m_fireLine = null;
+    [SerializeField]GameObject m_shield = null;
+    Transform m_shieldSpawn = null;
     bool IsSounded = false;
     bool IsHitSound = false;
     bool IsEndHit = false;
     bool CanShoot = true;
     Vector3 hitPosition;
+    ParticleSystem particleSystem;
 
     void Start()
     {
@@ -56,13 +60,19 @@ public class FireLine : MonoBehaviour
     private void OnEnable()
     {
         m_bulletNum = PlayerPrefs.GetInt("Bullet1");
+        m_fireLine = GameObject.Find("FireLine");
         m_muzzle = GameObject.FindWithTag("Muzzle");
         m_line = m_muzzle.GetComponent<LineRenderer>();
+        particleSystem = m_fireLine.GetComponent<ParticleSystem>();
+        particleSystem.Stop();
     }
 
     private void Awake()
     {
         m_bulletNum = PlayerPrefs.GetInt("Bullet1");
+        m_fireLine = GameObject.Find("FireLine");
+        particleSystem = m_fireLine.GetComponent<ParticleSystem>();
+        particleSystem.Stop();
     }
 
     void Update()
@@ -71,63 +81,31 @@ public class FireLine : MonoBehaviour
         
         Ray ray = Camera.main.ScreenPointToRay(m_crosshairUi.position);
         RaycastHit hit;
-        //Debug.Log($"{m_line.transform.position},{hitPosition}");
+
         GameObject hitObject = null;    // Ray が当たったオブジェクト
 
-        //hit = DebugDrawLine(ref ray);
-
-        // Ray が何かに当たったか・当たっていないかで処理を分ける        
-        if (Input.GetButton("Fire1") && CanShoot)
+        if (Input.GetButtonDown("Fire1"))
         {
-            bool IsHit = Physics.Raycast(ray, out hit, m_shootRange, m_layerMask);
-            if (IsHit)
+            if (m_bulletNum <= 0)
             {
-                hitPosition = hit.point;    // Ray が当たった場所
-                hitObject = hit.collider.gameObject;    // Ray が洗ったオブジェクト
-                if (hitObject)
-                {
-                    //Debug.Log(hitObject.tag);
-                    //Debug.Log(hitObject.name);
-                    if (!IsEndHit && m_bulletNum >= 1 && hitObject.tag == "Enemy" || hitObject.tag == "Item")
-                    {
-                        if (!IsSounded)
-                        {
-                            PlayShootSound();  // レーザーの発射点で射撃音を鳴らす
-                            IsSounded = true;
-                        }
-                        hitObject.GetComponentInParent<IDamage>().AddDamage(m_attackpower);
-                        Instantiate(m_effect, hitPosition, Quaternion.identity);
-                    }
-                    if (!IsHitSound && m_bulletNum >= 1)
-                    {
-                        PlayHitSound(hitPosition);  // レーザーが当たった場所でヒット音を鳴らす
-                        IsHitSound = true;
-                    }
-                    IsEndHit = true;
-                }
-                DrawLaser(hitPosition); // レーザーの終点は「Ray が当たっている時は当たった場所、当たっていない時は前方・射程距離ぶんの長さ」になる
-            }
-            else
-            {
-                IsHitSound = false;
-                hitPosition = m_line.transform.position + Camera.main.transform.forward * m_shootRange;  // hitPosition は Ray が当たった場所。Line の終点となる。何にも当たっていない時は Muzzle から射程距離だけ前方にする。
-                DrawLaser(hitPosition); // レーザーの終点は「Ray が当たっている時は当たった場所、当たっていない時は前方・射程距離ぶんの長さ」になる
 
             }
+            StartCoroutine(nameof(Fire));
         }
         else if (Input.GetButtonUp("Fire1"))
         {
-            IsEndHit = false;
-            IsSounded = false;
-            IsHitSound = false;
-            if (m_bulletNum >= 1)
+            StopCoroutine(nameof(Fire));
+            if (IsSpecial)
             {
-                DrawLaser(m_line.transform.position);   // 撃っていない時は、Line の終点と始点を同じ位置にすることで Line を消す
-                m_bulletNum -= 1;
+                m_shieldSpawn = GameObject.Find("ShieldSpawn").transform;
+                var m = Instantiate(m_shield);
+                m.transform.position = m_shieldSpawn.position;
+                m.transform.SetParent(m_shieldSpawn);
+                m.transform.localRotation = Quaternion.identity;
             }
             else
             {
-                m_reload?.SetActive(true);
+                PlayShootSound();
             }
         }
         if (Input.GetButtonDown("Reload"))
@@ -136,6 +114,18 @@ public class FireLine : MonoBehaviour
             Debug.Log("Reload");
             Reload();
         }
+    }
+
+    [SerializeField] float m_chargeTime = 3f;
+    bool IsSpecial = false;
+
+    IEnumerator Fire()
+    {
+        IsSpecial = false;
+        yield return new WaitForSeconds(1f);
+        if(m_bulletNum !=m_bulletMaxNum)
+        yield return new WaitForSeconds(m_chargeTime -1);
+        IsSpecial = true;
     }
 
     private RaycastHit DebugDrawLine(ref Ray ray)
@@ -157,20 +147,15 @@ public class FireLine : MonoBehaviour
         PlayerPrefs.SetInt("Bullet1", m_bulletNum);
         Debug.Log(m_bulletNum);
         PlayerPrefs.Save();
-        //DrawLaser(m_line.transform.position);
     }
 
     /// <summary>
     /// 射撃音を鳴らす
     /// </summary>
     /// <param name="position">音を鳴らす場所</param>
-    void PlayShootSound()
+    void PlayShootSound(AudioClip audioClip)
     {
-        if (m_shootSound)
-        {
-            
-            audio.PlayOneShot(m_shootSound);
-        }
+        audio?.PlayOneShot(m_shootSound);
     }
 
     /// <summary>
@@ -201,6 +186,7 @@ public class FireLine : MonoBehaviour
     public void Reload()
     {
         Debug.Log("リロード中");
+        StopCoroutine(nameof(WaitSeconds));
         StartCoroutine("WaitSeconds");
     }
 
