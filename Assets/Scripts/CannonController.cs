@@ -27,7 +27,7 @@ public class CannonController : MonoBehaviour
             Instantiate(m_bounceEffect, this.gameObject.transform.position, this.transform.rotation);
             if (collision.gameObject.GetComponent<EnemyContoroller>())
             {
-                collision.gameObject.GetComponent<EnemyContoroller>().Hit(m_bulletPower);
+               //collision.gameObject.GetComponent<EnemyContoroller>().Hit(m_bulletPower);
             }
             bounceflag = false;
             Debug.Log("bounced");
@@ -36,7 +36,7 @@ public class CannonController : MonoBehaviour
         {
             if (collision.gameObject.GetComponent<EnemyContoroller>())
             {
-                collision.gameObject.GetComponent<EnemyContoroller>().Hit(m_bulletPower * 2);
+                //collision.gameObject.GetComponent<EnemyContoroller>().Hit(m_bulletPower * 2);
             }
             Debug.Log("explosion");
             Destroy(this.gameObject);

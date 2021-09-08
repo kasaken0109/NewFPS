@@ -16,6 +16,8 @@ public class EnemyContorollerAi : MonoBehaviour
     [SerializeField] Animator m_animator;
     /// <summary>移動をやめ攻撃を開始する距離</summary>
     [SerializeField] float m_attackDistance = 3f;
+    /// <summary>移動をやめ攻撃を開始する距離</summary>
+    [SerializeField] float m_actionWaitTime = 5f;
     float enemyDistance;
     NavMeshAgent m_agent;
 
@@ -34,6 +36,7 @@ public class EnemyContorollerAi : MonoBehaviour
 
     void Update()
     {
+
         Debug.Log(enemyDistance);
         if (e_target != null)
         {
