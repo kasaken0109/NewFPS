@@ -12,6 +12,11 @@ TagManager:
   - aim
   - Floor
   - AttackCollider
+  - Cut
+  - CutAble
+  - EnemyFire
+  - Item
+  - NaviMesh
   layers:
   - Default
   - TransparentFX
@@ -27,8 +32,8 @@ TagManager:
   - Enemy
   - PostProcessing
   - Wall
-  - 
-  - 
+  - Floor
+  - CameraIgnore
   - 
   - 
   - 
