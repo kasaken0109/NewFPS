@@ -8,7 +8,6 @@ public class SceneLoader : MonoBehaviour
 {
     [SerializeField] string m_LoadSceneName = "SceneNameToBeLoaded";
     bool m_isLoading = false;
-    Rigidbody rigidbody;
     
     // Start is called before the first frame update
     void Start()
