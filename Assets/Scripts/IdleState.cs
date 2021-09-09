@@ -13,6 +13,8 @@ public class IdleState : StateBase
         Debug.Log("EnterIdle");
 
     }
+
+    
     private void OnCollisionEnter(Collision collision)
     {
         if (_opponentTag == "") return;
@@ -21,6 +23,7 @@ public class IdleState : StateBase
         {
             Debug.Log(collision.gameObject.tag);
             _actionCtrl.SetCurrent(_attackState);
+            _actionCtrl.SetCurrentName("AttackState");
         }
     }
 
@@ -32,6 +35,7 @@ public class IdleState : StateBase
         {
             Debug.Log("Ok");
             _actionCtrl.SetCurrent(_moveState);
+            _actionCtrl.SetCurrentName("MoveState");
         }
     }
 }
