@@ -18,18 +18,22 @@ public class MenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.GameStatus == GameManager.GameState.PLAYERWIN || GameManager.Instance.GameStatus == GameManager.GameState.PLAYERLOSE) return;
         if (Input.GetButtonDown("Menu"))
         {
             if (!menuFlag)
             {
                 Time.timeScale = 0;
                 menu.SetActive(true);
+                GameManager.Instance.GameStatus = GameManager.GameState.STOP;
                 menuFlag = true;
+
             }
             else
             {
                 Time.timeScale = 1;
                 menu.SetActive(false);
+                GameManager.Instance.GameStatus = GameManager.GameState.PLAYING;
                 menuFlag = false;
             }
             
