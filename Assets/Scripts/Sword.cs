@@ -13,6 +13,7 @@ public class Sword : MonoBehaviour,IWeapon
     void Start()
     {
         rb = GameManager.Instance.m_player.GetComponent<Rigidbody>();
+        PlayerManager.Instance.m_reloadImage.SetActive(false);
     }
 
     // Update is called once per frame
