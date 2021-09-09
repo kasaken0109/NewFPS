@@ -25,10 +25,11 @@ public class EnemyBossManager : MonoBehaviour, IDamage
  
     public void AddDamage(int damage)
     {
-        if (m_hp == maxHp)
+        if (actionCtrl.GetCurrentStateName() == "IdleState")
         {
             hpSlider.gameObject.SetActive(true);
             actionCtrl.SetCurrent(GetComponentInChildren<MoveState>());
+            actionCtrl.SetCurrentName("MoveState");
         }
         mp -= (30 - damage);
         if (m_hp > damage)
@@ -72,6 +73,7 @@ public class EnemyBossManager : MonoBehaviour, IDamage
         actionCtrl = new ActionCtrl();
         maxHp = 500;
         actionCtrl.SetCurrent(GetComponentInChildren<IdleState>());
+        actionCtrl.SetCurrentName("IdleState");
         mp = m_mp;
         StartCoroutine(nameof(FrostMode));
     }
@@ -79,7 +81,7 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
-        //hpSlider.value = (float)m_hp / maxHp;
+        Debug.Log(actionCtrl.GetCurrentStateName());
     }
 
     IEnumerator FrostMode()
