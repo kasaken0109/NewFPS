@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         PlayerPrefs.SetInt("Bullet1", 4);
+        PlayerPrefs.SetInt("Bullet2", 4);
     }
 
     private void Update()
@@ -33,8 +34,12 @@ public class GameManager : MonoBehaviour
         switch (myGameState)
         {
             case GameState.PLAYERWIN:m_win.SetActive(true);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
                 break;
             case GameState.PLAYERLOSE:m_lose.SetActive(true);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
                 break;
             default:
                 break;
