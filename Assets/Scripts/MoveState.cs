@@ -30,13 +30,13 @@ public class MoveState : StateBase
     int EnterCallback()
     {
         StartCoroutine("routine");
-        Debug.Log("EnterRoutine");
+        //Debug.Log("EnterRoutine");
         return 0;
     }
 
     int ExitCallback()
     {
-        Debug.Log("ExitRoutine");
+        //Debug.Log("ExitRoutine");
         StopCoroutine("routine");
         animator.SetFloat("Speed", 0);
         if (m_agent.pathStatus != NavMeshPathStatus.PathInvalid)
@@ -126,7 +126,9 @@ public class MoveState : StateBase
         if (other.gameObject == null) return;
         if (other.gameObject.CompareTag(_opponentTag))
         {
+            Debug.Log("EixtArea");
             _actionCtrl.SetCurrent(_idleState);
+            _actionCtrl.SetCurrentName("IdleState");
         }
     }
 }
