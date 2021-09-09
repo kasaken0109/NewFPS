@@ -201,6 +201,7 @@ public class PlayerControll : ColliderGenerater
             else if(timer != 0 && IsFirstAttack)
             {
                 m_anim.SetTrigger("PunchFlag");
+                yield return new WaitForSeconds(0.1f);
                 m_attackCollider.SetActive(true);
                 yield return new WaitForSeconds(0.5f);
                 m_attackCollider.SetActive(false);
