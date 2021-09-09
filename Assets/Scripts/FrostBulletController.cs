@@ -40,6 +40,10 @@ public class FrostBulletController : MonoBehaviour
         {
             collision.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackpower);
             hitTransform = m_player.transform;
+            foreach (ContactPoint point in collision.contacts)
+            {
+                hitPos = point.point;
+            }
             IsCreateWall = false;
             Destroy(this.gameObject);
             //getDamage.GetDamage(m_attackpower);
