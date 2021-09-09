@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     [SerializeField] int m_hp = 100;
     [SerializeField] float m_godTime = 0.4f;
     [SerializeField] float m_changeTime = 2f;
+    [SerializeField] int m_maxShield = 2;
     [SerializeField] GameObject m_charactor;
     [SerializeField] GameObject m_healEffect;
     [SerializeField] GameObject m_invisible;
@@ -22,11 +23,17 @@ public class PlayerManager : MonoBehaviour,IDamage
     [SerializeField] Material m_change = null;
     [SerializeField] Material m_origin = null;
     [SerializeField] PostEffect postEffect = null;
+    [SerializeField] FrostEffect m_frost = null;
+    [SerializeField] ShieldDisplayController shieldDisplay;
     [SerializeField] bool equipMode = true;
+    public GameObject m_reloadImage = null;
+    public GameObject m_textBox1 = null;
+    public GameObject m_textBox2 = null;
     /// <summary>
     /// 武器のNo.
     /// </summary>
     private int m_weaponNum = 0;
+    public int shieldNum;
     private float keyInterval = 0f;
     private WeaponManager m_weaponManager;
     private int m_maxhp;
@@ -58,6 +65,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     private void Awake()
     {
         Instance = this;
+        shieldNum = 0;
         stanceTypes = StanceTypes.NORMAL;
 
     }
@@ -195,16 +203,32 @@ public class PlayerManager : MonoBehaviour,IDamage
         }
         if (m_hp > damage)
         {
-            m_hp -= damage;
             if(damage < 0)
             {
+                m_hp -= damage;
                 if (m_hp >= m_maxhp) m_hp = m_maxhp;
                 Instantiate(m_healEffect, transform.position, Quaternion.identity);
             }
             else
             {
-                m_animator.Play("Damage", 0);
-                GetComponent<PlayerControll>().BasicHitAttack();
+                if (shieldDisplay.ShieldValue == 1) shieldNum = m_maxShield;
+                if(shieldNum >= 1)
+                {
+                    shieldNum--;
+                    shieldDisplay.ChangeValues((float)(shieldNum + 1) / (m_maxShield + 1));
+                    damage = (int)(damage * 0.5f);
+                }
+                else
+                {
+                    if (shieldNum == 0)
+                    {
+                        shieldDisplay.ChangeValues(0);
+                        Destroy(GameObject.Find("ShieldPrefab(Clone)"));
+                    }
+                    m_animator.Play("Damage", 0);
+                    GetComponent<PlayerControll>().BasicHitAttack();
+                }
+                m_hp -= damage;
             }
             
             DOTween.To(
@@ -250,10 +274,15 @@ public class PlayerManager : MonoBehaviour,IDamage
     {
         StopCoroutine(nameof(Invisible));
         IsActiveCoroutine = true;
-        postEffect.enabled = true;
+        m_frost.FrostAmount = 1f;
         IsInvisible = true;
         GetComponentInChildren<Renderer>().material = m_change;
-        yield return new WaitForSeconds(m_changeTime);
+        while (m_frost.FrostAmount > 0.0001f)
+        {
+            m_frost.FrostAmount -= 0.003f;
+            yield return new WaitForSeconds(m_changeTime /100);
+
+        }
         //m_invisible?.SetActive(false);
         postEffect.enabled = false;
         GetComponentInChildren<Renderer>().material = m_origin;
