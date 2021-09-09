@@ -23,6 +23,8 @@ public class WeaponManager : MonoBehaviour
     // Update is called once per frame
     public void EquipWeapon(string name)
     {
+        GameObject find = GameObject.Find($"{name}(Clone)");
+        if (find != null) return;
         if (m_weapon != null)
         {
             Destroy(m_weapon);
