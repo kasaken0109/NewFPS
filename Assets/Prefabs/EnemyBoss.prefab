@@ -4767,7 +4767,7 @@ GameObject:
   - component: {fileID: 366952177591218284}
   - component: {fileID: 366952178766715380}
   - component: {fileID: 366952178766715381}
-  m_Layer: 11
+  m_Layer: 16
   m_Name: EnemyStateMachine
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -16493,6 +16493,7 @@ MonoBehaviour:
   m_froznBody: {fileID: 708970449702650611}
   m_HpUI: {fileID: 0}
   _moveState: {fileID: 366952178766715381}
+  hpSlider: {fileID: 0}
 --- !u!114 &1008375456379677206
 MonoBehaviour:
   m_ObjectHideFlags: 0

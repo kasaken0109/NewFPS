@@ -10557,6 +10557,7 @@ MonoBehaviour:
   m_hp: 500
   m_godTime: 1
   m_changeTime: 5
+  m_maxShield: 2
   m_charactor: {fileID: 1376708005636415928}
   m_healEffect: {fileID: 859265667254208758, guid: 3643d34ee3add704187397d610eea04e,
     type: 3}
@@ -10572,7 +10573,15 @@ MonoBehaviour:
   m_change: {fileID: 2100000, guid: d1ff2650e9a10014088e0d2b42173193, type: 2}
   m_origin: {fileID: 2100000, guid: 97e275b1cf7f50e439a881ee7b9e88d7, type: 2}
   postEffect: {fileID: 157926793}
+  m_frost: {fileID: 0}
+  shieldDisplay: {fileID: 0}
+  equipMode: 1
+  m_reloadImage: {fileID: 0}
+  m_textBox1: {fileID: 0}
+  m_textBox2: {fileID: 0}
+  shieldNum: 0
   m_changeRate: 2
+  IsAlive: 1
   stanceTypes: 0
 --- !u!114 &1751380559792518082
 MonoBehaviour:
