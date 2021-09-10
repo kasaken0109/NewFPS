@@ -25,7 +25,9 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_player = GameManager.Player.gameObject; 
+        m_player = GameManager.Player.gameObject;
+        Camera.main.transform.LookAt(m_pivot, Vector3.up);
+        Camera.main.transform.position = (m_UpPoint.position + m_DownPoint.position)  / 2;
     }
 
     // Update is called once per frame
