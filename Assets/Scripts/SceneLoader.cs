@@ -6,20 +6,39 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    public static SceneLoader Instance { get; private set; } 
     [SerializeField] string m_LoadSceneName = "SceneNameToBeLoaded";
+    [SerializeField] Image m_loadPanel = null;
     bool m_isLoading = false;
-    
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+
+    }
+
+    IEnumerator Load()
+    {
+        Debug.Log("adsd");
         if (m_isLoading)
         {
-            SceneManager.LoadScene(m_LoadSceneName);      
+            Debug.Log("Called");
+            while(m_loadPanel.fillAmount < 0.99f)
+            {
+                m_loadPanel.fillAmount += 0.01f;
+                yield return new WaitForSeconds(0.1f);
+            }
+            SceneManager.LoadScene(m_LoadSceneName);
         }
     }
 
@@ -27,11 +46,13 @@ public class SceneLoader : MonoBehaviour
     public void SceneLoad()
     {
         m_isLoading = true;
+        StartCoroutine(nameof(Load));
     }
 
     public void SceneLoad(string sceneName)
     {
         m_isLoading = true;
         m_LoadSceneName = sceneName;
+        StartCoroutine(nameof(Load));
     }
 }
