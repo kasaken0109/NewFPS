@@ -52,8 +52,8 @@ public class MenuController : MonoBehaviour
 
     }
     
-    public void ShowTips()
+    public void StartClock()
     {
-
+        Time.timeScale = 1;
     }
 }
