@@ -189,7 +189,6 @@ public class FireLine : MonoBehaviour
     void OnDestroy()
     {
         PlayerPrefs.SetInt("Bullet1", m_bulletNum);
-        Debug.Log(m_bulletNum);
         PlayerPrefs.Save();
         StopCoroutine(nameof(WaitSeconds));
         m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
