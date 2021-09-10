@@ -2,28 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class TipsController : MonoBehaviour
 {
-    [SerializeField] Text text;
     [SerializeField] GameObject m_panel = null;
+    [SerializeField] GameObject[] m_tipsPanel;
+    [SerializeField] VideoController controller;
+    [SerializeField] VideoClip[] clip;
     // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Display(0);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            m_panel.SetActive(true);
+            m_panel?.SetActive(true);
         }
     }
 
@@ -31,7 +28,24 @@ public class TipsController : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            m_panel.SetActive(false);
+            m_panel?.SetActive(false);
         }
+    }
+
+    public void Display(int index)
+    {
+        if (index >= m_tipsPanel.Length) return;
+        for (int i = 0; i < m_tipsPanel.Length; i++)
+        {
+            if (i == index)
+            {
+                m_tipsPanel[i].SetActive(true);
+            }
+            else
+            {
+                m_tipsPanel[i].SetActive(false);
+            }
+        }
+        controller.DisplayVideo(clip[index]);
     }
 }
