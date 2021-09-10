@@ -12,7 +12,7 @@ public class TitleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_playable.Play();
     }
 
     // Update is called once per frame
@@ -54,5 +54,6 @@ public class TitleManager : MonoBehaviour
             item.SetActive(true);
         }
         m_anim?.SetActive(false);
+        m_playable.time = 0f;
     }
 }
