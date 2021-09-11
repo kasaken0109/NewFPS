@@ -226,13 +226,14 @@ public class PlayerManager : MonoBehaviour,IDamage
                         Destroy(GameObject.Find("ShieldPrefab(Clone)"));
                     }
                     m_animator.Play("Damage", 0);
-                    GetComponent<PlayerControll>().BasicHitAttack();
+                    if(TryGetComponent(out PlayerControll p)) GetComponent<PlayerControll>().BasicHitAttack();
+                    else if(TryGetComponent(out PlayerTutorialControll pl)) GetComponent<PlayerTutorialControll>().BasicHitAttack();
                 }
                 m_hp -= damage;
             }
-            
+
             DOTween.To(
-                () =>hpslider.value, // getter
+                () => hpslider.value, // getter
                 x => hpslider.value = x, // setter
                 (float)(float)m_hp / m_maxhp, // ターゲットとなる値
                 1f  // 時間（秒）
