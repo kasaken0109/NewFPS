@@ -5233,6 +5233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LoadSceneName: Fire&Blizzard
+  m_loadPanel: {fileID: 0}
 --- !u!1 &924079850
 GameObject:
   m_ObjectHideFlags: 3
