@@ -8,6 +8,7 @@ public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader Instance { get; private set; } 
     [SerializeField] string m_LoadSceneName = "SceneNameToBeLoaded";
+    [SerializeField] float m_fadeSpeed = 1f;
     [SerializeField] Image m_loadPanel = null;
     bool m_isLoading = false;
 
@@ -35,8 +36,8 @@ public class SceneLoader : MonoBehaviour
             Debug.Log("Called");
             while(m_loadPanel.fillAmount < 0.99f)
             {
-                m_loadPanel.fillAmount += 0.01f;
-                yield return new WaitForSeconds(0.1f);
+                m_loadPanel.fillAmount += 0.02f;
+                yield return new WaitForSeconds(0.1f / m_fadeSpeed);
             }
             SceneManager.LoadScene(m_LoadSceneName);
         }
