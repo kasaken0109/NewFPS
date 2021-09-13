@@ -23,6 +23,7 @@ public class EnemyNormalManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!IsFind) return;
         m_timer += Time.deltaTime;
         m_animator.SetFloat("Speed",navMeshAgent.velocity.magnitude);
         Debug.Log($"ss:{navMeshAgent.velocity.magnitude}");
@@ -43,10 +44,24 @@ public class EnemyNormalManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            navMeshAgent.SetDestination(other.gameObject.transform.position);
+            //navMeshAgent.SetDestination(other.gameObject.transform.position);
             m_attack = other.gameObject;
-            m_camera?.SetActive(true);
+            //m_camera?.SetActive(true);
+            StartCoroutine(nameof(ZoomEnemy));
         }
+    }
+
+    bool IsFind = false;
+    IEnumerator ZoomEnemy()
+    {
+        m_camera?.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        m_animator.Play("shout");
+        yield return new WaitForSeconds(3f);
+        m_camera?.SetActive(false);
+        IsFind = true;
+        navMeshAgent.SetDestination(m_attack.transform.position);
+        
     }
 
     
