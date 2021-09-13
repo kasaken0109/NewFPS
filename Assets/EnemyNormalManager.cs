@@ -15,8 +15,8 @@ public class EnemyNormalManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        m_animator = GetComponent<Animator>();
+        navMeshAgent = GetComponentInParent<NavMeshAgent>();
+        m_animator = GetComponentInParent<Animator>();
     }
 
     // Update is called once per frame
@@ -47,8 +47,5 @@ public class EnemyNormalManager : MonoBehaviour
         }
     }
 
-    public void ActiveCol()
-    {
-        ColliderGenerater.Instance.StartActiveCollider(m_attackCol, m_skillWaitTime);
-    }
+    
 }
