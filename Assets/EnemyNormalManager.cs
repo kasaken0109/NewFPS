@@ -9,6 +9,7 @@ public class EnemyNormalManager : MonoBehaviour
     Animator m_animator = null;
     GameObject m_attack = null;
     [SerializeField]GameObject m_attackCol = null;
+    [SerializeField] GameObject m_camera = null;
     float m_timer = 0f;
     [SerializeField] float m_skillWaitTime = 0.5f;
 
@@ -44,6 +45,7 @@ public class EnemyNormalManager : MonoBehaviour
         {
             navMeshAgent.SetDestination(other.gameObject.transform.position);
             m_attack = other.gameObject;
+            m_camera?.SetActive(true);
         }
     }
 
