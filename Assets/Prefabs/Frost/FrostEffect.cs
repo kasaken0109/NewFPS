@@ -18,6 +18,7 @@ public class FrostEffect : MonoBehaviour
 
 	private void Awake()
 	{
+        FrostAmount = 0;
         material = new Material(Shader);
         material.SetTexture("_BlendTex", Frost);
         material.SetTexture("_BumpMap", FrostNormals);
@@ -39,4 +40,9 @@ public class FrostEffect : MonoBehaviour
 
 		Graphics.Blit(source, destination, material);
 	}
+
+    private void OnDestroy()
+    {
+        FrostAmount = 0;
+    }
 }
