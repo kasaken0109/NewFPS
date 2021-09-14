@@ -26,13 +26,14 @@ public class EnemyNormalManager : MonoBehaviour
         if (!IsFind) return;
         m_timer += Time.deltaTime;
         m_animator.SetFloat("Speed",navMeshAgent.velocity.magnitude);
-        Debug.Log($"ss:{navMeshAgent.velocity.magnitude}");
+        //Debug.Log($"ss:{navMeshAgent.velocity.magnitude}");
         if(navMeshAgent.velocity.magnitude <= 0.1f)
         {
             m_animator.SetTrigger("Attack");
         }
         if (m_attack && m_timer >= 2f)
         {
+            Debug.Log("a");
             navMeshAgent.SetDestination(m_attack.gameObject.transform.position);
             transform.LookAt(m_attack.transform);
             m_timer = 0f;
@@ -44,6 +45,7 @@ public class EnemyNormalManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("Enter");
             //navMeshAgent.SetDestination(other.gameObject.transform.position);
             m_attack = other.gameObject;
             //m_camera?.SetActive(true);
@@ -54,11 +56,13 @@ public class EnemyNormalManager : MonoBehaviour
     bool IsFind = false;
     IEnumerator ZoomEnemy()
     {
+        if (IsFind) yield break;
         m_camera?.SetActive(true);
         yield return new WaitForSeconds(1f);
         m_animator.Play("shout");
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
         m_camera?.SetActive(false);
+        m_attack.GetComponent<CameraController>().ResetCamera();
         IsFind = true;
         navMeshAgent.SetDestination(m_attack.transform.position);
         
