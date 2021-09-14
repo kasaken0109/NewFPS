@@ -26,8 +26,13 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         m_player = GameManager.Player.gameObject;
+        ResetCamera();
+    }
+
+    public void ResetCamera()
+    {
         Camera.main.transform.LookAt(m_pivot, Vector3.up);
-        Camera.main.transform.position = (m_UpPoint.position + m_DownPoint.position)  / 2;
+        Camera.main.transform.position = (m_UpPoint.position + m_DownPoint.position) / 2;
     }
 
     // Update is called once per frame
