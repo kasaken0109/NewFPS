@@ -42,7 +42,7 @@ public class MenuController : MonoBehaviour
         if (!menuFlag)
         {
             Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.lockState = CursorLockMode.Locked;
         }
         else
         {
@@ -55,5 +55,11 @@ public class MenuController : MonoBehaviour
     public void StartClock()
     {
         Time.timeScale = 1;
+    }
+
+    private void OnDestroy()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 }
