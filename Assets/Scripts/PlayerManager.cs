@@ -191,15 +191,15 @@ public class PlayerManager : MonoBehaviour,IDamage
     }
     public void AddDamage(int damage)
     {
-        Debug.Log(m_hp);
+        //Debug.Log(m_hp);
         if (IsInvisible)
         {
-            if (!IsActiveCoroutine)
+            if (ActiveDodge)
             {
                 StopCoroutine("GodTime");
                 StartCoroutine("GodTime");
             }
-            if(damage > 0) return;
+            if (damage > 0) return;
         }
         if (m_hp > damage)
         {
@@ -253,13 +253,16 @@ public class PlayerManager : MonoBehaviour,IDamage
         StartCoroutine("Invisible");
     }
 
+    bool ActiveDodge = false;
     IEnumerator Invisible()
     {
         IsInvisible = true;
+        ActiveDodge = true;
         GetComponentInChildren<Renderer>().material = m_change;
         yield return new WaitForSeconds(m_godTime);
         GetComponentInChildren<Renderer>().material = m_origin;
         IsInvisible = false;
+        ActiveDodge = false;
     }
     IEnumerator Invisible(float time)
     {
@@ -269,22 +272,25 @@ public class PlayerManager : MonoBehaviour,IDamage
         GetComponentInChildren<Renderer>().material = m_origin;
         IsInvisible = false;
     }
-
+    bool IsGod = false;
     bool IsActiveCoroutine = false;
+    float timer = 0;
     IEnumerator GodTime()
     {
+        timer = 0;
         StopCoroutine(nameof(Invisible));
-        IsActiveCoroutine = true;
+        ActiveDodge = false;
         m_frost.FrostAmount = 1f;
         IsInvisible = true;
         GetComponentInChildren<Renderer>().material = m_change;
-        while (m_frost.FrostAmount > 0.0001f)
+        while (timer < m_changeTime)
         {
-            m_frost.FrostAmount -= 0.003f;
-            yield return new WaitForSeconds(m_changeTime /100);
+            Debug.Log($"timer :{timer},IsInvisible: {IsInvisible}");
+            timer += 0.02f;
+            m_frost.FrostAmount -= 0.02f / m_changeTime;
+            yield return new WaitForSeconds(0.02f);
 
         }
-        //m_invisible?.SetActive(false);
         postEffect.enabled = false;
         GetComponentInChildren<Renderer>().material = m_origin;
         IsInvisible = false;
