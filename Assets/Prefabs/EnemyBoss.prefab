@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366952177376835951}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.34, z: -3.23}
-  m_LocalScale: {x: 4, y: 3, z: 4}
+  m_LocalRotation: {x: 0.08229599, y: -0.7023015, z: 0.08229599, w: 0.7023015}
+  m_LocalPosition: {x: 212.9361, y: 153.50568, z: 0}
+  m_LocalScale: {x: 400, y: 300, z: 400}
   m_Children: []
-  m_Father: {fileID: 1008375456379742725}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 1008375456379817417}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 13.36693, y: 270, z: 0}
 --- !u!199 &366952177376835938
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -286,7 +286,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.9622642, g: 0.5725838, b: 0.38581347, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4831,6 +4831,7 @@ MonoBehaviour:
   m_stateDistance: 7 10 7 10
   m_maxBreathCount: 3
   m_moveState: {fileID: 366952178766715381}
+  attackValue: 
   m_enemy: {fileID: 1008375456379577187}
 --- !u!114 &366952178766715381
 MonoBehaviour:
@@ -4849,6 +4850,7 @@ MonoBehaviour:
   m_spawnEffect: {fileID: 366952178752846109}
   _attackState: {fileID: 366952178766715380}
   enemy: {fileID: 1008375456379677200}
+  m_runSpeed: 10
 --- !u!1 &366952178242574560
 GameObject:
   m_ObjectHideFlags: 0
@@ -16220,6 +16222,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1008375456379709339}
+  - {fileID: 366952177376835948}
   m_Father: {fileID: 1008375456379770075}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 1.5701443e-15, y: 3.2116093e-16, z: 4.4349413}
@@ -16446,7 +16449,6 @@ Transform:
   - {fileID: 1008375456379770075}
   - {fileID: 366952177591218281}
   - {fileID: 366952178472718590}
-  - {fileID: 366952177376835948}
   - {fileID: 188329242373052489}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -17221,7 +17223,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 940e052aed8ace748a53c99d1483e202,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 940e052aed8ace748a53c99d1483e202,
         type: 3}

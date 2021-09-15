@@ -123,6 +123,7 @@ MonoBehaviour:
   m_hp: 100
   m_godTime: 0.4
   m_changeTime: 2
+  m_maxShield: 2
   m_charactor: {fileID: 336422401103835862}
   m_healEffect: {fileID: 0}
   m_invisible: {fileID: 0}
@@ -134,7 +135,15 @@ MonoBehaviour:
   m_change: {fileID: 0}
   m_origin: {fileID: 0}
   postEffect: {fileID: 0}
+  m_frost: {fileID: 0}
+  shieldDisplay: {fileID: 0}
+  equipMode: 1
+  m_reloadImage: {fileID: 0}
+  m_textBox1: {fileID: 0}
+  m_textBox2: {fileID: 0}
+  shieldNum: 0
   m_changeRate: 2
+  IsAlive: 1
   stanceTypes: 0
 --- !u!114 &7047383558714317741
 MonoBehaviour:
@@ -209,7 +218,7 @@ Animator:
   m_GameObject: {fileID: 336422401103835862}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 16f380d52d0b4364998ca87162d7aedf, type: 3}
-  m_Controller: {fileID: 9100000, guid: 605425eb78a7de74ebaf67a9a47561c5, type: 2}
+  m_Controller: {fileID: 9100000, guid: f39771aa59204e84488b661d603be6cd, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
