@@ -11,6 +11,7 @@ public class MoveState : StateBase
     [SerializeField] Transform m_spawnEffect = null;
     [SerializeField] StateBase _attackState;
     [SerializeField] EnemyBossManager enemy;
+    [SerializeField] int m_runSpeed = 10;
     /// <summary>移動対象</summary>
     Vector3 m_cachedTargetPosition;
     StateBase _idleState;
@@ -30,7 +31,7 @@ public class MoveState : StateBase
     int EnterCallback()
     {
         StartCoroutine("routine");
-        //Debug.Log("EnterRoutine");
+        Debug.Log("EnterMove");
         return 0;
     }
 
@@ -77,7 +78,10 @@ public class MoveState : StateBase
                 {
                     animator.Play("Roar");
                     EnemyBossManager.Instance.hpSlider.gameObject.SetActive(true);
-                    yield return new WaitForSeconds(2f);
+                    yield return new WaitForSeconds(1f);
+                    GameManager.Instance.m_player.gameObject.GetComponent<CameraController>().ResetCamera();
+                    yield return new WaitForSeconds(1f);
+                    GameManager.Instance.m_player.gameObject.GetComponent<CameraController>().ResetCamera();
                     _actionCtrl.SetCurrent(_attackState);
 
                 }
@@ -91,8 +95,8 @@ public class MoveState : StateBase
                         {
                             m_agent.SetDestination(m_cachedTargetPosition); // Navmesh Agent に目的地をセットする（Vector3 で座標を設定していることに注意。Transform でも GameObject でもなく、Vector3 で目的地を指定する)
                         }
-                        m_agent.speed = 6;
-                        animator.SetFloat("Speed", 6);
+                        m_agent.speed = m_runSpeed;
+                        animator.SetFloat("Speed", m_runSpeed);
                     }
                     else
                     {
@@ -100,7 +104,8 @@ public class MoveState : StateBase
                         {
                             m_agent.SetDestination(m_cachedTargetPosition); // Navmesh Agent に目的地をセットする（Vector3 で座標を設定していることに注意。Transform でも GameObject でもなく、Vector3 で目的地を指定する)
                         }
-                        animator.SetFloat("Speed", 3);
+                        m_agent.speed = m_runSpeed * 0.5f;
+                        animator.SetFloat("Speed", m_runSpeed * 0.5f);
                     }
                 }
             }
