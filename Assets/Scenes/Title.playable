@@ -149,10 +149,10 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 19.883333333333333
+    m_Start: 19.402868297944472
     m_ClipIn: 0
     m_Asset: {fileID: 8057385146750129757}
-    m_Duration: 4.966666666666669
+    m_Duration: 5.447131702055529
     m_TimeScale: 1
     m_ParentTrack: {fileID: -8499343215807042876}
     m_EaseInDuration: 0
@@ -347,10 +347,10 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 19.2750905201667
+    m_Start: 19.883333333333333
     m_ClipIn: 0
     m_Asset: {fileID: 8313569572883899351}
-    m_Duration: 5.574909479833302
+    m_Duration: 4.966666666666669
     m_TimeScale: 1
     m_ParentTrack: {fileID: -7232155049108692034}
     m_EaseInDuration: 0
@@ -440,10 +440,10 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 9.938888888888892
+    m_Start: 10.816666666666666
     m_ClipIn: 0
     m_Asset: {fileID: 991313441453745386}
-    m_Duration: 2.1277777777777747
+    m_Duration: 1.2862016312778
     m_TimeScale: 1
     m_ParentTrack: {fileID: -7225990729238667183}
     m_EaseInDuration: 0
@@ -685,7 +685,7 @@ MonoBehaviour:
     m_Start: 8.816666666666666
     m_ClipIn: 0
     m_Asset: {fileID: -1268287981159209383}
-    m_Duration: 1
+    m_Duration: 2.0500000000000007
     m_TimeScale: 1
     m_ParentTrack: {fileID: -5483178512628259221}
     m_EaseInDuration: 0
@@ -747,7 +747,7 @@ MonoBehaviour:
     m_Recordable: 0
     m_PostExtrapolationMode: 1
     m_PreExtrapolationMode: 1
-    m_PostExtrapolationTime: 2.25
+    m_PostExtrapolationTime: 1.1999999999999993
     m_PreExtrapolationTime: 8.816666666666666
     m_DisplayName: Run_F
   m_Markers:
@@ -792,7 +792,7 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 11.066666666666666
+    m_Start: 10.866666666666667
     m_ClipIn: 0
     m_Asset: {fileID: -906902337570640346}
     m_Duration: 1
@@ -858,7 +858,7 @@ MonoBehaviour:
     m_PostExtrapolationMode: 1
     m_PreExtrapolationMode: 1
     m_PostExtrapolationTime: Infinity
-    m_PreExtrapolationTime: 11.066666666666666
+    m_PreExtrapolationTime: 10.866666666666667
     m_DisplayName: Fadeanim
   m_Markers:
     m_Objects: []
@@ -1750,7 +1750,7 @@ MonoBehaviour:
     m_Start: 8.816666666666666
     m_ClipIn: 0
     m_Asset: {fileID: 2327499799355050350}
-    m_Duration: 1
+    m_Duration: 2
     m_TimeScale: 1
     m_ParentTrack: {fileID: -2665213657935222003}
     m_EaseInDuration: 0
@@ -1812,7 +1812,7 @@ MonoBehaviour:
     m_Recordable: 0
     m_PostExtrapolationMode: 1
     m_PreExtrapolationMode: 1
-    m_PostExtrapolationTime: 2.2862016312778
+    m_PostExtrapolationTime: 1.2862016312778
     m_PreExtrapolationTime: 8.816666666666666
     m_DisplayName: Run
   m_Markers:
@@ -2065,6 +2065,22 @@ MonoBehaviour:
   m_Loop: 0
   m_Version: 1
   m_Rotation: {x: 0, y: 0, z: 0, w: 1}
+--- !u!114 &1486510766942618707
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90fb794a295e73545af71bcdb7375791, type: 3}
+  m_Name: CinemachineShot
+  m_EditorClassIdentifier: 
+  DisplayName: 
+  VirtualCamera:
+    exposedName: bbaada808efbcbe41a76a3793595718a
+    defaultValue: {fileID: 0}
 --- !u!114 &1588023457866052546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2881,7 +2897,7 @@ MonoBehaviour:
     m_Start: 8.8
     m_ClipIn: 0
     m_Asset: {fileID: 8044665889943689629}
-    m_Duration: 0.2333333333333325
+    m_Duration: 0.4499999999999975
     m_TimeScale: 1
     m_ParentTrack: {fileID: 6465572803383464320}
     m_EaseInDuration: 0
@@ -2947,10 +2963,10 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: PlayerSwitch
   - m_Version: 1
-    m_Start: 9.033333333333333
+    m_Start: 9.249999999999998
     m_ClipIn: 0
     m_Asset: {fileID: -8941242975821819742}
-    m_Duration: 0.2833333333333332
+    m_Duration: 0.5500000000000007
     m_TimeScale: 1
     m_ParentTrack: {fileID: 6465572803383464320}
     m_EaseInDuration: 0
@@ -2998,10 +3014,10 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: EnemySwith
   - m_Version: 1
-    m_Start: 9.316666666666666
+    m_Start: 9.799999999999999
     m_ClipIn: 0
     m_Asset: {fileID: 4772574264394724805}
-    m_Duration: 0.2333333333333325
+    m_Duration: 0.5833333333333339
     m_TimeScale: 1
     m_ParentTrack: {fileID: 6465572803383464320}
     m_EaseInDuration: 0
@@ -3049,10 +3065,10 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: PlayerSwitch
   - m_Version: 1
-    m_Start: 9.55
+    m_Start: 10.383333333333333
     m_ClipIn: 0
     m_Asset: {fileID: 5140217020965430048}
-    m_Duration: 0.2833333333333332
+    m_Duration: 0.4833333333333343
     m_TimeScale: 1
     m_ParentTrack: {fileID: 6465572803383464320}
     m_EaseInDuration: 0
@@ -3099,6 +3115,75 @@ MonoBehaviour:
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
     m_DisplayName: EnemySwith
+  - m_Version: 1
+    m_Start: 19.916666666666668
+    m_ClipIn: 0
+    m_Asset: {fileID: 1486510766942618707}
+    m_Duration: 5
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: 6465572803383464320}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: AllShot
   m_Markers:
     m_Objects: []
 --- !u!114 &7380742806619496730
