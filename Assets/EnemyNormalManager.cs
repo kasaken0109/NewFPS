@@ -10,8 +10,10 @@ public class EnemyNormalManager : MonoBehaviour
     GameObject m_attack = null;
     [SerializeField]GameObject m_attackCol = null;
     [SerializeField] GameObject m_camera = null;
+
     float m_timer = 0f;
     [SerializeField] float m_skillWaitTime = 0.5f;
+    [SerializeField] EnemyNormalController controller;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,7 @@ public class EnemyNormalManager : MonoBehaviour
     void Update()
     {
         if (!IsFind) return;
+        if (controller.m_froznBody.activeSelf) return;
         m_timer += Time.deltaTime;
         m_animator.SetFloat("Speed",navMeshAgent.velocity.magnitude);
         //Debug.Log($"ss:{navMeshAgent.velocity.magnitude}");
@@ -34,7 +37,7 @@ public class EnemyNormalManager : MonoBehaviour
         if (m_attack && m_timer >= 2f)
         {
             Debug.Log("a");
-            navMeshAgent.SetDestination(m_attack.gameObject.transform.position);
+            navMeshAgent.SetDestination(m_attack.transform.position);
             transform.LookAt(m_attack.transform);
             m_timer = 0f;
         }
@@ -46,7 +49,6 @@ public class EnemyNormalManager : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Enter");
-            //navMeshAgent.SetDestination(other.gameObject.transform.position);
             m_attack = other.gameObject;
             //m_camera?.SetActive(true);
             StartCoroutine(nameof(ZoomEnemy));
@@ -63,6 +65,7 @@ public class EnemyNormalManager : MonoBehaviour
         yield return new WaitForSeconds(4f);
         m_camera?.SetActive(false);
         m_attack.GetComponent<CameraController>().ResetCamera();
+        controller.SetNoDamege(false);
         IsFind = true;
         navMeshAgent.SetDestination(m_attack.transform.position);
         
