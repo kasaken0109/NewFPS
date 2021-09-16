@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ResultDisplay : MonoBehaviour
 {
-    [SerializeField] Text m_time = null;
-    [SerializeField] Text m_rank = null;
+    [SerializeField] TextMeshProUGUI m_time = null;
+    [SerializeField] TextMeshProUGUI m_rank = null;
     [SerializeField] GameObject[] m_buttons;
     int clearTime;
     int maxTime;
