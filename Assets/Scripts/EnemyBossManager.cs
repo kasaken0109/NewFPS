@@ -71,7 +71,7 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     {
         Instance = this;
         actionCtrl = new ActionCtrl();
-        maxHp = 500;
+        maxHp = m_hp;
         actionCtrl.SetCurrent(GetComponentInChildren<IdleState>());
         actionCtrl.SetCurrentName("IdleState");
         mp = m_mp;
@@ -81,7 +81,7 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(actionCtrl.GetCurrentStateName());
+        //Debug.Log(actionCtrl.GetCurrentStateName());
     }
 
     IEnumerator FrostMode()
