@@ -56,4 +56,11 @@ public class SceneLoader : MonoBehaviour
         m_LoadSceneName = sceneName;
         StartCoroutine(nameof(Load));
     }
+
+    public void SceneReload()
+    {
+        m_isLoading = true;
+        m_LoadSceneName = PlayerPrefs.GetString("SceneName");
+        StartCoroutine(nameof(Load));
+    }
 }
