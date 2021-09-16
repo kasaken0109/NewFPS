@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 560af545192004440beb69b15f37e9a4, type: 3}
   m_Name: Tutorial
   m_EditorClassIdentifier: 
+  m_color: {r: 0.34117648, g: 0.68235296, b: 0.7921569, a: 1}
   m_loadSceneName: Fire&BlizzardTutorial
   m_questName: MoveTutorial
   m_questText: "\u52D5\u304D\u306E\u57FA\u790E\u3092\u5B66\u307C\u3046\uFF01"

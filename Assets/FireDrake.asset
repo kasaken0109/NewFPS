@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 560af545192004440beb69b15f37e9a4, type: 3}
   m_Name: FireDrake
   m_EditorClassIdentifier: 
-  m_color: {r: 1, g: 0.9858491, b: 0.9858491, a: 0}
+  m_color: {r: 1, g: 0.23511353, b: 0, a: 1}
   m_loadSceneName: Fire&Blizzard
   m_questName: FireDrake Lv.2
-  m_questText: "\u4FEE\u7DF4\u3092\u7D42\u3048\u305F\u6A5F\u58EB\u306B\u5FCD\u3073\u5BC4\u308B\u9B54\u306E\u624B\u2026"
+  m_questText: "<color=\"red\">\u76EE\u6A19: \u30DC\u30B9\u306E\u8A0E\u4F10</color>
+    \u4FEE\u7DF4\u3092\u7D42\u3048\u305F\u6A5F\u58EB\u306B \u5FCD\u3073\u5BC4\u308B\u9B54\u306E\u624B\u2026"
   m_image: {fileID: 21300000, guid: ce52a52d52a92fa4a819fd1a4aaac27f, type: 3}
   m_backGround: {fileID: 21300000, guid: 8218d6768961d9c4daa8701e13378275, type: 3}
