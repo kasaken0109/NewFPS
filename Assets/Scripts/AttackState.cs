@@ -9,6 +9,7 @@ public class AttackState : StateBase
     [SerializeField] string m_stateDistance;
     [SerializeField] int m_maxBreathCount;
     [SerializeField] StateBase m_moveState;
+    [SerializeField] int[] attackValue;
     [SerializeField] GameObject m_enemy = null;
     int breathCount;
     string[] triggersDistances;
@@ -46,6 +47,12 @@ public class AttackState : StateBase
         return 0;
     }
 
+    void SetActionVariable()
+    {
+        int value = attackValue[Random.Range(0, attackValue.Length)];
+        m_animator.SetInteger("AttackCombo", value);
+    }
+
     IEnumerator AttackRoutine()
     {
         yield return new WaitForFixedUpdate();
@@ -58,6 +65,7 @@ public class AttackState : StateBase
                 if (distance <= triggerDistance[0])
                 {
                     m_animator.SetInteger("AttackType", 0);
+                    SetActionVariable();
                     //yield return new WaitForSeconds(2f);
                     //_actionCtrl.SetCurrent(_attackState);
 
@@ -73,11 +81,13 @@ public class AttackState : StateBase
                         //    _actionCtrl.SetCurrent(m_moveState);
                         //}
                         m_animator.SetInteger("AttackType", 2);
+                        SetActionVariable();
                         breathCount++;
                     }
                     else
                     {
                         m_animator.SetInteger("AttackType", 1);
+                        SetActionVariable();
                     }
                     //yield return new WaitForSeconds(2f);
                 }
