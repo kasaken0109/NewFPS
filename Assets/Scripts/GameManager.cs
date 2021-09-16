@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject m_bossEnemy = null;
     [SerializeField] Transform m_bossSpawn = null;
     [SerializeField] GameObject m_win = null;
+    [SerializeField] GameObject m_gate = null;
     [SerializeField] GameObject m_lose = null;
 
     public static GameManager Instance = null;
@@ -19,6 +21,8 @@ public class GameManager : MonoBehaviour
         Instance = this;
         PlayerPrefs.SetInt("Bullet1", 4);
         PlayerPrefs.SetInt("Bullet2", 4);
+        PlayerPrefs.SetString("SceneName",SceneManager.GetActiveScene().name);
+        PlayerPrefs.Save();
     }
 
     private void Update()
@@ -34,8 +38,9 @@ public class GameManager : MonoBehaviour
         switch (myGameState)
         {
             case GameState.PLAYERWIN:m_win.SetActive(true);
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.Confined;
+                m_gate?.SetActive(true);
+                //Cursor.visible = true;
+                //Cursor.lockState = CursorLockMode.Confined;
                 break;
             case GameState.PLAYERLOSE:m_lose.SetActive(true);
                 Cursor.visible = true;
