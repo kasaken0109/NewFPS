@@ -119,7 +119,7 @@ MonoBehaviour:
   m_bullet: {fileID: 1354823903795634764, guid: 0c8239e19677a0b4d8c01323797725c1,
     type: 3}
   m_line: {fileID: 0}
-  m_seconds: 2
+  m_seconds: 1
   m_shootRange: 50
   m_layerMask:
     serializedVersion: 2

@@ -1613,7 +1613,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1736740869
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2459,6 +2459,7 @@ MonoBehaviour:
     type: 3}
   m_bossSpawn: {fileID: 1371205781307029530}
   m_win: {fileID: 0}
+  m_gate: {fileID: 0}
   m_lose: {fileID: 0}
 --- !u!114 &1812908812
 MonoBehaviour:
