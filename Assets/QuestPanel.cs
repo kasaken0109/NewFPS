@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class QuestPanel : MonoBehaviour
 {  
     [SerializeField] Image m_questImage = null;
+    [SerializeField] Image m_questTitleImage = null;
     [SerializeField] Image m_questBackGroundImage = null;
     [SerializeField] Text m_questName = null;
     [SerializeField] Text m_questText = null;
@@ -21,6 +22,7 @@ public class QuestPanel : MonoBehaviour
     {
         if (!m_quest) Debug.LogError("QuestDataがありません！");
         m_questImage.sprite = m_quest.QuestImage();
+        m_questTitleImage.color = m_quest.QuestColor();
         m_questBackGroundImage.sprite = m_quest.QuestBackGroundImage();
         m_loadSceneName = m_quest.LoadSceneName();
         m_questName.text = m_quest.QuestName();
@@ -31,6 +33,7 @@ public class QuestPanel : MonoBehaviour
     {
         if (!m_quest) Debug.LogError("QuestDataがありません！");
         m_questImage.sprite = m_quest.QuestImage();
+        m_questTitleImage.color = m_quest.QuestColor();
         m_questBackGroundImage.sprite = m_quest.QuestBackGroundImage();
         m_loadSceneName = m_quest.LoadSceneName();
         m_questName.text = m_quest.QuestName();
