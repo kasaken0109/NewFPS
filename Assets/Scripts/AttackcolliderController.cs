@@ -26,7 +26,7 @@ public class AttackcolliderController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
+        //Debug.Log(other.name);
         if (other.CompareTag("Item"))
         {
             other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
