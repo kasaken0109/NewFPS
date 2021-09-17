@@ -39,11 +39,26 @@ public class AudioController : MonoBehaviour
         }
         if (player.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
         {
-            sourcew.PlayOneShot(sounds[Random.Range(0, sounds.Length)]);
+            sourcew.PlayOneShot(sounds[0]);
         }
         else if (player.GetCurrentAnimatorStateInfo(0).IsName("Run"))
         {
-            sourcew.PlayOneShot(sounds[Random.Range(0, sounds.Length)]);
+            sourcew.PlayOneShot(sounds[1]);
         }
+    }
+
+    public void PlayJumpSE()
+    {
+        sourcew.PlayOneShot(sounds[2]);
+    }
+
+    public void PlaySlashSE()
+    {
+        sourcew.PlayOneShot(sounds[3]);
+    }
+
+    public void PlaySpecialSlashSE()
+    {
+        sourcew.PlayOneShot(sounds[4]);
     }
 }
