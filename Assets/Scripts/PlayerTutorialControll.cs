@@ -182,7 +182,7 @@ public class PlayerTutorialControll : ColliderGenerater
         {
             m_anim.SetTrigger("JumpFlag");
             m_rb.useGravity = false;
-            m_rb.AddForce(Vector3.up * m_jumpPower * powerUpRate, ForceMode.Impulse);
+            m_rb.DOMoveY(5, 0.5f);
             m_rb.constraints = RigidbodyConstraints.FreezeRotation;
             m_rb.useGravity = true;
 
