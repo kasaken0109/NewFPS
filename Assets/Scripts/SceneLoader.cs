@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader Instance { get; private set; } 
-    [SerializeField] string m_LoadSceneName = "SceneNameToBeLoaded";
+    [SerializeField] string m_LoadSceneName = "ResultScene";
     [SerializeField] float m_fadeSpeed = 1f;
     [SerializeField] Image m_loadPanel = null;
     bool m_isLoading = false;
