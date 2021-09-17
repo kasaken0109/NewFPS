@@ -109,6 +109,7 @@ public class FireLine : MonoBehaviour
         }
         else if (Input.GetButtonUp("Fire1"))
         {
+            SoundManager.Instance.StopSE();
             StopCoroutine(nameof(Fireline));
             if (IsCreate && m_shieldDisplay.ShieldValue >= 1)
             {
@@ -126,6 +127,7 @@ public class FireLine : MonoBehaviour
                 DrawLaser(m_line.transform.position);   // 撃っていない時は、Line の終点と始点を同じ位置にすることで Line を消す
                 if (m_bulletNum >= 1)
                 {
+                    SoundManager.Instance.PlayShoot();
                     Instantiate(m_bullet,m_particleMuzzle.transform.position,m_particleMuzzle.transform.rotation);
                     m_bulletNum -= 1;
                     bool IsHit = Physics.Raycast(ray, out hit, m_shootRange, m_layerMask);
@@ -171,7 +173,7 @@ public class FireLine : MonoBehaviour
         float time = 0;
         IsCreate = false;
         yield return new WaitForSeconds(1f);
-
+        SoundManager.Instance.PlayCharge();
         while (m_shieldDisplay.ShieldValue < 1)
         {
             time += 0.01f;

@@ -61,5 +61,6 @@ public class FrostBulletController : MonoBehaviour
         float yInstance = m_freeze.transform.lossyScale.y / 2;
         m.transform.position = new Vector3(hitPos.x ,0 , hitPos.z);
         m.transform.rotation = hitTransform.rotation;
+        SoundManager.Instance.PlayFrostWall();
     }
 }

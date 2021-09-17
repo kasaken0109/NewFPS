@@ -34,7 +34,7 @@ public class fire : MonoBehaviour
     {
         m_shootAnim = GetComponent<Animator>();
         m_bulletNum = PlayerPrefs.GetInt("Bullet2");
-        GameObject.Find("CannonImage").GetComponent<Image>().fillAmount = 1;
+        GameManager.Instance.m_shootweaponImage.GetComponent<Image>().fillAmount = 1;
         m_reload = PlayerManager.Instance.m_reloadImage;
         if (m_muzzle == null)
         {
@@ -56,6 +56,7 @@ public class fire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.timeScale == 0) return;
         if(!IsReload)m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
 
         if (Input.GetButtonDown("Fire1"))
@@ -82,6 +83,7 @@ public class fire : MonoBehaviour
         }
         else if(Input.GetButtonUp("Fire1"))
         {
+            SoundManager.Instance.StopSE();
             if (IsSpecial)
             {
                 StopCoroutine(nameof(BigWall));
@@ -132,6 +134,7 @@ public class fire : MonoBehaviour
 
     IEnumerator BigWall()
     {
+        SoundManager.Instance.PlayCharge();
         yield return new WaitForSeconds(2.5f);
         IsSpecial = true;
         var player = GameManager.Instance.m_player.gameObject;
