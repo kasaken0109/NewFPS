@@ -117,6 +117,7 @@ public class MoveState : StateBase
     public void SpawnEffect()
     {
         StartCoroutine("SpawnWait");
+        SoundManager.Instance.PlayRoar();
         GameManager.Instance.ShakeCamera();
     }
 
