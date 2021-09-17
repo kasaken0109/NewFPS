@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     [SerializeField] GameObject[] m_weaponImage;
     [SerializeField] Text m_hptext = null;
     [SerializeField] Animator m_animator = null;
-    [SerializeField] Slider hpslider = null;
+    [SerializeField] Image hpslider = null;
     [SerializeField] Material m_change = null;
     [SerializeField] Material m_origin = null;
     [SerializeField] PostEffect postEffect = null;
@@ -79,7 +79,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     void Update()
     {
         //m_hptext.text = "HP:" + m_hp.ToString();
-        hpslider.value = (float)m_hp / m_maxhp;
+        hpslider.fillAmount = (float)m_hp / m_maxhp;
         if (postEffect.enabled)
         {
             stanceTypes = StanceTypes.GOD;
@@ -230,17 +230,24 @@ public class PlayerManager : MonoBehaviour,IDamage
                     else if(TryGetComponent(out PlayerTutorialControll pl)) GetComponent<PlayerTutorialControll>().BasicHitAttack();
                 }
                 m_hp -= damage;
+                SoundManager.Instance.PlayPlayerHit();
             }
 
             DOTween.To(
-                () => hpslider.value, // getter
-                x => hpslider.value = x, // setter
+                () => hpslider.fillAmount, // getter
+                x => hpslider.fillAmount = x, // setter
                 (float)(float)m_hp / m_maxhp, // ターゲットとなる値
                 1f  // 時間（秒）
                 ).SetEase(Ease.OutCubic);
         }
         else
         {
+            DOTween.To(
+                () => hpslider.fillAmount, // getter
+                x => hpslider.fillAmount = x, // setter
+                0, // ターゲットとなる値
+                1f  // 時間（秒）
+                ).SetEase(Ease.OutCubic);
             var m =Instantiate(m_dead);
             GameManager.Instance.GameStatus = GameManager.GameState.PLAYERLOSE;
             m.transform.position = transform.position;
@@ -277,6 +284,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     float timer = 0;
     IEnumerator GodTime()
     {
+        SoundManager.Instance.PlayFrost();
         timer = 0;
         StopCoroutine(nameof(Invisible));
         ActiveDodge = false;
