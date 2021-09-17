@@ -21,6 +21,7 @@ public class TitleManager : MonoBehaviour
         if (IsDone())
         {
             SetShowUI();
+            m_playable.Stop();
             m_skip?.SetActive(false);
             Debug.Log("Done");
         }
