@@ -21,7 +21,7 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     int maxHp;
     int mp;
     int hitRate = 0;
-    public Slider hpSlider;
+    public Image hpSlider;
  
     public void AddDamage(int damage)
     {
@@ -36,8 +36,8 @@ public class EnemyBossManager : MonoBehaviour, IDamage
         {
             m_hp -= damage;
             DOTween.To(
-                () => hpSlider.value, // getter
-                x => hpSlider.value = x, // setter
+                () => hpSlider.fillAmount, // getter
+                x => hpSlider.fillAmount = x, // setter
                 (float)(float)m_hp / maxHp, // ターゲットとなる値
                 1f  // 時間（秒）
                 ).SetEase(Ease.OutCubic);
@@ -54,8 +54,8 @@ public class EnemyBossManager : MonoBehaviour, IDamage
         {
             m_hp = 0;
             DOTween.To(
-                () => hpSlider.value, // getter
-                x => hpSlider.value = x, // setter
+                () => hpSlider.fillAmount, // getter
+                x => hpSlider.fillAmount = x, // setter
                 (float)(float)0, // ターゲットとなる値
                 1f  // 時間（秒）
                 ).SetEase(Ease.OutCubic);
