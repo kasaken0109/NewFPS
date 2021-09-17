@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public PlayerManager m_player;
     [SerializeField] GameObject m_bossEnemy = null;
     [SerializeField] Transform m_bossSpawn = null;
+    public GameObject m_shootweaponImage;
     [SerializeField] GameObject m_win = null;
     [SerializeField] GameObject m_gate = null;
     [SerializeField] GameObject m_lose = null;
