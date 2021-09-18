@@ -19,7 +19,11 @@ public class GateController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) SceneLoader.Instance.SceneLoad();
+        if (other.CompareTag("Player"))
+        {
+            SceneLoader.Instance.SceneLoad();
+            SoundManager.Instance.PlayMove();
+        }
     }
 
     IEnumerator ZoomMe()
