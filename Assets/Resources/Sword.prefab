@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_attackPower: 50
+  m_hit: {fileID: 8300000, guid: 853e8688771f90446b6fb1f033b8c7c8, type: 3}
   m_opponentTagName: Enemy
 --- !u!114 &3637872329420686539
 MonoBehaviour:
@@ -234,6 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_attackPower: 15
+  m_hit: {fileID: 8300000, guid: 9659dd6bca397104a9a771d208ae1863, type: 3}
   m_opponentTagName: Enemy
 --- !u!1 &8510561298910996675
 GameObject:
