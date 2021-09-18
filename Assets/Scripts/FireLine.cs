@@ -90,6 +90,7 @@ public class FireLine : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0) return;
         if(!IsReload)m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
 
         Ray ray = Camera.main.ScreenPointToRay(m_crosshairUi.position);
