@@ -135,7 +135,7 @@ public class fire : MonoBehaviour
     IEnumerator BigWall()
     {
         SoundManager.Instance.PlayCharge();
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.5f);
         IsSpecial = true;
         var player = GameManager.Instance.m_player.gameObject;
         var playerCol = player.GetComponent<Collider>();
