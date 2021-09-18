@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Spawn"))
         {
-            Instantiate(m_bossEnemy,m_bossSpawn.position,m_bossSpawn.rotation);
+            //Instantiate(m_bossEnemy,m_bossSpawn.position,m_bossSpawn.rotation);
         }
     }
 
