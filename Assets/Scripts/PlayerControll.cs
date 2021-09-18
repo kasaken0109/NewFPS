@@ -96,11 +96,13 @@ public class PlayerControll : ColliderGenerater
         }
         else
         {
-            dir = Camera.main.transform.TransformDirection(dir);    // メインカメラを基準に入力方向のベクトルを変換する
+            //dir = Camera.main.transform.TransformDirection(dir);    // メインカメラを基準に入力方向のベクトルを変換する
+            //dir = transform.TransformDirection(dir);    // メインカメラを基準に入力方向のベクトルを変換する
             dir.y = 0;  // y 軸方向はゼロにして水平方向のベクトルにする
             Running(); // 入力した方向に移動する
             velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
             m_rb.velocity = velo;   // 計算した速度ベクトルをセットする
+            gameObject.transform.LookAt(velo);
         }
 
         if (IsGrounded())
@@ -292,8 +294,8 @@ public class PlayerControll : ColliderGenerater
     {
         weaponManager.NowWeapon.GetComponent<Sword>().FloatUp();
     }
-    public void LargeHitAttack()
+    public void PlayDodgeSE()
     {
-
+        SoundManager.Instance.PlayDodge();
     }
 }
