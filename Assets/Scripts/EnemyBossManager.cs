@@ -22,6 +22,8 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     int mp;
     int hitRate = 0;
     public Image hpSlider;
+    int rateTemp;
+    public bool IsCritical = false;
  
     public void AddDamage(int damage)
     {
@@ -78,10 +80,39 @@ public class EnemyBossManager : MonoBehaviour, IDamage
         StartCoroutine(nameof(FrostMode));
     }
 
+    int count = 0;
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(actionCtrl.GetCurrentStateName());
+        if (m_hp < maxHp * 0.5f && count == 0)
+        {
+            StartCoroutine(nameof(DeathCombo));
+        }
+        else if (m_hp < maxHp * 0.2f && count == 1)
+        {
+            StopCoroutine(nameof(DeathCombo));
+            StartCoroutine(nameof(DeathCombo));
+        }
+    }
+
+    IEnumerator DeathCombo()
+    {
+        IsCritical = true;
+        count++;
+        Debug.Log("!Warnimg!");
+        rateTemp = hitRate;
+        hitRate = -500;
+        yield return new WaitForSeconds(5f);
+        float distance = Vector3.Distance(GameManager.Player.transform.position, gameObject.transform.position);
+        
+        int type = distance >= 7 ? 5 : 4;
+        Debug.Log($"type:{type}");
+        m_animator.SetTrigger("DeathAttack");
+        m_animator.SetInteger("AttackType", type);
+        yield return new WaitForSeconds(5f);
+        IsCritical = false;
+        Debug.Log("Warnimg");
+        hitRate = rateTemp;
     }
 
     IEnumerator FrostMode()
