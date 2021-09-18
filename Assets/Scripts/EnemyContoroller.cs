@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.AI;
 
 public class EnemyContoroller : MonoBehaviour
 {
@@ -11,10 +12,12 @@ public class EnemyContoroller : MonoBehaviour
     [SerializeField] GameObject m_finalBreath;
     [SerializeField] Transform m_spwanBreath;
     [SerializeField] float m_hitTime = 1f;
+    NavMeshAgent agent;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     public void BasicAttack()
@@ -25,24 +28,37 @@ public class EnemyContoroller : MonoBehaviour
         //m_rb.velocity = this.transform.forward * 100;
     }
 
+    public void CriticalAttack()
+    {
+        //this.transform.DOMove(this.transform.position + this.transform.forward * 2, 0.2f);
+        transform.LookAt(GameManager.Player.transform);
+        this.transform.DOMove(gameObject.transform.position + gameObject.transform.forward * 3, 1f);
+        //m_rb.velocity = this.transform.forward * 100;
+    }
+
     public void JumpAttack()
     {
-        this.transform.DOMove(GameManager.Player.transform.position, 2f);
+        //this.transform.DOMove(GameManager.Player.transform.position, 2f);
+        agent.SetDestination(GameManager.Player.transform.position);
+        agent.speed = 20;
+        agent.acceleration = 100;
     }
 
     public void SetPosition()
     {
-        gameObject.transform.position = GameManager.Player.transform.position;
+        agent.SetDestination(transform.position);
     }
 
     public void BreathAttack()
     {
         Instantiate(m_breath,m_spwanBreath.position, m_spwanBreath.rotation);
+        SoundManager.Instance.PlayFireB();
     }
 
     public void FinalBreathAttack()
     {
         Instantiate(m_finalBreath, m_spwanBreath.position, m_spwanBreath.rotation);
+        SoundManager.Instance.PlayFireB();
     }
 
     public void JumpAttackEffect()
