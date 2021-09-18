@@ -51,6 +51,7 @@ public class AttackState : StateBase
     {
         int value = attackValue[Random.Range(0, attackValue.Length)];
         m_animator.SetInteger("AttackCombo", value);
+        Debug.Log(value);
     }
 
     IEnumerator AttackRoutine()
@@ -60,37 +61,33 @@ public class AttackState : StateBase
         {
             if (!EnemyBossManager.Instance.m_froznBody.activeSelf)
             {
-                float distance = Vector3.Distance(GameManager.Player.transform.position, transform.position);
                 m_enemy.transform.LookAt(GameManager.Player.transform);
-                if (distance <= triggerDistance[0])
+                if (!EnemyBossManager.Instance.IsCritical)
                 {
-                    m_animator.SetInteger("AttackType", 0);
-                    SetActionVariable();
-                    //yield return new WaitForSeconds(2f);
-                    //_actionCtrl.SetCurrent(_attackState);
-
-                }
-                else
-                {
-                    if (triggerDistance[1] <= distance)
+                    float distance = Vector3.Distance(GameManager.Player.transform.position, transform.position);
+                    m_enemy.transform.LookAt(GameManager.Player.transform);
+                    if (distance <= triggerDistance[0])
                     {
-                        //if(m_maxBreathCount <= breathCount)
-                        //{
-                        //    Debug.Log("MoVe");
-                        //    breathCount = 0;
-                        //    _actionCtrl.SetCurrent(m_moveState);
-                        //}
-                        m_animator.SetInteger("AttackType", 2);
+                        m_animator.SetInteger("AttackType", 0);
                         SetActionVariable();
-                        breathCount++;
                     }
                     else
                     {
-                        m_animator.SetInteger("AttackType", 1);
-                        SetActionVariable();
+                        if (triggerDistance[1] <= distance)
+                        {
+                            m_animator.SetInteger("AttackType", 2);
+                            SetActionVariable();
+                            breathCount++;
+                        }
+                        else
+                        {
+                            m_animator.SetInteger("AttackType", 1);
+                            SetActionVariable();
+                        }
+                        //yield return new WaitForSeconds(2f);
                     }
-                    //yield return new WaitForSeconds(2f);
                 }
+                yield return new WaitForSeconds(2f);
             }
             yield return null;
         }
