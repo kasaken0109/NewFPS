@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FireDrake
   m_EditorClassIdentifier: 
   m_color: {r: 1, g: 0.23511353, b: 0, a: 1}
-  m_loadSceneName: Fire&Blizzard
+  m_loadSceneName: Fire&BlizzardNormal1
   m_questName: FireDrake Lv.2
   m_questText: "<color=\"red\">\u76EE\u6A19: \u30DC\u30B9\u306E\u8A0E\u4F10</color>
     \u4FEE\u7DF4\u3092\u7D42\u3048\u305F\u6A5F\u58EB\u306B \u5FCD\u3073\u5BC4\u308B\u9B54\u306E\u624B\u2026"
