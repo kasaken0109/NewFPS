@@ -208,6 +208,7 @@ public class PlayerManager : MonoBehaviour,IDamage
                 m_hp -= damage;
                 if (m_hp >= m_maxhp) m_hp = m_maxhp;
                 Instantiate(m_healEffect, transform.position, Quaternion.identity);
+                SoundManager.Instance.PlayHeal();
             }
             else
             {
@@ -263,6 +264,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     bool ActiveDodge = false;
     IEnumerator Invisible()
     {
+        SoundManager.Instance.PlayDodge();
         IsInvisible = true;
         ActiveDodge = true;
         GetComponentInChildren<Renderer>().material = m_change;
@@ -293,7 +295,7 @@ public class PlayerManager : MonoBehaviour,IDamage
         GetComponentInChildren<Renderer>().material = m_change;
         while (timer < m_changeTime)
         {
-            Debug.Log($"timer :{timer},IsInvisible: {IsInvisible}");
+            //Debug.Log($"timer :{timer},IsInvisible: {IsInvisible}");
             timer += 0.02f;
             m_frost.FrostAmount -= 0.02f / m_changeTime;
             yield return new WaitForSeconds(0.02f);
