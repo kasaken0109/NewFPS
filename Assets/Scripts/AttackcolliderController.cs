@@ -5,6 +5,7 @@ using UnityEngine;
 public class AttackcolliderController : MonoBehaviour
 {
     [SerializeField] int m_attackPower = 15;
+    [SerializeField] AudioClip m_hit;
     [SerializeField] string m_opponentTagName = "Player";
     bool CanHit;
     // Start is called before the first frame update
@@ -26,7 +27,7 @@ public class AttackcolliderController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(other.name);
+        Debug.Log(other.name);
         if (other.CompareTag("Item"))
         {
             other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
@@ -35,6 +36,7 @@ public class AttackcolliderController : MonoBehaviour
         if (other.tag == m_opponentTagName && CanHit)
         {
             other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
+            if(m_hit)SoundManager.Instance.PlayHit(m_hit,other.gameObject.transform.position);
             CanHit = false;
         }
     }
