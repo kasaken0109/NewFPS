@@ -30,10 +30,10 @@ public class SceneLoader : MonoBehaviour
 
     IEnumerator Load()
     {
-        Debug.Log("adsd");
+        //Debug.Log("adsd");
         if (m_isLoading)
         {
-            Debug.Log("Called");
+            //Debug.Log("Called");
             while(m_loadPanel.fillAmount < 0.99f)
             {
                 m_loadPanel.fillAmount += 0.02f;
