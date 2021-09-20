@@ -348,8 +348,8 @@ public class PlayerTutorialControll : ColliderGenerater
     {
         weaponManager.NowWeapon.GetComponent<Sword>().FloatUp();
     }
-    public void LargeHitAttack()
+    public void PlayDodgeSE()
     {
-
+        SoundManager.Instance.PlayDodge();
     }
 }
