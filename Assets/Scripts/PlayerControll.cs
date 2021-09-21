@@ -36,20 +36,20 @@ public class PlayerControll : ColliderGenerater
     [SerializeField] GameObject m_speedup = null;
     /// <summary>ラッシュエフェクト</summary>
     [SerializeField] GameObject m_rush = null;
+    /// <summary>攻撃の当たり判定</summary>
+    [SerializeField] GameObject m_root = null;
     [SerializeField] Animator m_anim = null;
-    /// <summary>しゃがみ時の減速割合</summary>
-    [SerializeField] float m_crouchSlow = 1;
     /// <summary>スキルクールダウンタイム</summary>
     [SerializeField] float m_skillWaitTime = 1;
     /// <summary>当たるレイヤー</summary>
     [SerializeField] LayerMask m_layerMask = 0;
     bool IsButtonHold = false;
-    Rigidbody m_rb;
-    Vector3 dir;
-    Vector3 velo;
-    CapsuleCollider collider;
+    private Rigidbody m_rb;
+    private Vector3 dir;
+    private Vector3 velo;
     Ray ray;
     RaycastHit hit;
+    private Vector3 latestPos;
     WeaponManager weaponManager;
     bool m_isMoveActive = true;
     float powerUpRate = 3;
@@ -64,7 +64,6 @@ public class PlayerControll : ColliderGenerater
         m_rb = GetComponent<Rigidbody>();
         m_anim = GetComponent<Animator>();
         weaponManager = GetComponent<WeaponManager>();
-        collider = GetComponent<CapsuleCollider>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -85,6 +84,7 @@ public class PlayerControll : ColliderGenerater
 
         // 入力方向のベクトルを組み立てる
         dir = Vector3.forward * v + Vector3.right * h;
+        Debug.Log(Mathf.Acos(dir.z) * 180 / Mathf.PI);
         ray = Camera.main.ScreenPointToRay(m_crosshairUi.position);
 
         if (dir == Vector3.zero)
@@ -96,13 +96,22 @@ public class PlayerControll : ColliderGenerater
         }
         else
         {
-            //dir = Camera.main.transform.TransformDirection(dir);    // メインカメラを基準に入力方向のベクトルを変換する
+            dir = Camera.main.transform.TransformDirection(dir);    // メインカメラを基準に入力方向のベクトルを変換する
             //dir = transform.TransformDirection(dir);    // メインカメラを基準に入力方向のベクトルを変換する
             dir.y = 0;  // y 軸方向はゼロにして水平方向のベクトルにする
             Running(); // 入力した方向に移動する
             velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
             m_rb.velocity = velo;   // 計算した速度ベクトルをセットする
-            gameObject.transform.LookAt(velo);
+            
+            Vector3 diff = transform.position - latestPos;   //前回からどこに進んだかをベクトルで取得
+            diff.y = 0;
+            latestPos = transform.position;  //前回のPositionの更新
+
+            //ベクトルの大きさが0.01以上の時に向きを変える処理をする
+            if (diff.magnitude > 0.01f)
+            {
+                transform.rotation = Quaternion.LookRotation(diff); //向きを変更する
+            }
         }
 
         if (IsGrounded())
@@ -186,16 +195,12 @@ public class PlayerControll : ColliderGenerater
         {
             if (timer >= 2)
             {
-                Debug.Log("HoldAttack");
-                //StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_rushAttackCollider, m_skillWaitTime / 5));
                 m_anim.SetTrigger("FlipTrigger");
-                m_rb.DOMove(transform.position + Camera.main.transform.forward* 10, 1);
-                //m_rb.AddForce(this.gameObject.transform.forward * m_dushPower,ForceMode.Impulse);
+                m_rb.DOMove(transform.position + transform.forward * m_dushPower, 1);
                 bool Ishit = Physics.Raycast(ray, out hit, 15f, m_layerMask);
-                //Debug.Log(Ishit);
+
                 if (Ishit)
                 {
-                    Debug.Log("Hit");
                     m_hit = hit.collider.gameObject;
                     m_hit.GetComponentInParent<IDamage>().AddDamage(20);
                 }
@@ -236,18 +241,15 @@ public class PlayerControll : ColliderGenerater
     {
         if (Input.GetButton("Splint"))
         {
-            velo = dir.normalized * m_runningSpeed * m_crouchSlow * powerUpRate;
+            velo = dir.normalized * m_runningSpeed * powerUpRate;
             m_anim.SetFloat("Speed", m_runningSpeed * powerUpRate);
-            m_speedup.SetActive(true);
-            Camera.main.fieldOfView = 100;
-
+            m_speedup.SetActive(Input.GetButton("Splint"));
         }
         else
         {
-            velo = dir.normalized * m_movingSpeed * m_crouchSlow * powerUpRate;
+            velo = dir.normalized * m_movingSpeed * powerUpRate;
             m_anim.SetFloat("Speed", m_movingSpeed * powerUpRate);
             m_speedup.SetActive(false);
-            Camera.main.fieldOfView = 80;
         }
     }
 
@@ -268,22 +270,22 @@ public class PlayerControll : ColliderGenerater
 
     public void BasicWeaponAttack()
     {
-        weaponManager.NowWeapon.GetComponent<IWeapon>().BasicAttack();
+        weaponManager.NowWeapon.GetComponent<IWeapon>()?.BasicAttack();
     }
 
     public void SpecialWeaponAttack()
     {
-        weaponManager.NowWeapon.GetComponent<IWeapon>().SpecialAttack();
+        weaponManager.NowWeapon.GetComponent<IWeapon>()?.SpecialAttack();
     }
 
     public void StartEmit()
     {
-        weaponManager.NowWeapon.GetComponent<Sword>().StartEmitting();
+        weaponManager.NowWeapon.GetComponent<Sword>()?.StartEmitting();
     }
 
     public void StopEmit()
     {
-        weaponManager.NowWeapon.GetComponent<Sword>().StopEmitting();
+        weaponManager.NowWeapon.GetComponent<Sword>()?.StopEmitting();
     }
     public void StopFloat()
     {
@@ -292,7 +294,7 @@ public class PlayerControll : ColliderGenerater
 
     public void StartFloat()
     {
-        weaponManager.NowWeapon.GetComponent<Sword>().FloatUp();
+        weaponManager.NowWeapon.GetComponent<Sword>()?.FloatUp();
     }
     public void PlayDodgeSE()
     {
