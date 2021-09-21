@@ -54,7 +54,7 @@ public class Sword : MonoBehaviour,IWeapon
         int dmg = (int)Mathf.Abs(transform.position.y - GameObject.FindGameObjectWithTag("Floor").transform.position.y) * 4;
         int correctDmg = dmg >= 50 ? 50 : dmg;
         controller.AddDamageCount(correctDmg);
-        Debug.Log(correctDmg);
+        //Debug.Log(correctDmg);
     }
     public void FloatUp()
     {
