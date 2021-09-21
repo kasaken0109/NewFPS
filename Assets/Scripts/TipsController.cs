@@ -37,14 +37,7 @@ public class TipsController : MonoBehaviour
         if (index >= m_tipsPanel.Length) return;
         for (int i = 0; i < m_tipsPanel.Length; i++)
         {
-            if (i == index)
-            {
-                m_tipsPanel[i].SetActive(true);
-            }
-            else
-            {
-                m_tipsPanel[i].SetActive(false);
-            }
+            m_tipsPanel[i].SetActive(i == index);
         }
         controller.DisplayVideo(clip[index]);
     }
