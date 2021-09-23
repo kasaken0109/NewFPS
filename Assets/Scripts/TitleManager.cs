@@ -38,7 +38,7 @@ public class TitleManager : MonoBehaviour
 
     public bool IsDone()
     {
-        return m_playable.time >= m_playable.duration;
+        return m_playable.time >= m_playable.duration - 3;
     }
 
     public void ActiveButton()
