@@ -70,10 +70,7 @@ public class FireLine : MonoBehaviour
         m_muzzle = GameObject.FindWithTag("Muzzle");
         m_particleMuzzle = GameObject.Find("BulletSpawn");
         m_shieldDisplay = GameObject.Find("ShieldImage").GetComponent<ShieldDisplayController>();
-
         m_line = m_muzzle.GetComponent<LineRenderer>();
-        //particleSystem = m_fireLine.GetComponent<ParticleSystem>();
-        //particleSystem.Stop();
     }
 
     private void Awake()
@@ -105,6 +102,7 @@ public class FireLine : MonoBehaviour
             {
                 //音の処理
                 m_reload?.SetActive(true);
+                Reload();
             }
             if (m_shieldDisplay.ShieldValue < 1 && m_bulletNum == 4) StartCoroutine(nameof(Fireline));
         }
@@ -125,7 +123,6 @@ public class FireLine : MonoBehaviour
             }
             else
             {
-                DrawLaser(m_line.transform.position);   // 撃っていない時は、Line の終点と始点を同じ位置にすることで Line を消す
                 if (m_bulletNum >= 1)
                 {
                     SoundManager.Instance.PlayShoot();
