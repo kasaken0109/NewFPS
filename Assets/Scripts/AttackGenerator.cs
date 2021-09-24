@@ -6,11 +6,18 @@ public class AttackGenerator : MonoBehaviour
 {
     [SerializeField] Collider m_head;
     [SerializeField] Collider m_crow;
+    [SerializeField] Collider m_horn;
     // Start is called before the first frame update
     public void GenerateHeadAttackCollider(float activeTime)
     {
         m_head.gameObject.SetActive(true);
         StartCoroutine(WaitCount(m_head.gameObject, activeTime));
+    }
+
+    public void GenerateHornAttackCollider(float activeTime)
+    {
+        m_horn.gameObject.SetActive(true);
+        StartCoroutine(WaitCount(m_horn.gameObject, activeTime));
     }
     public void GenerateCrowAttackCollider(GameObject collider, float activeTime)
     {
