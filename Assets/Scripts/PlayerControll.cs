@@ -97,7 +97,6 @@ public class PlayerControll : ColliderGenerater
         else
         {
             dir = Camera.main.transform.TransformDirection(dir);    // メインカメラを基準に入力方向のベクトルを変換する
-            //dir = transform.TransformDirection(dir);    // メインカメラを基準に入力方向のベクトルを変換する
             dir.y = 0;  // y 軸方向はゼロにして水平方向のベクトルにする
             Running(); // 入力した方向に移動する
             velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
@@ -195,16 +194,7 @@ public class PlayerControll : ColliderGenerater
         {
             if (timer >= 2)
             {
-                m_anim.SetTrigger("FlipTrigger");
-                m_rb.DOMove(transform.position + transform.forward * m_dushPower, 1);
-                bool Ishit = Physics.Raycast(ray, out hit, 15f, m_layerMask);
-
-                if (Ishit)
-                {
-                    m_hit = hit.collider.gameObject;
-                    m_hit.GetComponentInParent<IDamage>().AddDamage(20);
-                }
-                m_rush.SetActive(true);
+                DushAttack();
             }
             else if(timer != 0 && IsFirstAttack)
             {
@@ -218,6 +208,20 @@ public class PlayerControll : ColliderGenerater
             timer = 0;
             yield break;
         }
+    }
+
+    public void DushAttack()
+    {
+        m_anim.SetTrigger("FlipTrigger");
+        m_rb.DOMove(transform.position + transform.forward * m_dushPower, 1);
+        bool Ishit = Physics.Raycast(ray, out hit, 15f, m_layerMask);
+
+        if (Ishit)
+        {
+            m_hit = hit.collider.gameObject;
+            m_hit.GetComponentInParent<IDamage>().AddDamage(20);
+        }
+        m_rush.SetActive(true);
     }
 
     /// <summary>
