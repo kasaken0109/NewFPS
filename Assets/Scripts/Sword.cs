@@ -14,6 +14,7 @@ public class Sword : MonoBehaviour,IWeapon
     {
         rb = GameManager.Instance.m_player.GetComponent<Rigidbody>();
         PlayerManager.Instance.m_reloadImage.SetActive(false);
+        StartCoroutine(nameof(Changeattack));
     }
 
     // Update is called once per frame
@@ -22,6 +23,16 @@ public class Sword : MonoBehaviour,IWeapon
         
     }
 
+    IEnumerator Changeattack()
+    {
+        float timer = 0;
+        while (timer < 0.5f)
+        {
+            if (Input.GetButtonDown("Fire1")) GameManager.Instance.m_player.GetComponent<PlayerControll>().DushAttack();
+            timer += 0.01f;
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
     public void NormalAttack()
     {
         StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_activeCollider[0], 1f));
