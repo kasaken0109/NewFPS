@@ -95,10 +95,10 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SetPlayerCameraInput()
     {
-        CameraController.Instance.SetMoveActive(false);
+        //CameraController.Instance.SetMoveActive(false);
         PlayerControll.Instance.SetMoveActive(false);
         yield return new WaitForSeconds(1.5f);
-        CameraController.Instance.SetMoveActive(true);
+        //CameraController.Instance.SetMoveActive(true);
         PlayerControll.Instance.SetMoveActive(true);
     }
 }
