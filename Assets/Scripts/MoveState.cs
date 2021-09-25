@@ -79,9 +79,9 @@ public class MoveState : StateBase
                     animator.Play("Roar");
                     EnemyBossManager.Instance.hpSlider.gameObject.SetActive(true);
                     yield return new WaitForSeconds(1f);
-                    GameManager.Instance.m_player.gameObject.GetComponent<CameraController>().ResetCamera();
+                    //GameManager.Instance.m_player.gameObject.GetComponent<CameraController>().ResetCamera();
                     yield return new WaitForSeconds(1f);
-                    GameManager.Instance.m_player.gameObject.GetComponent<CameraController>().ResetCamera();
+                    //GameManager.Instance.m_player.gameObject.GetComponent<CameraController>().ResetCamera();
                     _actionCtrl.SetCurrent(_attackState);
 
                 }
