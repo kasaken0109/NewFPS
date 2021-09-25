@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AttackGenerator : MonoBehaviour
 {
+    [Header("頭のコライダー")]
     [SerializeField] Collider m_head;
     [SerializeField] Collider m_crow;
     [SerializeField] Collider m_horn;
