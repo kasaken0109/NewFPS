@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
 public class SoundManager : MonoBehaviour
@@ -19,6 +20,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip m_blizzard;
     [SerializeField] AudioClip m_god;
     [SerializeField] AudioClip m_charge;
+    [SerializeField] Slider m_seSlider = null;
+    [SerializeField] Slider m_bgmSlider = null;
     [SerializeField, Range(0, 1f)] float m_seVolume = 0.5f;
     [SerializeField, Range(0, 1f)] float m_bgmVolume = 0.5f;
     [SerializeField] AudioSource m_bgm;
@@ -126,19 +129,22 @@ public class SoundManager : MonoBehaviour
         }
         source.volume = volume;
     }
+    /// <summary>
+    /// SEの音量を調整する
+    /// </summary>
+    /// <param name="volume">音量</param>
+    public void SetSEVolume()
+    {
+        source.volume = m_seSlider.value;
+    }
 
     /// <summary>
     /// BGMの音量を調整する
     /// </summary>
     /// <param name="volume">音量</param>
-    public void SetBGMVolume(float volume)
+    public void SetBGMVolume()
     {
-        if (volume > 1f)
-        {
-            Debug.LogError("BGM音量が適切ではありません");
-            volume = 1f;
-        }
-        m_bgm.volume = volume;
+        m_bgm.volume = m_bgmSlider.value;
     }
 
     private void OnDestroy()
