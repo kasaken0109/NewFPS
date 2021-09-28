@@ -40,7 +40,7 @@ public class FrostWallController : MonoBehaviour,IDamage
 
     private void OnDestroy()
     {
-        
+        Instantiate(m_effect, this.transform.position, this.transform.rotation);
     }
 
     IEnumerator SetNonActive()
@@ -55,7 +55,7 @@ public class FrostWallController : MonoBehaviour,IDamage
         if(m_hp <= damage)
         {
             m_frostwall.SetActive(false);
-            Instantiate(m_effect, this.transform.position, this.transform.rotation);
+            
             StartCoroutine(SetNonActive());
             Destroy(this.gameObject, 1);
         }
