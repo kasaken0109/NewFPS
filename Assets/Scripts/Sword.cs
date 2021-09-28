@@ -28,24 +28,24 @@ public class Sword : MonoBehaviour,IWeapon
         float timer = 0;
         while (timer < 0.5f)
         {
-            if (Input.GetButtonDown("Fire1")) GameManager.Instance.m_player.GetComponent<PlayerControll>().DushAttack();
+            if (Input.GetButtonDown("Fire1")) GameManager.Instance.m_player.GetComponent<PlayerControll>().DushAttack(10);
             timer += 0.01f;
             yield return new WaitForSeconds(0.01f);
         }
     }
     public void NormalAttack()
     {
-        StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_activeCollider[0], 1f));
+        StartCoroutine(ColliderGenerater.Instance.GenerateCollider(m_activeCollider[0], 0.5f));
     }
 
     public void BasicAttack()
     {
-        ColliderGenerater.Instance.StartActiveCollider(m_activeCollider[0], 1f);
+        ColliderGenerater.Instance.StartActiveCollider(m_activeCollider[0], 0.5f);
     }
 
     public void SpecialAttack()
     {
-        ColliderGenerater.Instance.StartActiveCollider(m_activeCollider[1], 2f);
+        ColliderGenerater.Instance.StartActiveCollider(m_activeCollider[1], 1f);
         //rb.useGravity = true;
         rb.DOMoveY(0,0.5f);
     }
@@ -62,8 +62,8 @@ public class Sword : MonoBehaviour,IWeapon
         
         //rb.useGravity = false;
         //rb.velocity = Vector3.zero;
-        int dmg = (int)Mathf.Abs(transform.position.y - GameObject.FindGameObjectWithTag("Floor").transform.position.y) * 4;
-        int correctDmg = dmg >= 50 ? 50 : dmg;
+        int dmg = (int)Mathf.Abs(transform.position.y - GameObject.FindGameObjectWithTag("Floor").transform.position.y) * 8;
+        int correctDmg = dmg >= 100 ? 100 : dmg;
         controller.AddDamageCount(correctDmg);
         //Debug.Log(correctDmg);
     }
