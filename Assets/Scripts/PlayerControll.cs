@@ -30,6 +30,10 @@ public class PlayerControll : ColliderGenerater
     [SerializeField] GameObject m_attackCollider = null;
     /// <summary>ラッシュ攻撃の当たり判定</summary>
     [SerializeField] GameObject m_rushAttackCollider = null;
+    /// <summary>コンボ攻撃判定</summary>
+    [SerializeField] GameObject m_comboEffect = null;
+    /// <summary>コンボ攻撃成功判定</summary>
+    [SerializeField] GameObject m_successEffect = null;
     /// <summary>プレイヤーオブジェクト</summary>
     [SerializeField] GameObject m_player = null;
     /// <summary>スピードアップエフェクト</summary>
@@ -110,6 +114,8 @@ public class PlayerControll : ColliderGenerater
             if (diff.magnitude > 0.01f)
             {
                 transform.rotation = Quaternion.LookRotation(diff); //向きを変更する
+                Quaternion targetRotation = Quaternion.LookRotation(dir);
+                this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * m_turnSpeed);  // Slerp を使うのがポイント
             }
         }
 
@@ -194,7 +200,7 @@ public class PlayerControll : ColliderGenerater
         {
             if (timer >= 2)
             {
-                DushAttack();
+                DushAttack(m_dushPower);
             }
             else if(timer != 0 && IsFirstAttack)
             {
@@ -210,10 +216,10 @@ public class PlayerControll : ColliderGenerater
         }
     }
 
-    public void DushAttack()
+    public void DushAttack(float dushpower)
     {
         m_anim.SetTrigger("FlipTrigger");
-        m_rb.DOMove(transform.position + transform.forward * m_dushPower, 1);
+        m_rb.DOMove(transform.position + transform.forward * dushpower, 1);
         bool Ishit = Physics.Raycast(ray, out hit, 15f, m_layerMask);
 
         if (Ishit)
@@ -281,6 +287,34 @@ public class PlayerControll : ColliderGenerater
     {
         weaponManager.NowWeapon.GetComponent<IWeapon>()?.SpecialAttack();
     }
+
+    public void Combo()
+    {
+        StopCoroutine(nameof(WaitInput));
+        StartCoroutine(nameof(WaitInput));
+    }
+
+    IEnumerator WaitInput()
+    {
+
+        float timer = 0;
+        m_comboEffect?.SetActive(true);
+        while(timer < 0.3f)
+        {
+            yield return new WaitForSeconds(0.01f);
+            timer += 0.01f;
+            if (Input.GetButtonDown("Fire1"))
+            {
+                m_anim.SetTrigger("Combo");
+                m_successEffect?.SetActive(true);
+                m_comboEffect?.SetActive(false);
+            }
+        }
+        m_comboEffect?.SetActive(false);
+        yield return new WaitForSeconds(2f);
+        m_successEffect?.SetActive(false);
+    }
+
 
     public void StartEmit()
     {
