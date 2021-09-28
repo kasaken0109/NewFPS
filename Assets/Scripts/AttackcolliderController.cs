@@ -5,6 +5,7 @@ using UnityEngine;
 public class AttackcolliderController : MonoBehaviour
 {
     [SerializeField] int m_attackPower = 15;
+    [SerializeField] GameObject m_hitEffect = null;
     [SerializeField] AudioClip m_hit;
     [SerializeField] string m_opponentTagName = "Player";
     bool CanHit;
@@ -36,7 +37,8 @@ public class AttackcolliderController : MonoBehaviour
         if (other.tag == m_opponentTagName && CanHit)
         {
             other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
-            if(m_hit)SoundManager.Instance.PlayHit(m_hit,other.gameObject.transform.position);
+            if(m_hit)SoundManager.Instance.PlayHit(m_hit,gameObject.transform.position);
+            if (m_hitEffect) Instantiate(m_hitEffect, other.ClosestPoint(transform.position), GameManager.Player.transform.rotation);
             CanHit = false;
         }
     }
