@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class fire : MonoBehaviour
 {
@@ -70,7 +71,8 @@ public class fire : MonoBehaviour
                 }
                 if (m_bulletNum >= 4)
                 {
-                    StartCoroutine(nameof(BigWall));
+                    //StartCoroutine(nameof(BigWall));
+                    StartCoroutine(nameof(SpawnChange));
                 }
             }
             else if(!IsReload)
@@ -86,13 +88,15 @@ public class fire : MonoBehaviour
             SoundManager.Instance.StopSE();
             if (IsSpecial)
             {
-                StopCoroutine(nameof(BigWall));
+                //StopCoroutine(nameof(BigWall));
+                StopCoroutine(nameof(SpawnChange));
                 IsSpecial = false;
             }
             else
             {
                 StartCoroutine(nameof(Fire));
-                StopCoroutine(nameof(BigWall));
+                //StopCoroutine(nameof(BigWall));
+                StopCoroutine(nameof(SpawnChange));
             }
         }
         if (Input.GetButtonDown("Reload") && !IsReload)
@@ -145,6 +149,30 @@ public class fire : MonoBehaviour
         m.transform.rotation = player.transform.rotation;
 
 
+    }
+
+    IEnumerator SpawnChange()
+    {
+        SoundManager.Instance.PlayCharge();
+        yield return new WaitForSeconds(1.5f);
+        IsSpecial = true;
+        
+        m_bulletNum = 0;
+        GameObject[]targets = GameObject.FindGameObjectsWithTag("CanSpawn");
+        GameObject target = targets[0];
+        float minDistance = float.MaxValue;
+        foreach (var item in targets)
+        {
+            float distance = Vector3.Distance(item.transform.position,GameManager.Player.transform.position);
+            if(distance < minDistance)
+            {
+                target = item;
+                minDistance = distance;
+            }
+        }
+        yield return new WaitForSeconds(1f);
+        GameManager.Player.transform.position = target.transform.position;
+        Destroy(target);
     }
 
     void BulletInstance()
