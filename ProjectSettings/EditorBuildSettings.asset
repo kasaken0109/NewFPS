@@ -6,23 +6,44 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/Crazy Shoots!/Crazy Shoots! Title.unity
-    guid: b7868055fc3930945af4e0da2bdc300c
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/Crazy Shoots!/Crazy Shoots!.unity
-    guid: 4ab6d56b16e710c4f85265f3799be9d7
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/Crazy Shoots!/Crazy Shoots! level1.unity
-    guid: fc71fccb44f916d4c9af549b25b9ba8d
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/New Scene.unity
-    guid: 73f92ac8d95be2749a4428eca82b5156
-  - enabled: 1
-    path: Assets/Scenes/Fire&Blizzard/TestScene.unity
-    guid: 1102303e18f67774bae57a876be0cd84
-  - enabled: 1
-    path: Assets/Scenes/TestScene/Fire&Blizzard.unity
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: Assets/Scenes/Fire&Blizzard/Fire&Blizzard.unity
     guid: e64c209e7be5d5a4aa5410ddc67aecd3
+  - enabled: 1
+    path: Assets/Scenes/Fire&Blizzard/Fire&BlizzardTitle.unity
+    guid: bd6f16410a225e9418bab85684fa76c3
+  - enabled: 1
+    path: Assets/Scenes/Fire&Blizzard/MainScene.unity
+    guid: f057fcd2f2f4f034b885d8b934dd1c6a
+  - enabled: 1
+    path: Assets/Scenes/Fire&Blizzard/SelectScene.unity
+    guid: b453f60ee8574a84f84e9412a85cba71
+  - enabled: 1
+    path: Assets/Scenes/Fire&Blizzard/Fire&BlizzardExtraEasy.unity
+    guid: d27e73808183e064f9491867bbd02d2e
+  - enabled: 1
+    path: Assets/Scenes/Fire&Blizzard/Fire&BlizzardExtraNormal.unity
+    guid: b5b09a9ba29da4a44b2cc980b86fdaf8
+  - enabled: 1
+    path: Assets/Scenes/Fire&Blizzard/Fire&BlizzardExtra.unity
+    guid: 79d443ef982f6ef4ea614137f4f91579
+  - enabled: 1
+    path: Assets/Scenes/Fire&Blizzard/ResultScene.unity
+    guid: 0dc9266206579a3479e732fe5aba7005
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 75c29e91126f3654fa2feeaa4ab2b08d,
       type: 2}
