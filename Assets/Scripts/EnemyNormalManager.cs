@@ -43,7 +43,7 @@ public class EnemyNormalManager : MonoBehaviour
         }
         
     }
-
+    bool IsFirst = true;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -51,7 +51,11 @@ public class EnemyNormalManager : MonoBehaviour
             Debug.Log("Enter");
             m_attack = other.gameObject;
             //m_camera?.SetActive(true);
-            StartCoroutine(nameof(ZoomEnemy));
+            if (IsFirst)
+            {
+                StartCoroutine(nameof(ZoomEnemy));
+                IsFirst = false;
+            }
         }
     }
 
@@ -64,7 +68,7 @@ public class EnemyNormalManager : MonoBehaviour
         m_animator.Play("shout");
         yield return new WaitForSeconds(4f);
         m_camera?.SetActive(false);
-        m_attack.GetComponent<CameraController>().ResetCamera();
+        //m_attack.GetComponent<CameraController>().ResetCamera();
         controller.SetNoDamege(false);
         IsFind = true;
         navMeshAgent.SetDestination(m_attack.transform.position);
