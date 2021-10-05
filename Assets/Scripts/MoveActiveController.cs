@@ -10,7 +10,7 @@ public class MoveActiveController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PlayerTutorialControll>().Tutorial(activeNum);
+            other.gameObject.GetComponent<PlayerTutorialControll>()?.Tutorial(activeNum);
         }
     }
 }
