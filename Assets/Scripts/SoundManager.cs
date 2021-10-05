@@ -35,12 +35,17 @@ public class SoundManager : MonoBehaviour
         source = GetComponent<AudioSource>();
         m_seVolume = PlayerPrefs.GetFloat("SEVolume");
         m_seVolume = PlayerPrefs.GetFloat("BGMVolume");
+        SetSEVolume(m_seVolume);
+        SetBGMVolume(m_bgmVolume);
     }
 
     // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        m_seVolume = PlayerPrefs.GetFloat("SEVolume");
+        m_seVolume = PlayerPrefs.GetFloat("BGMVolume");
+        SetSEVolume(m_seVolume);
+        SetBGMVolume(m_bgmVolume);
     }
 
     public void PlayClick()
@@ -128,6 +133,9 @@ public class SoundManager : MonoBehaviour
             volume = 1f;
         }
         source.volume = volume;
+        PlayerPrefs.SetFloat("SEVolume", volume);
+        PlayerPrefs.Save();
+        m_seSlider.value = volume;
     }
     /// <summary>
     /// SEの音量を調整する
@@ -142,10 +150,25 @@ public class SoundManager : MonoBehaviour
     /// BGMの音量を調整する
     /// </summary>
     /// <param name="volume">音量</param>
+    public void SetBGMVolume(float volume)
+    {
+        m_bgm.volume = volume;
+        PlayerPrefs.SetFloat("SEVolume", volume);
+        PlayerPrefs.Save();
+        m_bgmSlider.value = volume;
+    }
+    /// <summary>
+    /// BGMの音量を調整する
+    /// </summary>
+    /// <param name="volume">音量</param>
     public void SetBGMVolume()
     {
         m_bgm.volume = m_bgmSlider.value;
+        PlayerPrefs.SetFloat("BGMVolume", m_bgmSlider.value);
+        PlayerPrefs.Save();
     }
+
+    
 
     private void OnDestroy()
     {

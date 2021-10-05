@@ -36,6 +36,10 @@ public class PlayerTutorialControll : ColliderGenerater
     [SerializeField] GameObject m_speedup = null;
     /// <summary>ラッシュエフェクト</summary>
     [SerializeField] GameObject m_rush = null;
+    /// <summary>コンボ攻撃判定</summary>
+    [SerializeField] GameObject m_comboEffect = null;
+    /// <summary>コンボ攻撃成功判定</summary>
+    [SerializeField] GameObject m_successEffect = null;
     [SerializeField] Animator m_anim = null;
     /// <summary>しゃがみ時の減速割合</summary>
     [SerializeField] float m_crouchSlow = 1;
@@ -49,6 +53,7 @@ public class PlayerTutorialControll : ColliderGenerater
     Rigidbody m_rb;
     Vector3 dir;
     Vector3 velo;
+    private Vector3 latestPos;
     Ray ray;
     RaycastHit hit;
     WeaponManager weaponManager;
@@ -126,6 +131,17 @@ public class PlayerTutorialControll : ColliderGenerater
             Move(); // 入力した方向に移動する
             velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
             m_rb.velocity = velo;   // 計算した速度ベクトルをセットする
+        }
+        Vector3 diff = transform.position - latestPos;   //前回からどこに進んだかをベクトルで取得
+        diff.y = 0;
+        latestPos = transform.position;  //前回のPositionの更新
+
+        //ベクトルの大きさが0.01以上の時に向きを変える処理をする
+        if (diff.magnitude > 0.01f)
+        {
+            transform.rotation = Quaternion.LookRotation(diff); //向きを変更する
+            Quaternion targetRotation = Quaternion.LookRotation(dir);
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * m_turnSpeed);  // Slerp を使うのがポイント
         }
 
         powerUpRate = PlayerManager.Instance.stanceTypes == PlayerManager.StanceTypes.GOD ?2f : 1f;
@@ -216,6 +232,32 @@ public class PlayerTutorialControll : ColliderGenerater
             StopCoroutine(HoldAttack());
             //m_anim.SetBool("PunchBool", false);
         }
+    }
+    public void Combo()
+    {
+        StopCoroutine(nameof(WaitInput));
+        StartCoroutine(nameof(WaitInput));
+    }
+
+    IEnumerator WaitInput()
+    {
+
+        float timer = 0;
+        m_comboEffect?.SetActive(true);
+        while (timer < 0.3f)
+        {
+            yield return new WaitForSeconds(0.01f);
+            timer += 0.01f;
+            if (Input.GetButtonDown("Fire1"))
+            {
+                m_anim.SetTrigger("Combo");
+                m_successEffect?.SetActive(true);
+                m_comboEffect?.SetActive(false);
+            }
+        }
+        m_comboEffect?.SetActive(false);
+        yield return new WaitForSeconds(2f);
+        m_successEffect?.SetActive(false);
     }
 
     float timer = 0;
