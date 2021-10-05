@@ -88,7 +88,6 @@ public class PlayerControll : ColliderGenerater
 
         // 入力方向のベクトルを組み立てる
         dir = Vector3.forward * v + Vector3.right * h;
-        Debug.Log(Mathf.Acos(dir.z) * 180 / Mathf.PI);
         ray = Camera.main.ScreenPointToRay(m_crosshairUi.position);
 
         if (dir == Vector3.zero)

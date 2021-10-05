@@ -29,7 +29,7 @@ public class TimerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_text.text = "のこり時間：" + Mathf.CeilToInt(timeLimit);
+        m_text.text = "制限時間：" + Mathf.CeilToInt(timeLimit);
         if (GameManager.Instance.GameStatus == GameManager.GameState.PLAYERWIN)
         {
             PlayerPrefs.SetInt("TimeScore", maxTimeLimit - Mathf.CeilToInt(timeLimit));
