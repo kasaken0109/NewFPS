@@ -139,8 +139,6 @@ public class PlayerControll : ColliderGenerater
             if (Input.GetButtonDown("Crouch"))
             {
                 m_anim.SetTrigger("CrouchFlag");
-                //m_crouchSlow = 0.5f;
-                //collider.height = 0.7f;
             }
             if (v == 0 && h == 0)
             {

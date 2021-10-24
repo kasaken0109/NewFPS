@@ -287,6 +287,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     IEnumerator GodTime()
     {
         SoundManager.Instance.PlayFrost();
+        AchivementManager.Instance.DodgeCount++;
         timer = 0;
         StopCoroutine(nameof(Invisible));
         ActiveDodge = false;

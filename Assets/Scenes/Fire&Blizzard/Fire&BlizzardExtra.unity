@@ -29191,7 +29191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9044ef733a99ffa4aa7a986bb5e9a7f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FrostAmount: -0.004001323
+  FrostAmount: 0
   EdgeSharpness: 1
   minFrost: 0
   maxFrost: 0.32
@@ -36956,7 +36956,7 @@ PrefabInstance:
     - target: {fileID: 1052534692840431183, guid: 45d9233d8b8ccd34ba7a48882b0e98c1,
         type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4632643173958479788, guid: 45d9233d8b8ccd34ba7a48882b0e98c1,
         type: 3}
@@ -37033,6 +37033,11 @@ PrefabInstance:
       propertyPath: m_frost
       value: 
       objectReference: {fileID: 1494055572}
+    - target: {fileID: 4632643176020569413, guid: 45d9233d8b8ccd34ba7a48882b0e98c1,
+        type: 3}
+      propertyPath: m_hp
+      value: 400
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4632643174136099538, guid: 45d9233d8b8ccd34ba7a48882b0e98c1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 45d9233d8b8ccd34ba7a48882b0e98c1, type: 3}
