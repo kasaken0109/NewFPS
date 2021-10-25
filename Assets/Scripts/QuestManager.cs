@@ -13,7 +13,7 @@ public class QuestManager : MonoBehaviour
         m_questIndex = new int[m_quests.Length];
         for (int i = 0; i < m_questPanels.Length; i++)
         {
-            m_questPanels[i].SetQuest = m_quests[i];
+            m_questPanels[i].SetQuest(m_quests[i]);
             m_questIndex[i] = i;
         }
     }
@@ -31,7 +31,7 @@ public class QuestManager : MonoBehaviour
         {
             int index = m_questIndex[i];
             index = index == 0 ? m_quests.Length - 1 : index - 1;
-            m_questPanels[i].SetQuest = m_quests[index];
+            m_questPanels[i].SetQuest(m_quests[index]);
             m_questIndex[i] = index;
         }
     }
@@ -41,7 +41,7 @@ public class QuestManager : MonoBehaviour
         {
             int index = m_questIndex[i];
             index = index == m_quests.Length - 1 ? 0 : index + 1;
-            m_questPanels[i].SetQuest = m_quests[index];
+            m_questPanels[i].SetQuest(m_quests[index]); ;
             m_questIndex[i] = index;
         }
     }
