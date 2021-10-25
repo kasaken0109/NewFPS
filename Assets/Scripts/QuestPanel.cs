@@ -13,20 +13,19 @@ public class QuestPanel : MonoBehaviour
     string m_loadSceneName = null;
 
     private Quest m_quest = null;
-    public Quest SetQuest
+    public void SetQuest(Quest quest)
     {
-        set { m_quest = value; }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (!m_quest) Debug.LogError("QuestDataがありません！");
+        m_quest = quest;
         m_questImage.sprite = m_quest.QuestImage();
         m_questTitleImage.color = m_quest.QuestColor();
         m_questBackGroundImage.sprite = m_quest.QuestBackGroundImage();
         m_loadSceneName = m_quest.LoadSceneName();
         m_questName.text = m_quest.QuestName();
         m_questText.text = m_quest.QuestText();
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
     }
 
     private void Update()
