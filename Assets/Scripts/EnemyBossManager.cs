@@ -15,7 +15,6 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     [SerializeField] Animator m_animator = null;
     [SerializeField] GameObject m_deathBody = null;
     public GameObject m_froznBody = null;
-    [SerializeField] GameObject m_HpUI = null;
     [SerializeField] MoveState _moveState = null;
     ActionCtrl actionCtrl = null;
     int maxHp;
@@ -24,7 +23,9 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     public Image hpSlider;
     int rateTemp;
     public bool IsCritical = false;
- 
+
+
+    float hitSpeed = 1f;
     public void AddDamage(int damage)
     {
         if (actionCtrl.GetCurrentStateName() == "IdleState")
@@ -34,6 +35,9 @@ public class EnemyBossManager : MonoBehaviour, IDamage
             actionCtrl.SetCurrentName("MoveState");
         }
         mp -= (30 - damage);
+        hitSpeed = (float)(Mathf.Abs(10 - damage) / 20f);
+        StopCoroutine(HitStop());
+        StartCoroutine(HitStop());
         if (m_hp > damage)
         {
             m_hp -= damage;
@@ -68,6 +72,20 @@ public class EnemyBossManager : MonoBehaviour, IDamage
         }
     }
 
+    IEnumerator HitStop()
+    {
+        var source = GetComponent<Cinemachine.CinemachineImpulseSource>();
+        source.GenerateImpulse();
+        Time.timeScale = 0f;
+        yield return new WaitForSeconds(0.3f / hitSpeed);
+        float timer = 0;
+        while (Time.timeScale < 0.99f)
+        {
+            Time.timeScale += 0.2f;
+            yield return null;
+        } 
+    }
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -99,14 +117,12 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     {
         IsCritical = true;
         count++;
-        Debug.Log("!Warnimg!");
         rateTemp = hitRate;
         hitRate = -500;
         yield return new WaitForSeconds(5f);
         float distance = Vector3.Distance(GameManager.Player.transform.position, gameObject.transform.position);
         
         int type = distance >= 7 ? 5 : 4;
-        Debug.Log($"type:{type}");
         m_animator.SetTrigger("DeathAttack");
         m_animator.SetInteger("AttackType", type);
         yield return new WaitForSeconds(5f);
