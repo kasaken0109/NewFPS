@@ -35,7 +35,7 @@ public class EnemyBossManager : MonoBehaviour, IDamage
             actionCtrl.SetCurrentName("MoveState");
         }
         mp -= (30 - damage);
-        hitSpeed = (float)(Mathf.Abs(10 - damage) / 20f);
+        hitSpeed = (float)(damage / 10f);
         StopCoroutine(HitStop());
         StartCoroutine(HitStop());
         if (m_hp > damage)
@@ -76,14 +76,10 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     {
         var source = GetComponent<Cinemachine.CinemachineImpulseSource>();
         source.GenerateImpulse();
-        Time.timeScale = 0f;
-        yield return new WaitForSeconds(0.3f / hitSpeed);
-        float timer = 0;
-        while (Time.timeScale < 0.99f)
-        {
-            Time.timeScale += 0.2f;
-            yield return null;
-        } 
+        Time.timeScale = 0.5f;
+        Debug.Log(0.1f * hitSpeed);
+        yield return new WaitForSeconds(0.1f * hitSpeed);
+        Time.timeScale = 1;
     }
 
     // Start is called before the first frame update
