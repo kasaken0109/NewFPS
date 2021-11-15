@@ -5,12 +5,12 @@ using UnityEngine;
 public class AttackState : StateBase
 {
     StateBase _idleState;
-    [SerializeField] Animator m_animator = null;
-    [SerializeField] string m_stateDistance;
-    [SerializeField] int m_maxBreathCount;
-    [SerializeField] StateBase m_moveState;
-    [SerializeField] int[] attackValue;
-    [SerializeField] GameObject m_enemy = null;
+    [SerializeField] private Animator m_animator = null;
+    [SerializeField] private string m_stateDistance;
+    [SerializeField] private int m_maxBreathCount;
+    [SerializeField] private StateBase m_moveState;
+    [SerializeField] private int[] attackValue;
+    [SerializeField] private GameObject m_enemy = null;
     int breathCount;
     string[] triggersDistances;
     List<int> triggerDistance;
@@ -35,8 +35,9 @@ public class AttackState : StateBase
         if (_opponentTag == "Player")
         {
             var e = GetComponentInParent<EnemyBossManager>();
-            e.transform.LookAt(GameManager.Player.transform.position);
+            //e.transform.LookAt(GameManager.Player.transform.position);
         }
+        Debug.Log("EnterAttack");
         return 0;
     }
 
@@ -44,6 +45,7 @@ public class AttackState : StateBase
     {
         m_animator.SetBool("Attack", false);
         StopCoroutine(nameof(AttackRoutine));
+        Debug.Log("ExitAttack");
         return 0;
     }
 
@@ -51,7 +53,6 @@ public class AttackState : StateBase
     {
         int value = attackValue[Random.Range(0, attackValue.Length)];
         m_animator.SetInteger("AttackCombo", value);
-        Debug.Log(value);
     }
 
     IEnumerator AttackRoutine()
@@ -59,13 +60,22 @@ public class AttackState : StateBase
         yield return new WaitForFixedUpdate();
         while (true)
         {
+            float time = 0f;
+            Vector3 target = m_enemy.transform.position;
             if (!EnemyBossManager.Instance.m_froznBody.activeSelf)
             {
-                m_enemy.transform.LookAt(GameManager.Player.transform);
+                while (time < 5f)
+                {
+                    target += (GameManager.Player.transform.position - m_enemy.transform.position) * Time.deltaTime / 5f;
+                    m_enemy.transform.LookAt(target);
+                    Debug.Log(time);
+                    time += Time.deltaTime;
+                    yield return new WaitForSeconds(Time.deltaTime);
+                }
                 if (!EnemyBossManager.Instance.IsCritical)
                 {
                     float distance = Vector3.Distance(GameManager.Player.transform.position, transform.position);
-                    m_enemy.transform.LookAt(GameManager.Player.transform);
+                    //m_enemy.transform.LookAt(GameManager.Player.transform);
                     if (distance <= triggerDistance[0])
                     {
                         m_animator.SetInteger("AttackType", 0);
@@ -84,10 +94,8 @@ public class AttackState : StateBase
                             m_animator.SetInteger("AttackType", 1);
                             SetActionVariable();
                         }
-                        //yield return new WaitForSeconds(2f);
                     }
                 }
-                yield return new WaitForSeconds(2f);
             }
             yield return null;
         }

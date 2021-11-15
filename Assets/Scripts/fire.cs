@@ -41,7 +41,18 @@ public class fire : MonoBehaviour
         {
             m_muzzle = GameObject.FindGameObjectWithTag("Muzzle").transform;
         }
+        StartCoroutine(Changeattack());
         //m_reload.SetActive(false);
+    }
+    IEnumerator Changeattack()
+    {
+        float timer = 0;
+        while (timer < 0.5f)
+        {
+            if (Input.GetButtonDown("Fire1")) GameManager.Instance.m_player.GetComponent<PlayerControll>().DushAttack(-10);
+            timer += 0.01f;
+            yield return new WaitForSeconds(0.01f);
+        }
     }
 
     private void Awake()
@@ -110,7 +121,6 @@ public class fire : MonoBehaviour
     void OnDestroy()
     {
         PlayerPrefs.SetInt("Bullet2", m_bulletNum);
-        Debug.Log(m_bulletNum);
         PlayerPrefs.Save();
         StopCoroutine(nameof(WaitSeconds));
         m_text.text = m_bulletNum + "/" + m_bulletMaxNum;

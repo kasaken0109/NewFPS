@@ -60,6 +60,17 @@ public class FireLine : MonoBehaviour
         m_reload?.SetActive(false);
         audio = GetComponent<AudioSource>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
+        StartCoroutine(Changeattack());
+    }
+    IEnumerator Changeattack()
+    {
+        float timer = 0;
+        while (timer < 0.5f)
+        {
+            if (Input.GetButtonDown("Fire1")) GameManager.Instance.m_player.GetComponent<PlayerControll>().DushAttack(-10);
+            timer += 0.01f;
+            yield return new WaitForSeconds(0.01f);
+        }
     }
 
     private void OnEnable()
