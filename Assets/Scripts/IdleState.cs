@@ -10,8 +10,7 @@ public class IdleState : StateBase
 
     protected override void Setup()
     {
-        Debug.Log("EnterIdle");
-
+        //Debug.Log("EnterIdle");
     }
 
     
@@ -21,7 +20,6 @@ public class IdleState : StateBase
         if (collision.gameObject == null) return;
         if (collision.gameObject.CompareTag(_opponentTag))
         {
-            Debug.Log(collision.gameObject.tag);
             _actionCtrl.SetCurrent(_attackState);
             _actionCtrl.SetCurrentName("AttackState");
         }
@@ -33,7 +31,6 @@ public class IdleState : StateBase
         if (other.gameObject == null) return;
         if (other.gameObject.CompareTag(_opponentTag))
         {
-            Debug.Log("Ok");
             _actionCtrl.SetCurrent(_moveState);
             _actionCtrl.SetCurrentName("MoveState");
         }
