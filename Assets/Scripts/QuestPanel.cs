@@ -5,11 +5,17 @@ using UnityEngine.UI;
 
 public class QuestPanel : MonoBehaviour
 {  
-    [SerializeField] Image m_questImage = null;
-    [SerializeField] Image m_questTitleImage = null;
-    [SerializeField] Image m_questBackGroundImage = null;
-    [SerializeField] Text m_questName = null;
-    [SerializeField] Text m_questText = null;
+    [SerializeField]
+    private Image m_questImage = null;
+    [SerializeField]
+    private Image m_questTitleImage = null;
+    [SerializeField]
+    private Image m_questBackGroundImage = null;
+    [SerializeField]
+    private Text m_questName = null;
+    [SerializeField]
+    private Text m_questText = null;
+
     string m_loadSceneName = null;
 
     private Quest m_quest = null;
@@ -23,11 +29,6 @@ public class QuestPanel : MonoBehaviour
         m_questName.text = m_quest.QuestName();
         m_questText.text = m_quest.QuestText();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
     private void Update()
     {
         if (!m_quest) Debug.LogError("QuestDataがありません！");

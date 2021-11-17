@@ -20,8 +20,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip m_blizzard;
     [SerializeField] AudioClip m_god;
     [SerializeField] AudioClip m_charge;
-    [SerializeField] Slider m_seSlider = null;
-    [SerializeField] Slider m_bgmSlider = null;
+    [SerializeField] Slider m_seSlider = default;
+    [SerializeField] Slider m_bgmSlider = default;
     [SerializeField, Range(0, 1f)] float m_seVolume = 0.5f;
     [SerializeField, Range(0, 1f)] float m_bgmVolume = 0.5f;
     [SerializeField] AudioSource m_bgm;
