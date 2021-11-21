@@ -87,8 +87,6 @@ public class MoveState : StateBase
                 }
                 else
                 {
-                    Debug.Log($"m_agent.isOnNavMesh:{m_agent.isOnNavMesh}");
-                    //Debug.Log(m_agent.velocity.magnitude);
                     if (distance > 8)
                     {
                         if (m_agent.pathStatus != NavMeshPathStatus.PathInvalid)
@@ -117,6 +115,8 @@ public class MoveState : StateBase
     public void SpawnEffect()
     {
         StartCoroutine("SpawnWait");
+        var source = GetComponentInParent<Cinemachine.CinemachineImpulseSource>();
+        source.GenerateImpulse(5);
         SoundManager.Instance.PlayRoar();
         GameManager.Instance.ShakeCamera();
     }
