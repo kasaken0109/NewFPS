@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -6440649755584760145}
   - component: {fileID: -6345301046286295369}
   - component: {fileID: 124950641094215812}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlayerRifle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_shootRange: 50
   m_layerMask:
     serializedVersion: 2
-    m_Bits: 7735
+    m_Bits: 6710
   m_shootSound: {fileID: 8300000, guid: 1d03157c54b28f143ac92c800e9909a0, type: 3}
   m_hitSound: {fileID: 8300000, guid: 202b951c1661d6e4589f332b48beaff3, type: 3}
   m_reloadSound: {fileID: 8300000, guid: 6628f457ad1e3ae4a90cc58878fe40d0, type: 3}

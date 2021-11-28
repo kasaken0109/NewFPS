@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5856992829205771141}
   - component: {fileID: 5856992829205771139}
   - component: {fileID: 5856992829205771140}
+  - component: {fileID: 1998119168}
+  - component: {fileID: 1998119169}
   m_Layer: 11
   m_Name: RoarEffect
   m_TagString: Untagged
@@ -4928,3 +4930,32 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!135 &1998119168
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5856992829205771142}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 7.2
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1998119169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5856992829205771142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f36769f11b3d7645bdd4bfa43052790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_attackPower: 20
+  m_hitEffect: {fileID: 0}
+  m_hit: {fileID: 0}
+  m_opponentTagName: Player
