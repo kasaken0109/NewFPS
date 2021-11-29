@@ -291,6 +291,7 @@ public class PlayerControll : ColliderGenerater
         StartCoroutine(nameof(WaitInput));
     }
 
+    bool IsSucceeded = false;
     IEnumerator WaitInput()
     {
 
@@ -303,10 +304,14 @@ public class PlayerControll : ColliderGenerater
             if (Input.GetButtonDown("Fire1"))
             {
                 m_anim.SetTrigger("Combo");
+                IsSucceeded = true;
                 m_successEffect?.SetActive(true);
                 m_comboEffect?.SetActive(false);
+                break;
             }
         }
+        m_anim.speed = IsSucceeded ? m_anim.speed*= 1.1f : 1;
+        IsSucceeded = false;
         m_comboEffect?.SetActive(false);
         yield return new WaitForSeconds(2f);
         m_successEffect?.SetActive(false);
