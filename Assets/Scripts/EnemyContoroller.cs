@@ -9,8 +9,10 @@ public class EnemyContoroller : MonoBehaviour
     Rigidbody m_rb;
     [SerializeField] GameObject attackCollider;
     [SerializeField] GameObject m_breath;
+    [SerializeField] GameObject m_effect;
     [SerializeField] GameObject m_finalBreath;
     [SerializeField] Transform m_spwanBreath;
+    [SerializeField] Transform m_spwanEffect;
     [SerializeField] float m_hitTime = 1f;
     NavMeshAgent agent;
 
@@ -26,6 +28,13 @@ public class EnemyContoroller : MonoBehaviour
         //this.transform.DOMove(this.transform.position + this.transform.forward * 2, 0.2f);
         this.transform.DOMove(gameObject.transform.position + gameObject.transform.forward * 2, 1f);
         //m_rb.velocity = this.transform.forward * 100;
+    }
+
+    public void BasicAttackEffect()
+    {
+        var m = Instantiate(m_effect);
+        m.transform.position = m_spwanEffect.position;
+        m.transform.rotation = Quaternion.Euler(0, 0, -90);
     }
 
     public void CriticalAttack()
