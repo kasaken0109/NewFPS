@@ -51,6 +51,42 @@ namespace BehaviorTree
         {
             m_owner = owner;
         }
+        
+        /// <summary>
+        /// NodeをPushする
+        /// </summary>
+        /// <param name="node">対象Node</param>
+        private void PushNode(Node node)
+        {
+            if (m_activeStack.Count == 0 || m_activeStack.Peek() != node.Index)
+            {
+                m_activeStack.Push(node.Index);
+                m_activeStack.Peek();
+            }
+        }
+
+        /// <summary>
+        /// NodeをPopする
+        /// </summary>
+        /// <param name="node">対象Node</param>
+        private void PopNode()
+        {
+            m_activeStack.Pop();
+            m_activeNodeIndex = m_activeStack.Peek();
+        }
+
+        private int CommonAncestorNode(int node1,int node2)
+        {
+            HashSet<int> parentNodes = new HashSet<int>();
+
+            Node parent1 = m_nodeList[node1].ParentNode;
+            return -1;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="node"></param>
         private void CallOnAwake(BehaviorTree.Node node)
         {
             //node.Index =
