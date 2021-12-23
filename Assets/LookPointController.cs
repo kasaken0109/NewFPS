@@ -20,6 +20,6 @@ public class LookPointController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + m_anim.GetFloat("Speed") > 12 ? m_zoomDistance : 0); //m_anim.GetBoneTransform(HumanBodyBones.Neck).position;
+        transform.localPosition = new Vector3(0, 0, m_anim.GetFloat("Speed") > 12 ? m_zoomDistance : 0); //m_anim.GetBoneTransform(HumanBodyBones.Neck).position;
     }
 }
