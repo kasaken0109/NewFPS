@@ -5,47 +5,66 @@ using UnityEngine.UI;
 
 public class FireLine : MonoBehaviour
 {
-    /// <summary>照準</summary>
-    RectTransform m_crosshairUi = null;
-    [SerializeField] GameObject m_muzzle = null;
-    [SerializeField] GameObject m_effect = null;
-    [SerializeField] GameObject m_bullet = null;
+    #region SerializeGameObject
+    [SerializeField]
+    GameObject m_muzzle = null;
+    [SerializeField]
+    GameObject m_effect = null;
+    [SerializeField]
+    GameObject m_bullet = null;
+    [SerializeField]
+    GameObject m_shield = null;
+    #endregion
     /// <summary>LineRenderer 兼 Line の出発点</summary>
-    [SerializeField] LineRenderer m_line = null;
+    [SerializeField]
+    LineRenderer m_line = null;
     /// <summary>リロード時間</summary>
-    [SerializeField] float m_seconds = 2f;
+    [SerializeField]
+    float m_seconds = 2f;
     /// <summary>射程距離</summary>
-    [SerializeField] float m_shootRange = 15f;
+    [SerializeField]
+    float m_shootRange = 15f;
     /// <summary>当たるレイヤー</summary>
-    [SerializeField] LayerMask m_layerMask = 0;
+    [SerializeField]
+    LayerMask m_layerMask = 0;
     /// <summary>発射した時の音</summary>
-    [SerializeField] AudioClip m_shootSound = null;
+    [SerializeField]
+    AudioClip m_shootSound = null;
     /// <summary>命中した時の音</summary>
-    [SerializeField] AudioClip m_hitSound = null;
-    [SerializeField] AudioClip m_reloadSound = null;
-    [SerializeField] AudioClip m_airshoot = null;
-    GameObject m_reload = null;
-    GameObject m_particleMuzzle = null;
+    [SerializeField] 
+    AudioClip m_hitSound = null;
+    [SerializeField]
+    AudioClip m_reloadSound = null;
+    [SerializeField]
+    AudioClip m_airshoot = null;
+    
     [SerializeField] Text m_text;
+    [SerializeField] float m_chargeTime = 3f;
     [SerializeField] int m_attackpower = 10;
     /// <summary>マガジン内の弾数</summary>
     public int m_bulletNum;
-    AudioSource audio;
+    
     public int m_bulletMaxNum = 4;
+    GameObject m_reload = null;
+    GameObject m_particleMuzzle = null;
     GameObject m_textBox = null;
     GameObject m_fireLine = null;
-    [SerializeField] GameObject m_shield = null;
-    ShieldDisplayController m_shieldDisplay = null;
+
+    /// <summary>照準</summary>
+    RectTransform m_crosshairUi = null;
     Transform m_shieldSpawn = null;
     bool IsSounded = false;
     bool IsHitSound = false;
     bool IsEndHit = false;
     bool CanShoot = true;
-    Vector3 hitPosition;
-    ParticleSystem particleSystem;
-    [SerializeField] float m_chargeTime = 3f;
     bool IsCreate = false;
     bool IsReload = false;
+    ShieldDisplayController m_shieldDisplay = null;
+    Vector3 hitPosition;
+    ParticleSystem particleSystem;
+    
+    
+    AudioSource audio;
 
     void Start()
     {
@@ -92,8 +111,6 @@ public class FireLine : MonoBehaviour
         m_textBox = PlayerManager.Instance.m_textBox1;
         m_text = m_textBox.GetComponent<Text>();
         m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
-        //particleSystem = m_fireLine.GetComponent<ParticleSystem>();
-        //particleSystem.Stop();
     }
 
     void Update()
@@ -137,23 +154,21 @@ public class FireLine : MonoBehaviour
                 if (m_bulletNum >= 1)
                 {
                     SoundManager.Instance.PlayShoot();
-                    Instantiate(m_bullet,m_particleMuzzle.transform.position,m_particleMuzzle.transform.rotation);
+                    Instantiate(m_bullet,m_particleMuzzle.transform.position,Camera.main.transform.rotation);
                     m_bulletNum -= 1;
                     bool IsHit = Physics.Raycast(ray, out hit, m_shootRange, m_layerMask);
 
                     if (IsHit)
                     {
+                        
                         hitPosition = hit.point;    // Ray が当たった場所
                         hitObject = hit.collider.gameObject;    // Ray が洗ったオブジェクト
+
                         if (hitObject)
                         {
                             if (hitObject.tag == "Enemy" || hitObject.tag == "Item")
                             {
-                                if (!IsSounded)
-                                {
-                                    //PlayShootSound();  // レーザーの発射点で射撃音を鳴らす
-                                    IsSounded = true;
-                                }
+                                IsSounded = !IsSounded ? true : false;
                                 hitObject.GetComponentInParent<IDamage>().AddDamage(m_attackpower);
                                 Instantiate(m_effect, hitPosition, Quaternion.identity);
                             }
@@ -171,8 +186,6 @@ public class FireLine : MonoBehaviour
 
         if (Input.GetButtonDown("Reload") && !IsReload)
         {
-            AudioSource.PlayClipAtPoint(m_reloadSound, this.transform.position);
-            Debug.Log("Reload");
             Reload();
         }
 
@@ -220,10 +233,7 @@ public class FireLine : MonoBehaviour
     /// <param name="position">音を鳴らす場所</param>
     void PlayHitSound(Vector3 position)
     {
-        if (m_hitSound)
-        {
-            AudioSource.PlayClipAtPoint(m_hitSound, position, 0.1f);
-        }
+        if (m_hitSound) AudioSource.PlayClipAtPoint(m_hitSound, position, 0.1f);
     }
 
     /// <summary>
@@ -234,13 +244,11 @@ public class FireLine : MonoBehaviour
     {
         Vector3[] positions = { m_line.transform.position, destination };   // レーザーの始点は常に Muzzle にする
         m_line.positionCount = positions.Length;   // Line を終点と始点のみに制限する
-        if (m_bulletNum >= 1)
-        {
-            m_line.SetPositions(positions);
-        }
+        if (m_bulletNum >= 1) m_line.SetPositions(positions);
     }
     void Reload()
     {
+        AudioSource.PlayClipAtPoint(m_reloadSound, this.transform.position);
         m_text.text ="リロード中";
         StopCoroutine(nameof(WaitSeconds));
         StartCoroutine(nameof(WaitSeconds));
@@ -257,9 +265,7 @@ public class FireLine : MonoBehaviour
             i.fillAmount += 0.01f;
             yield return new WaitForSeconds(m_seconds / 100);
         }
-        //yield return new WaitForSeconds(m_seconds);
         m_bulletNum = m_bulletMaxNum;
-        //m_reload.Play();
         IsReload = false;
     }
 }
