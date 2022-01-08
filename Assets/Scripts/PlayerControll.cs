@@ -154,11 +154,14 @@ public class PlayerControll : ColliderGenerater
         else
         {
             m_anim.SetFloat("Speed", 0);
+            float veloY = m_rb.velocity.y;
+            m_rb.velocity = new Vector3(m_rb.velocity.x * 0.7f, veloY, m_rb.velocity.z * 0.7f); 
             if (Input.GetButtonDown("Fire1") && weaponManager.NowWeapon.name.Contains("Sword"))
             {
                 m_anim.Play("JumpAttack");
             }
         }
+        m_speedup.SetActive(m_rb.velocity.sqrMagnitude >= 200);
 
 
         if (Input.GetButton("Fire1"))
@@ -250,13 +253,11 @@ public class PlayerControll : ColliderGenerater
         {
             velo = dir.normalized * m_runningSpeed * powerUpRate;
             m_anim.SetFloat("Speed", m_runningSpeed * powerUpRate);
-            m_speedup.SetActive(Input.GetButton("Splint"));
         }
         else
         {
             velo = dir.normalized * m_movingSpeed * powerUpRate;
             m_anim.SetFloat("Speed", m_movingSpeed * powerUpRate);
-            m_speedup.SetActive(false);
         }
     }
 
