@@ -73,6 +73,10 @@ public class FireLine : MonoBehaviour
         // FPS なのでマウスカーソルを消す。ESC で表示される。
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        m_reload = PlayerManager.Instance.m_reloadImage;
+        m_textBox = PlayerManager.Instance.m_textBox1;
+        m_text = m_textBox.GetComponent<Text>();
+        m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
         m_muzzle = GameObject.FindWithTag("Muzzle");
         m_line = m_muzzle.GetComponent<LineRenderer>();
         m_reload = PlayerManager.Instance.m_reloadImage;
@@ -94,7 +98,6 @@ public class FireLine : MonoBehaviour
 
     private void OnEnable()
     {
-        m_reload = PlayerManager.Instance.m_reloadImage;
         m_bulletNum = PlayerPrefs.GetInt("Bullet1");
         m_fireLine = GameObject.Find("FireLine");
         m_muzzle = GameObject.FindWithTag("Muzzle");
@@ -108,9 +111,6 @@ public class FireLine : MonoBehaviour
         m_bulletNum = PlayerPrefs.GetInt("Bullet1");
         m_fireLine = GameObject.Find("FireLine");
         StopCoroutine(nameof(WaitSeconds));
-        m_textBox = PlayerManager.Instance.m_textBox1;
-        m_text = m_textBox.GetComponent<Text>();
-        m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
     }
 
     void Update()
@@ -119,6 +119,7 @@ public class FireLine : MonoBehaviour
         if(!IsReload)m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
 
         Ray ray = Camera.main.ScreenPointToRay(m_crosshairUi.position);
+        transform.LookAt(new Vector3(Camera.main.transform.position.x,Camera.main.transform.position.y,int.MaxValue));
         Vector3 pos = Camera.main.ScreenToWorldPoint(m_crosshairUi.position);
         RaycastHit hit;
 
@@ -134,7 +135,7 @@ public class FireLine : MonoBehaviour
             }
             if (m_shieldDisplay.ShieldValue < 1 && m_bulletNum == 4) StartCoroutine(nameof(Fireline));
         }
-        else if (Input.GetButtonUp("Fire1"))
+        else if (Input.GetButtonUp("Fire2"))
         {
             SoundManager.Instance.StopSE();
             StopCoroutine(nameof(Fireline));
