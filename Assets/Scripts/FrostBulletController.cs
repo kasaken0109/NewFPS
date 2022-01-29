@@ -46,7 +46,6 @@ public class FrostBulletController : MonoBehaviour
             }
             IsCreateWall = false;
             Destroy(this.gameObject);
-            //getDamage.GetDamage(m_attackpower);
         }
     }
 
@@ -56,7 +55,6 @@ public class FrostBulletController : MonoBehaviour
         {
             return;
         }
-        
         var m  = Instantiate(IsCreateWall ? m_freeze : m_explosion);
         float yInstance = m_freeze.transform.lossyScale.y / 2;
         m.transform.position = new Vector3(hitPos.x ,0 , hitPos.z);

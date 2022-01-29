@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class EnemyNewController : MonoBehaviour
 {
-    [SerializeField] float e_power = 10;
-    [SerializeField] float e_hp = 100;
-    [SerializeField] GameObject deathBody;
-    [SerializeField] AudioClip e_hit;
+    [SerializeField]
+    private float m_power = 10;
+    [SerializeField]
+    private float m_hp = 100;
+    [SerializeField]
+    private GameObject deathBody;
+    [SerializeField]
+    private AudioClip m_hit;
+
     bool IsDoolExisted = false;
     // Start is called before the first frame update
    
@@ -15,21 +20,18 @@ public class EnemyNewController : MonoBehaviour
     {
         if (!IsDoolExisted)
         {
-            Instantiate<GameObject>(deathBody, transform.position, transform.rotation);
-            //this.gameObject.SetActive(false);
-            Destroy(this.gameObject);
+            Instantiate(deathBody, transform.position, transform.rotation);
+            Destroy(gameObject);
             IsDoolExisted = true;
         }
-        
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "Bullet" && !IsDoolExisted)
         {
-            Instantiate<GameObject>(deathBody, transform.position, transform.rotation);
-            //this.gameObject.SetActive(false);
-            Destroy(this.gameObject);
+            Instantiate(deathBody, transform.position, transform.rotation);
+            Destroy(gameObject);
             IsDoolExisted = true;
         }
     }
