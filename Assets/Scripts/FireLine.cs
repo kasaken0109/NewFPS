@@ -125,7 +125,7 @@ public class FireLine : MonoBehaviour
 
         GameObject hitObject = null;    // Ray が当たったオブジェクト
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire2"))
         {
             if (m_bulletNum <= 0 && !IsReload)
             {
