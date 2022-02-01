@@ -17,12 +17,6 @@ public class Sword : MonoBehaviour,IWeapon
         StartCoroutine(nameof(Changeattack));
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     IEnumerator Changeattack()
     {
         float timer = 0;
