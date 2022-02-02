@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using BehaviourAI;
 
-public class EnemyBossManager : MonoBehaviour, IDamage
+public class EnemyBossManager : MonoBehaviour, IDamage,BehaviourAI.IBehaviour
 {
     public static EnemyBossManager Instance { get; private set; }
     [SerializeField] int m_hp = 100;
@@ -14,6 +15,8 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     [SerializeField] float m_freezeTime = 5f;
     [SerializeField] Animator m_animator = null;
     [SerializeField] GameObject m_deathBody = null;
+    public GameObject m_hpUI = null;
+    [SerializeField] GameObject m_sandEffect = null;
     public GameObject m_froznBody = null;
     [SerializeField] MoveState _moveState = null;
     ActionCtrl actionCtrl = null;
@@ -28,12 +31,6 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     float hitSpeed = 1f;
     public void AddDamage(int damage)
     {
-        if (actionCtrl.GetCurrentStateName() == "IdleState")
-        {
-            hpSlider.gameObject.SetActive(true);
-            actionCtrl.SetCurrent(GetComponentInChildren<MoveState>());
-            actionCtrl.SetCurrentName("MoveState");
-        }
         mp -= (30 - damage);
         hitSpeed = (float)(damage / 10f);
         StopCoroutine(HitStop());
@@ -86,10 +83,7 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     void Awake()
     {
         Instance = this;
-        actionCtrl = new ActionCtrl();
         maxHp = m_hp;
-        actionCtrl.SetCurrent(GetComponentInChildren<IdleState>());
-        actionCtrl.SetCurrentName("IdleState");
         mp = m_mp;
         StartCoroutine(nameof(FrostMode));
     }
@@ -146,7 +140,8 @@ public class EnemyBossManager : MonoBehaviour, IDamage
 
     public void SpawnEffects()
     {
-        _moveState.SpawnEffect();
+        //_moveState.SpawnEffect();
+        m_sandEffect.SetActive(true);
     }
 
     public void StopPlayer()
@@ -154,5 +149,13 @@ public class EnemyBossManager : MonoBehaviour, IDamage
         GameManager.Instance.CinemaMode();
     }
 
+    public GameObject SetTarget()
+    {
+        throw new System.NotImplementedException();
+    }
 
+    public void Call(IAction Set)
+    {
+        throw new System.NotImplementedException();
+    }
 }
