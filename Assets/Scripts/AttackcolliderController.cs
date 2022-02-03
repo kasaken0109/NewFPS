@@ -44,6 +44,12 @@ public class AttackcolliderController : MonoBehaviour
         
         if (other.tag == m_opponentTagName && CanHit)
         {
+            var frostAttack = other.GetComponentInChildren<FrostAttackController>();
+            if (frostAttack)
+            {
+                other.gameObject.GetComponentInParent<IDamage>().AddDamage(frostAttack.Damage);
+                Destroy(frostAttack.gameObject);
+            }
             other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
             if(m_hit)SoundManager.Instance.PlayHit(m_hit,gameObject.transform.position);
             if(m_hitEffect) Instantiate(m_hitEffect, other.ClosestPoint(transform.position), GameManager.Player.transform.rotation);
