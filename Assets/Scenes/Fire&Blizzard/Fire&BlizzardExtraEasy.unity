@@ -615,7 +615,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 58759469}
-  m_LocalRotation: {x: 0.6179191, y: 0.00000004734929, z: -0.000000037212512, w: 0.7862417}
+  m_LocalRotation: {x: 0.6179191, y: -0.000000047349324, z: 0.000000037212537, w: 0.7862417}
   m_LocalPosition: {x: -0.29, y: 1.37, z: -7.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -30627,8 +30627,9 @@ MonoBehaviour:
   m_animator: {fileID: 736725683}
   m_deathBody: {fileID: 1981511366947812163, guid: 17a386854e6525649951327eadf4a72b,
     type: 3}
+  m_hpUI: {fileID: 0}
+  m_sandEffect: {fileID: 0}
   m_froznBody: {fileID: 366952178568541900}
-  m_HpUI: {fileID: 0}
   _moveState: {fileID: 736726386}
   hpSlider: {fileID: 5662252311758547931}
   IsCritical: 0
@@ -30647,9 +30648,11 @@ MonoBehaviour:
   attackCollider: {fileID: 736725392}
   m_breath: {fileID: 3135876029342006063, guid: 77870249a57fb6b48a8698422cf4594c,
     type: 3}
+  m_effect: {fileID: 0}
   m_finalBreath: {fileID: 3135876029342006063, guid: 11fdaa4701e75fd4e860392d03ac83e0,
     type: 3}
   m_spwanBreath: {fileID: 736725977}
+  m_spwanEffect: {fileID: 0}
   m_hitTime: 1
 --- !u!114 &736726398
 MonoBehaviour:
@@ -66460,6 +66463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponTempleteName: RigPistolRight
   m_weaponTemplete: {fileID: 5662252310612917387}
+  m_equipEffect: {fileID: 0}
   m_weaponSwordTemplete: {fileID: 6258450067429214824}
   m_weapon: {fileID: 0}
 --- !u!54 &5662252310816132147
@@ -66594,6 +66598,7 @@ MonoBehaviour:
   m_dushAttackPower: 15
   m_isGroundedLength: 0.3
   m_attackCollider: {fileID: 5662252311567554792}
+  m_legAttackCollider: {fileID: 0}
   m_rushAttackCollider: {fileID: 6258450066654122561}
   m_comboEffect: {fileID: 1868096824}
   m_successEffect: {fileID: 786987312}
@@ -78784,7 +78789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: f9dcbcebfed71514f9bf9a62c031a3e3, type: 2}
+  sharedProfile: {fileID: 0}
   isGlobal: 1
   blendDistance: 0
   weight: 1

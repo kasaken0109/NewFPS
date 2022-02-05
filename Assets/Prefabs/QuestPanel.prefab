@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u6226\u95D8\u306E\u57FA\u790E\u3092\u5B66\u307C\u3046\uFF01"
+  m_Text: "\u6E96\u5099\u4E2D\u3067\u3059\uFF01"
 --- !u!114 &8802581280283033275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,9 +262,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Tutorialwwwwwwwwwwww
-
-'
+  m_Text: "\u6E96\u5099\u4E2D\n"
 --- !u!114 &6893701935720227091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,6 +445,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_questImage: {fileID: 4517640361167418657}
+  m_questTitleImage: {fileID: 0}
   m_questBackGroundImage: {fileID: 4517640362343407795}
   m_questName: {fileID: 4517640361631411839}
   m_questText: {fileID: 4517640361064301081}

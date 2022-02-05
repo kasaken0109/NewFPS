@@ -702,9 +702,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_quests:
-  - {fileID: 11400000, guid: 1eb8f7ce00649e848bb5b685cb49265e, type: 2}
-  - {fileID: 11400000, guid: 4bd7ae23127d61f4ab131dac5b414d5b, type: 2}
-  - {fileID: 11400000, guid: 272152570f4d58d49b7600f6daff1ff1, type: 2}
   - {fileID: 11400000, guid: 81ab338c56fbe9540ad7a545ff0f546c, type: 2}
   m_questPanels:
   - {fileID: 942597617}
