@@ -122,10 +122,7 @@ public class PlayerControll : ColliderGenerater
         {
             if (Input.GetButtonDown("Fire1"))
             {
-                if (weaponManager.NowWeapon.name.Contains("Sword"))
-                {
-                    m_anim.Play("Basic");
-                }
+                m_anim.Play("Basic");
             }
             if (Input.GetButtonDown("Jump"))
             {
@@ -156,21 +153,12 @@ public class PlayerControll : ColliderGenerater
             m_anim.SetFloat("Speed", 0);
             float veloY = m_rb.velocity.y;
             m_rb.velocity = new Vector3(m_rb.velocity.x * 0.7f, veloY, m_rb.velocity.z * 0.7f); 
-            if (Input.GetButtonDown("Fire1") && weaponManager.NowWeapon.name.Contains("Sword"))
+            if (Input.GetButtonDown("Fire1"))
             {
                 m_anim.Play("JumpAttack");
             }
         }
-        m_speedup.SetActive(m_rb.velocity.sqrMagnitude >= 200);
-
-
-        if (Input.GetButton("Fire1"))
-        {
-            if (!weaponManager.NowWeapon.name.Contains("Sword"))
-            {
-                m_anim.SetTrigger("ShootFlag");
-            }
-        }
+        m_speedup.SetActive(m_rb.velocity.sqrMagnitude >= 100);
         
         if (Input.GetButton("Fire2"))
         {

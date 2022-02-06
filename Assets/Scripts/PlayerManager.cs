@@ -80,14 +80,14 @@ public class PlayerManager : MonoBehaviour,IDamage
     {
         //m_hptext.text = "HP:" + m_hp.ToString();
         hpslider.fillAmount = (float)m_hp / m_maxhp;
-        if (postEffect.enabled)
-        {
-            stanceTypes = StanceTypes.GOD;
-        }
-        else
-        {
-            stanceTypes = StanceTypes.NORMAL;
-        }
+        //if (postEffect.enabled)
+        //{
+        //    stanceTypes = StanceTypes.GOD;
+        //}
+        //else
+        //{
+        //    stanceTypes = StanceTypes.NORMAL;
+        //}
         if (equipMode)
         {
             if (Time.time - keyInterval > 0.2f)

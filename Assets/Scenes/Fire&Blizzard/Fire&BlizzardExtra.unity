@@ -36177,7 +36177,6 @@ MonoBehaviour:
   m_head: {fileID: 736725640}
   m_crow: {fileID: 736725692}
   m_horn: {fileID: 15030299}
-  m_body: {fileID: 1596703818}
 --- !u!114 &736726389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36220,8 +36219,6 @@ MonoBehaviour:
   m_breath: {fileID: 3135876029342006063, guid: 77870249a57fb6b48a8698422cf4594c,
     type: 3}
   m_effect: {fileID: 5856992829205771142, guid: 8c38b949cb27e1149a87b3d4424b7da1,
-    type: 3}
-  m_sandEffect: {fileID: 1818699733122424156, guid: 05341846783cd7642b8a25dd70e72e23,
     type: 3}
   m_finalBreath: {fileID: 3135876029342006063, guid: 11fdaa4701e75fd4e860392d03ac83e0,
     type: 3}
@@ -38029,7 +38026,6 @@ MonoBehaviour:
   m_dushAttackPower: 15
   m_isGroundedLength: 0.3
   m_attackCollider: {fileID: 317533952}
-  m_legAttackCollider: {fileID: 718744459}
   m_rushAttackCollider: {fileID: 662662063}
   m_comboEffect: {fileID: 1334231765}
   m_successEffect: {fileID: 1609892086}
