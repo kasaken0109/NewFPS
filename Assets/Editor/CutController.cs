@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if UNITY_EDITOR
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BLINDED_AM_ME;
@@ -114,3 +115,4 @@ public class CutController : MonoBehaviour
         CutObject(m_cutMode);
     }
 }
+#endif

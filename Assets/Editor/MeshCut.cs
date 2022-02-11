@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -645,3 +646,4 @@ namespace BLINDED_AM_ME
         }
     }
 }
+#endif
