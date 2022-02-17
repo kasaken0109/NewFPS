@@ -20,7 +20,7 @@ public class JumpPadController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PlayerControll>().KickAttack(20);
+            other.gameObject.GetComponent<PlayerControll>().StepForward(20);
         }
     }
 }
