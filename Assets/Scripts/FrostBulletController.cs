@@ -4,31 +4,31 @@ using UnityEngine;
 
 public class FrostBulletController : MonoBehaviour
 {
-    [SerializeField] GameObject m_freeze = null;
-    [SerializeField] GameObject m_explosion = null;
-    [SerializeField] GameObject m_player = null;
-    [SerializeField] int m_attackpower = 10;
-    bool IsCreateWall;
+    [SerializeField]
+    [Tooltip("敵に着弾時に発生する")]
+    private GameObject m_freeze = null;
+
+    [SerializeField]
+    [Tooltip("地面に着弾時に発生する")]
+    private GameObject m_explosion = null;
+
+    [SerializeField]
+    private int m_attackpower = 10;
+
+    private GameObject m_player = null;
+    private　bool IsCreateWall;
+
     Vector3 hitPos;
-    Transform hitTransform;
     // Start is called before the first frame update
     void Start()
     {
-        m_player = GameObject.FindGameObjectWithTag("Player");
+        m_player = GameManager.Player.gameObject;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "Floor")
         {
             Destroy(this.gameObject);
-            hitTransform = m_player.transform;
 
             foreach (ContactPoint point in collision.contacts)
             {
@@ -39,11 +39,7 @@ public class FrostBulletController : MonoBehaviour
         else if (collision.collider.tag == "Enemy" || collision.collider.tag == "Item")
         {
             collision.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackpower);
-            hitTransform = m_player.transform;
-            foreach (ContactPoint point in collision.contacts)
-            {
-                hitPos = point.point;
-            }
+            foreach (ContactPoint point in collision.contacts) hitPos = point.point;
             IsCreateWall = false;
             Destroy(this.gameObject);
         }
@@ -51,14 +47,12 @@ public class FrostBulletController : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (!m_freeze)
-        {
-            return;
-        }
-        var m  = Instantiate(IsCreateWall ? m_freeze : m_explosion);
-        float yInstance = m_freeze.transform.lossyScale.y / 2;
-        m.transform.position = new Vector3(hitPos.x ,0 , hitPos.z);
-        m.transform.rotation = hitTransform.rotation;
+        if (!m_freeze) return;
+
+        var obj  = Instantiate(IsCreateWall ? m_freeze : m_explosion);
+        obj.transform.position = new Vector3(hitPos.x , -1.38f, hitPos.z);
+        Quaternion look = new Quaternion(0, m_player.transform.rotation.y, 0, 0) * obj.transform.rotation;
+        obj.transform.rotation = look;
         SoundManager.Instance.PlayFrostWall();
     }
 }
