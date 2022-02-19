@@ -26,14 +26,6 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private void Update()
-    {
-        if (Input.GetButtonDown("Spawn"))
-        {
-            //Instantiate(m_bossEnemy,m_bossSpawn.position,m_bossSpawn.rotation);
-        }
-    }
-
     private void FixedUpdate()
     {
         switch (myGameState)
