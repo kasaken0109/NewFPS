@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 接触判定(攻撃)を制御する
+/// </summary>
 public class AttackcolliderController : MonoBehaviour
 {
     [SerializeField]
@@ -27,15 +30,6 @@ public class AttackcolliderController : MonoBehaviour
     {
         //コライダーがアクティブになったときに攻撃を有効にする
         CanHit = true;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == m_opponentTagName && CanHit)
-        {
-            collision.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
-            CanHit = false;
-        }
     }
 
     private void OnTriggerEnter(Collider other)

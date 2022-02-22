@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+/// <summary>
+/// 氷エフェクトの出現、消滅をコントロールする
+/// </summary>
 public class ActiveController : MonoBehaviour
 {
-    [SerializeField] float m_activeTime = 1;
+    [SerializeField]
+    [Tooltip("エフェクトの表示時間")]
+    private float m_activeTime = 1;
     // Start is called before the first frame update
     private void OnEnable()
     {
-        //StartCoroutine(nameof(Active));
-        AActive();
-        
+        FrostActive();   
     }
 
-    public void AActive()
+    /// <summary>
+    /// 鉛直方向に上昇後、一定時間静止し、下降する
+    /// </summary>
+    public void FrostActive()
     {
         var sequence = DOTween.Sequence();
         sequence.Append(transform.DOMoveY(transform.position.y + 0.5f, 0.2f))
@@ -24,20 +30,6 @@ public class ActiveController : MonoBehaviour
                 {
                     Destroy(this.gameObject);
                 });
-
         sequence.Play();
-
-    }
-
-    IEnumerator Active()
-    {
-        float timer = 0;
-        while (timer <= m_activeTime)
-        {
-            this.transform.DOMoveY(transform.position.y - 0.02f,0.1f);
-            yield return new WaitForSeconds(0.1f);
-            timer += 0.1f;
-        }
-        Destroy(this.gameObject);
     }
 }
