@@ -45,34 +45,44 @@ public class PlayerControll : ColliderGenerater
     [Tooltip("接地判定の際、中心 (Pivot) からどれくらいの距離を「接地している」と判定するかの長さ")]
     float m_isGroundedLength = 1.1f;
     
-    /// <summary>攻撃の当たり判定</summary>
     [SerializeField]
+    [Tooltip("攻撃の当たり判定")]
     GameObject m_attackCollider = null;
-    /// <summary>キック攻撃の当たり判定</summary>
+
     [SerializeField]
+    [Tooltip("キック攻撃の当たり判定")]
     GameObject m_legAttackCollider = null;
-    /// <summary>コンボ攻撃判定</summary>
+
     [SerializeField]
+    [Tooltip("コンボ攻撃判定")]
     GameObject m_comboEffect = null;
-    /// <summary>コンボ攻撃成功判定</summary>
+
     [SerializeField]
+    [Tooltip("コンボ攻撃成功エフェクト")]
     GameObject m_successEffect = null;
-    /// <summary>プレイヤーオブジェクト</summary>
+
     [SerializeField]
+    [Tooltip("プレイヤーオブジェクト")]
     GameObject m_player = null;
-    /// <summary>スピードアップエフェクト</summary>
+
     [SerializeField]
+    [Tooltip("スピードアップエフェクト")]
     GameObject m_speedup = null;
-    /// <summary>ラッシュエフェクト</summary>
+
     [SerializeField]
+    [Tooltip("ラッシュエフェクト")]
     GameObject m_rush = null;
+
     [SerializeField]
     Animator m_anim = null;
+
     [SerializeField]
     [Tooltip("スキルクールダウンタイム")]
     private float m_skillWaitTime = 1;
+
     [SerializeField]
     private float m_powerUpRate = 3f;
+
     [SerializeField]
     [Tooltip("当たるレイヤー")]
     private LayerMask m_layerMask = 0;
@@ -104,6 +114,11 @@ public class PlayerControll : ColliderGenerater
         m_anim = GetComponent<Animator>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
 
+        DisplayEffectInit();
+    }
+
+    private void DisplayEffectInit()
+    {
         VolumeProfile profile = m_Volume.sharedProfile;
         foreach (var item in profile.components)
         {
