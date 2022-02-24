@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// タイマーの表示と制御を行う
+/// </summary>
 public class TimerManager : MonoBehaviour
 {
-    [SerializeField] public float timeLimit = 20f;
-    [SerializeField] Text m_text = null;
-    [SerializeField] GameObject m_gameOver = null;
-    [SerializeField] GameObject m_gameClear = null;
+    public float timeLimit = 20f;
     public bool m_menu = false;
-    [SerializeField]TextManager textManager;
+    [SerializeField]
+    private Text m_text = null;
+    [SerializeField]
+    private GameObject m_gameOver = null;
+    [SerializeField]
+    private GameObject m_gameClear = null;
+    
     Animation m_anim = null;
-    GameState m_gameState;
     int maxTimeLimit;
     // Start is called before the first frame update
     void Start()
@@ -21,7 +26,6 @@ public class TimerManager : MonoBehaviour
         PlayerPrefs.Save();
         m_gameClear.SetActive(false);
         maxTimeLimit = (int)timeLimit;
-        m_gameState = GameState.PLAYING;
         m_anim = gameObject.GetComponent<Animation>();
         m_menu = false;
     }
@@ -56,11 +60,6 @@ public class TimerManager : MonoBehaviour
                 m_menu = true;
             }
         }
-    }
-
-    public void ClockStop()
-    {
-
     }
 
     public enum GameState
