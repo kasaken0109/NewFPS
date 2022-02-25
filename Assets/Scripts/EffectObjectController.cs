@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 破壊可能なオブジェクトを管理する
+/// </summary>
 public class EffectObjectController : MonoBehaviour,IDamage
 {
-    [SerializeField] GameObject m_effect;
-    [SerializeField] GameObject m_item;
-    [SerializeField] GameObject m_mine;
+    [SerializeField]
+    [Tooltip("発生するエフェクト")]
+    private GameObject m_effect;
+    [SerializeField]
+    private GameObject m_item;
+    [SerializeField]
+    private GameObject m_mine;
     public void AddDamage(int damage)
     {
         StartCoroutine(nameof(InstanceObj));

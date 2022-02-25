@@ -5,30 +5,55 @@ using UnityEngine.UI;
 using DG.Tweening;
 using BehaviourAI;
 
-public class EnemyBossManager : MonoBehaviour, IDamage,BehaviourAI.IBehaviour
+/// <summary>
+/// 敵の状態を管理する
+/// </summary>
+public class EnemyBossManager : MonoBehaviour, IDamage
 {
     public static EnemyBossManager Instance { get; private set; }
-    [SerializeField] int m_hp = 100;
-    [SerializeField] int m_mp = 200;
-    [SerializeField, Range(1, 100)] int m_rate;
-    [SerializeField] int m_attackPower = 10;
-    [SerializeField] float m_freezeTime = 5f;
-    [SerializeField] Animator m_animator = null;
-    [SerializeField] GameObject m_deathBody = null;
+
+    [SerializeField]
+    private int m_hp = 100;
+
+    [SerializeField]
+    private int m_mp = 200;
+
+    [SerializeField]
+    [Range(1, 100)]
+    private int m_rate;
+
+    [SerializeField]
+    private int m_attackPower = 10;
+
+    [SerializeField]
+    private float m_freezeTime = 5f;
+
+    [SerializeField]
+    private Animator m_animator = null;
+
+    [SerializeField]
+    private GameObject m_deathBody = null;
+
+    [SerializeField]
+    private GameObject m_sandEffect = null;
+
     public GameObject m_hpUI = null;
-    [SerializeField] GameObject m_sandEffect = null;
+    
     public GameObject m_froznBody = null;
-    [SerializeField] MoveState _moveState = null;
+
+    public Image hpSlider;
+
+    public bool IsCritical = false;
+
     ActionCtrl actionCtrl = null;
+
     int maxHp;
     int mp;
     int hitRate = 0;
-    public Image hpSlider;
     int rateTemp;
-    public bool IsCritical = false;
-
 
     float hitSpeed = 1f;
+
     public void AddDamage(int damage)
     {
         mp -= (30 - damage);
@@ -56,6 +81,8 @@ public class EnemyBossManager : MonoBehaviour, IDamage,BehaviourAI.IBehaviour
         else
         {
             m_hp = 0;
+            Time.timeScale = 0;
+            StopCoroutine(HitStop());
             DOTween.To(
                 () => hpSlider.fillAmount, // getter
                 x => hpSlider.fillAmount = x, // setter
@@ -69,6 +96,10 @@ public class EnemyBossManager : MonoBehaviour, IDamage,BehaviourAI.IBehaviour
         }
     }
 
+    /// <summary>
+    /// ヒットストップを発生させる
+    /// </summary>
+    /// <returns></returns>
     IEnumerator HitStop()
     {
         var source = GetComponent<Cinemachine.CinemachineImpulseSource>();
@@ -115,7 +146,7 @@ public class EnemyBossManager : MonoBehaviour, IDamage,BehaviourAI.IBehaviour
         int type = distance >= 7 ? 5 : 4;
         m_animator.SetTrigger("DeathAttack");
         m_animator.SetInteger("AttackType", type);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
         IsCritical = false;
         Debug.Log("Warnimg");
         hitRate = rateTemp;
@@ -147,15 +178,5 @@ public class EnemyBossManager : MonoBehaviour, IDamage,BehaviourAI.IBehaviour
     public void StopPlayer()
     {
         GameManager.Instance.CinemaMode();
-    }
-
-    public GameObject SetTarget()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Call(IAction Set)
-    {
-        throw new System.NotImplementedException();
     }
 }

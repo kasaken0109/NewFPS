@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// スクリプト内でコライダーを有効にする処理を制御する
+/// </summary>
 public class ColliderGenerater : MonoBehaviour
 {
     public static ColliderGenerater Instance { get; private set; }
-    GameObject hitCollider;
-    float waitTime;
+    private GameObject hitCollider;
+    private float waitTime;
 
     private void Awake()
     {

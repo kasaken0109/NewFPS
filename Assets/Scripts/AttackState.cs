@@ -2,15 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 攻撃の処理を行うState(現在は不使用)
+/// </summary>
 public class AttackState : StateBase
 {
+    [SerializeField] 
+    private Animator m_animator = null;
+
+    [SerializeField]
+    private string m_stateDistance;
+
+    [SerializeField] 
+    private int m_maxBreathCount;
+
+    [SerializeField] 
+    private StateBase m_moveState;
+
+    [SerializeField]
+    private int[] attackValue;
+
+    [SerializeField]
+    private GameObject m_enemy = null;
+
     StateBase _idleState;
-    [SerializeField] private Animator m_animator = null;
-    [SerializeField] private string m_stateDistance;
-    [SerializeField] private int m_maxBreathCount;
-    [SerializeField] private StateBase m_moveState;
-    [SerializeField] private int[] attackValue;
-    [SerializeField] private GameObject m_enemy = null;
+
     int breathCount;
     string[] triggersDistances;
     List<int> triggerDistance;

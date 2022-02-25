@@ -2,14 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 攻撃の当たり判定の有効を制御する(主にアニメーションイベントで使用)
+/// </summary>
 public class AttackGenerator : MonoBehaviour
 {
-    [Header("頭のコライダー")]
-    [SerializeField] Collider m_head;
-    [SerializeField] Collider m_body;
-    [SerializeField] Collider m_crow;
-    [SerializeField] Collider m_horn;
-    // Start is called before the first frame update
+    [SerializeField]
+    [Tooltip("頭")]
+    private Collider m_head;
+
+    [SerializeField]
+    [Tooltip("体")]
+    private Collider m_body;
+
+    [SerializeField]
+    [Tooltip("爪攻撃の当たり判定")]
+    private Collider m_crow;
+
+    [SerializeField]
+    [Tooltip("角")]
+    private Collider m_horn;
+
     public void GenerateHeadAttackCollider(float activeTime)
     {
         m_head.gameObject.SetActive(true);
@@ -38,6 +51,5 @@ public class AttackGenerator : MonoBehaviour
         yield return new WaitForSeconds(activeTime);
         collider.SetActive(false);
         StopCoroutine(WaitCount(collider,activeTime));
-
     }
 }

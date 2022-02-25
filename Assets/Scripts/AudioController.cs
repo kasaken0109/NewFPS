@@ -2,63 +2,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーの音の処理を管理する
+/// </summary>
 [RequireComponent(typeof(AudioSource))]
 public class AudioController : MonoBehaviour
 {
-    [SerializeField] AudioClip[] sounds;
-    [SerializeField] Animator player;
-    protected AudioSource sourcew;
-    protected AudioSource sourcer;
-    [SerializeField] bool randomizePitch = true;
-    [SerializeField] float pitchRange = 0.1f;
+    [SerializeField]
+    private AudioClip[] m_sounds;
+
+    [SerializeField]
+    private Animator m_anim = default;
+
+    [SerializeField]
+    private float pitchRange = 0.1f;
+
+    private AudioSource sourcew;
+    private AudioSource sourcer;
+    
     // Start is called before the first frame update
     void Start()
     {
         sourcew = GetComponents<AudioSource>()[0];
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //if (player.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
-        //{
-        //    sourcew.PlayOneShot;
-        //}
-        //else if (player.GetCurrentAnimatorStateInfo(0).IsName("Run"))
-        //{
-        //    AudioSource.PlayClipAtPoint(runSound, m_player.transform.position);
-        //}
-    }
-
     public void PlayFootstepSE()
     {
-        if (randomizePitch)
+        if (m_anim.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
         {
-            sourcew.pitch = 1.0f + Random.Range(-pitchRange, pitchRange);
-            ///sourcer.pitch = 1.0f + Random.Range(-pitchRange, pitchRange);
+            sourcew.PlayOneShot(m_sounds[0]);
         }
-        if (player.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+        else if (m_anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
         {
-            sourcew.PlayOneShot(sounds[0]);
-        }
-        else if (player.GetCurrentAnimatorStateInfo(0).IsName("Run"))
-        {
-            sourcew.PlayOneShot(sounds[1]);
+            sourcew.PlayOneShot(m_sounds[1]);
         }
     }
 
     public void PlayJumpSE()
     {
-        sourcew.PlayOneShot(sounds[2]);
+        sourcew.PlayOneShot(m_sounds[2]);
     }
 
     public void PlaySlashSE()
     {
-        sourcew.PlayOneShot(sounds[3]);
+        sourcew.PlayOneShot(m_sounds[3]);
     }
 
     public void PlaySpecialSlashSE()
     {
-        sourcew.PlayOneShot(sounds[4]);
+        sourcew.PlayOneShot(m_sounds[4]);
     }
 }

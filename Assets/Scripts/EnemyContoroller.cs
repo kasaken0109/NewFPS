@@ -4,16 +4,33 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.AI;
 
+/// <summary>
+/// 敵の挙動を定義する
+/// </summary>
 public class EnemyContoroller : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject attackCollider;
+
+    [SerializeField]
+    private GameObject m_breath;
+
+    [SerializeField]
+    private GameObject m_effect;
+    
+    [SerializeField]
+    private GameObject m_finalBreath;
+    
+    [SerializeField]
+    private Transform m_spwanBreath;
+    
+    [SerializeField]
+    private Transform m_spwanEffect;
+
+    [SerializeField]
+    private float m_hitTime = 1f;
+
     Rigidbody m_rb;
-    [SerializeField] GameObject attackCollider;
-    [SerializeField] GameObject m_breath;
-    [SerializeField] GameObject m_effect;
-    [SerializeField] GameObject m_finalBreath;
-    [SerializeField] Transform m_spwanBreath;
-    [SerializeField] Transform m_spwanEffect;
-    [SerializeField] float m_hitTime = 1f;
     NavMeshAgent agent;
 
     void Start()
@@ -47,7 +64,6 @@ public class EnemyContoroller : MonoBehaviour
 
     public void JumpAttack()
     {
-        //this.transform.DOMove(GameManager.Player.transform.position, 2f);
         agent.SetDestination(GameManager.Player.transform.position);
         agent.speed = 20;
         agent.acceleration = 100;
