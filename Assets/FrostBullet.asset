@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: FrostBullet
+  m_EditorClassIdentifier: Assembly-CSharp::Gun
+  m_bullet:
+    m_bullet: {fileID: 1354823903795634764, guid: 0c8239e19677a0b4d8c01323797725c1,
+      type: 3}
+    m_damage: 20
+    m_bulletType: 0
+  m_magNum: 4
+  m_delay: 0.2

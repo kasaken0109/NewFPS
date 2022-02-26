@@ -212,6 +212,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: AttackType
     m_EventTreshold: 4
+  - m_ConditionMode: 1
+    m_ConditionEvent: DeathAttack
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 825332889971282730}
   m_Solo: 0
@@ -511,6 +514,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: AttackType
     m_EventTreshold: 5
+  - m_ConditionMode: 1
+    m_ConditionEvent: DeathAttack
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7033832096109946660}
   m_Solo: 0
