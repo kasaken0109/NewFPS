@@ -703,6 +703,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_quests:
   - {fileID: 11400000, guid: 81ab338c56fbe9540ad7a545ff0f546c, type: 2}
+  - {fileID: 11400000, guid: 81ab338c56fbe9540ad7a545ff0f546c, type: 2}
+  - {fileID: 11400000, guid: 81ab338c56fbe9540ad7a545ff0f546c, type: 2}
+  - {fileID: 11400000, guid: 81ab338c56fbe9540ad7a545ff0f546c, type: 2}
+  - {fileID: 11400000, guid: 81ab338c56fbe9540ad7a545ff0f546c, type: 2}
   m_questPanels:
   - {fileID: 942597617}
   - {fileID: 112898707}
@@ -1020,6 +1024,7 @@ MonoBehaviour:
   m_fireB: {fileID: 0}
   m_move: {fileID: 0}
   m_dodge: {fileID: 0}
+  m_kick: {fileID: 0}
   m_blizzard: {fileID: 0}
   m_god: {fileID: 0}
   m_charge: {fileID: 0}
