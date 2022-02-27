@@ -34,7 +34,6 @@ public class BulletTextManager : MonoBehaviour
 
     void FireLineText()
     {
-        Debug.Log("takashi");
         m_text.text = fireLine.m_bulletNum.ToString(); 
     }
 

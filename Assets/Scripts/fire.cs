@@ -49,7 +49,7 @@ public class fire : MonoBehaviour
         float timer = 0;
         while (timer < 0.5f)
         {
-            if (Input.GetButtonDown("Fire1")) GameManager.Instance.m_player.GetComponent<PlayerControll>().DushAttack(-10);
+            if (Input.GetButtonDown("Fire1")) GameManager.Instance.m_player.GetComponent<PlayerControll>().StepForward(-10);
             timer += 0.01f;
             yield return new WaitForSeconds(0.01f);
         }
@@ -57,10 +57,10 @@ public class fire : MonoBehaviour
 
     private void Awake()
     {
-        m_textBox = PlayerManager.Instance.m_textBox2;
-        m_text = m_textBox.GetComponent<Text>();
+        //m_textBox = PlayerManager.Instance.m_textBox2;
+        //m_text = m_textBox.GetComponent<Text>();
         m_bulletNum = PlayerPrefs.GetInt("Bullet2");
-        m_text.text = m_bulletNum +"/" + m_bulletMaxNum;
+        //m_text.text = m_bulletNum +"/" + m_bulletMaxNum;
         
         if (m_bulletNum == 0) m_reload?.SetActive(true);
     }
@@ -69,13 +69,12 @@ public class fire : MonoBehaviour
     void Update()
     {
         if (Time.timeScale == 0) return;
-        if(!IsReload)m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
+        //if(!IsReload)m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire2"))
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             {
             if (m_bulletNum > 0)
             {
-                m_shootAnim.SetTrigger("ShootFlag");
                 if (m_coroutine != null)
                 {
                     StopCoroutine(m_coroutine);
@@ -94,7 +93,7 @@ public class fire : MonoBehaviour
 
             }
         }
-        else if(Input.GetButtonUp("Fire1"))
+        else if(Input.GetButtonUp("Fire2"))
         {
             SoundManager.Instance.StopSE();
             if (IsSpecial)
@@ -123,7 +122,7 @@ public class fire : MonoBehaviour
         PlayerPrefs.SetInt("Bullet2", m_bulletNum);
         PlayerPrefs.Save();
         StopCoroutine(nameof(WaitSeconds));
-        m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
+        //m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
     }
 
     void PlayShootSound()
