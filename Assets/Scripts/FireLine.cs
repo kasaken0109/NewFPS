@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class FireLine : MonoBehaviour
 {
@@ -11,36 +13,43 @@ public class FireLine : MonoBehaviour
     [SerializeField]
     GameObject m_effect = null;
     [SerializeField]
+    GameObject m_frostEffect = null;
+    [SerializeField]
     GameObject m_bullet = null;
     [SerializeField]
     GameObject m_shield = null;
     #endregion
-    /// <summary>LineRenderer 兼 Line の出発点</summary>
     [SerializeField]
-    LineRenderer m_line = null;
-    /// <summary>リロード時間</summary>
+    [Tooltip("LineRenderer 兼 Line の出発点")]
+    private LineRenderer m_line = null;
+
     [SerializeField]
-    float m_seconds = 2f;
-    /// <summary>射程距離</summary>
+    [Tooltip("リロード時間")]
+    private float m_seconds = 2f;
+
     [SerializeField]
-    float m_shootRange = 15f;
+    [Tooltip("射程距離")]
+    private float m_shootRange = 15f;
     /// <summary>当たるレイヤー</summary>
     [SerializeField]
-    LayerMask m_layerMask = 0;
+    private LayerMask m_layerMask = 0;
     /// <summary>発射した時の音</summary>
     [SerializeField]
-    AudioClip m_shootSound = null;
+    private AudioClip m_shootSound = null;
     /// <summary>命中した時の音</summary>
     [SerializeField] 
-    AudioClip m_hitSound = null;
+    private AudioClip m_hitSound = null;
     [SerializeField]
-    AudioClip m_reloadSound = null;
+    private AudioClip m_reloadSound = null;
     [SerializeField]
-    AudioClip m_airshoot = null;
+    private AudioClip m_airshoot = null;
     
-    [SerializeField] Text m_text;
-    [SerializeField] float m_chargeTime = 3f;
-    [SerializeField] int m_attackpower = 10;
+    [SerializeField]
+    private Text m_text;
+    [SerializeField]
+    private float m_chargeTime = 3f;
+    [SerializeField]
+    private int m_attackpower = 10;
     /// <summary>マガジン内の弾数</summary>
     public int m_bulletNum;
     
@@ -49,50 +58,63 @@ public class FireLine : MonoBehaviour
     GameObject m_particleMuzzle = null;
     GameObject m_textBox = null;
     GameObject m_fireLine = null;
+    PlayerControll m_pControll;
+    public Volume m_Volume;
 
-    /// <summary>照準</summary>
-    RectTransform m_crosshairUi = null;
-    Transform m_shieldSpawn = null;
+
+    #region Bool
     bool IsSounded = false;
     bool IsHitSound = false;
     bool IsEndHit = false;
     bool CanShoot = true;
     bool IsCreate = false;
     bool IsReload = false;
+    #endregion
+    /// <summary>照準</summary>
+    RectTransform m_crosshairUi = null;
+    Transform m_shieldSpawn = null;
     ShieldDisplayController m_shieldDisplay = null;
     Vector3 hitPosition;
     ParticleSystem particleSystem;
-    
-    
     AudioSource audio;
+    Animator m_anim;
+    MotionBlur motionBlur;
+    
 
+    private void Awake()
+    {
+        m_bulletNum = PlayerPrefs.GetInt("Bullet1");
+        m_fireLine = GameObject.Find("FireLine");
+        StopCoroutine(nameof(WaitSeconds));
+    }
     void Start()
     {
         GameObject.Find("RifleImage").GetComponent<Image>().fillAmount = 1;
         m_bulletNum = PlayerPrefs.GetInt("Bullet1");
-        // FPS なのでマウスカーソルを消す。ESC で表示される。
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+
         m_reload = PlayerManager.Instance.m_reloadImage;
         m_textBox = PlayerManager.Instance.m_textBox1;
         m_text = m_textBox.GetComponent<Text>();
         m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
+
         m_muzzle = GameObject.FindWithTag("Muzzle");
         m_line = m_muzzle.GetComponent<LineRenderer>();
+
         m_reload = PlayerManager.Instance.m_reloadImage;
         m_reload?.SetActive(false);
         audio = GetComponent<AudioSource>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
-        StartCoroutine(Changeattack());
-    }
-    IEnumerator Changeattack()
-    {
-        float timer = 0;
-        while (timer < 0.5f)
+
+        m_pControll = GetComponentInParent<PlayerControll>();
+        m_anim = GetComponentInParent<Animator>();
+
+        VolumeProfile profile = m_Volume.sharedProfile;
+        foreach (var item in profile.components)
         {
-            if (Input.GetButtonDown("Fire1")) GameManager.Instance.m_player.GetComponent<PlayerControll>().DushAttack(-10);
-            timer += 0.01f;
-            yield return new WaitForSeconds(0.01f);
+            if (item as MotionBlur)
+            {
+                motionBlur = item as MotionBlur;
+            }
         }
     }
 
@@ -102,15 +124,7 @@ public class FireLine : MonoBehaviour
         m_fireLine = GameObject.Find("FireLine");
         m_muzzle = GameObject.FindWithTag("Muzzle");
         m_particleMuzzle = GameObject.Find("BulletSpawn");
-        m_shieldDisplay = GameObject.Find("ShieldImage").GetComponent<ShieldDisplayController>();
         m_line = m_muzzle.GetComponent<LineRenderer>();
-    }
-
-    private void Awake()
-    {
-        m_bulletNum = PlayerPrefs.GetInt("Bullet1");
-        m_fireLine = GameObject.Find("FireLine");
-        StopCoroutine(nameof(WaitSeconds));
     }
 
     void Update()
@@ -127,27 +141,22 @@ public class FireLine : MonoBehaviour
 
         if (Input.GetButtonDown("Fire2"))
         {
-            if (m_bulletNum <= 0 && !IsReload)
+            if (m_bulletNum >= 1) StartCoroutine(nameof(Fireline));
+            else if(!IsReload)
             {
                 //音の処理
                 m_reload?.SetActive(true);
                 Reload();
             }
-            if (m_shieldDisplay.ShieldValue < 1 && m_bulletNum == 4) StartCoroutine(nameof(Fireline));
+            //if (m_shieldDisplay.ShieldValue < 1 && m_bulletNum == 4) StartCoroutine(nameof(Fireline));
         }
         else if (Input.GetButtonUp("Fire2"))
         {
             SoundManager.Instance.StopSE();
             StopCoroutine(nameof(Fireline));
-            if (IsCreate && m_shieldDisplay.ShieldValue >= 1)
+            if (IsCreate)
             {
-                var v = GameObject.Find("ShieldPrefab(Clone)");
-                if (v != null) return;
-                m_shieldSpawn = GameObject.Find("ShieldSpawn").transform;
-                var m = Instantiate(m_shield);
-                m.transform.position = m_shieldSpawn.position;
-                m.transform.SetParent(m_shieldSpawn);
-                m.transform.localRotation = Quaternion.identity;
+                m_bulletNum--;
                 IsCreate = false;
             }
             else
@@ -172,10 +181,12 @@ public class FireLine : MonoBehaviour
                                 IsSounded = !IsSounded ? true : false;
                                 hitObject.GetComponentInParent<IDamage>().AddDamage(m_attackpower);
                                 Instantiate(m_effect, hitPosition, Quaternion.identity);
+                                Instantiate(m_frostEffect, hitPosition, Quaternion.identity,hitObject.transform);
                             }
                             if (!IsHitSound)
                             {
                                 PlayHitSound(hitPosition);  // レーザーが当たった場所でヒット音を鳴らす
+                                SoundManager.Instance.PlayFrost();
                                 IsHitSound = true;
                             }
                         }
@@ -185,10 +196,7 @@ public class FireLine : MonoBehaviour
             
         }
 
-        if (Input.GetButtonDown("Reload") && !IsReload)
-        {
-            Reload();
-        }
+        if (Input.GetButtonDown("Reload") && !IsReload) Reload();
 
     }
     IEnumerator Fireline()
@@ -197,18 +205,11 @@ public class FireLine : MonoBehaviour
         IsCreate = false;
         yield return new WaitForSeconds(1f);
         SoundManager.Instance.PlayCharge();
-        while (m_shieldDisplay.ShieldValue < 1)
-        {
-            time += 0.01f;
-            yield return new WaitForSeconds(0.01f);
-            m_shieldDisplay.ChangeValues(m_shieldDisplay.ShieldValue + 0.5f * time / m_chargeTime, 0.01f);
-            if (m_bulletNum != m_bulletMaxNum && time > 1.5)
-            {
-                m_shieldDisplay.ChangeValues(0, 0.5f);
-                yield break;
-            }
-        }
+        yield return new WaitForSeconds(0.5f);
         IsCreate = true;
+        m_pControll.StepForward(-10);
+        m_anim.Play("Step");
+        
     }
 
     void OnDestroy()
