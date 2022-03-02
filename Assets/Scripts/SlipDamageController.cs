@@ -24,10 +24,15 @@ public class SlipDamageController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             hitObj = other.gameObject;
-            StartCoroutine(nameof(SlipDamage));
+            if (!IsStarted)
+            {
+                StartCoroutine(nameof(SlipDamage));
+                IsStarted = true;
+            }
         }
     }
 
+    bool IsStarted;
     IEnumerator SlipDamage()
     {
         while (true)
@@ -36,7 +41,6 @@ public class SlipDamageController : MonoBehaviour
             float size = Vector2.Distance(new Vector2(collider.center.x, collider.center.z), new Vector2(collider.bounds.max.x, collider.bounds.max.z));
             int damage = (int)((m_maxSlipDamage * distance) / size);
             //if(distance / size < 0.5f)
-            Debug.Log($"damage:{damage}");
             hitObj.GetComponentInParent<PlayerManager>().AddDamage(damage);
             yield return new WaitForSeconds(1.5f);
         }

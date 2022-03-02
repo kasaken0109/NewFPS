@@ -8,24 +8,57 @@ public class PlayerManager : MonoBehaviour,IDamage
 {
     public static PlayerManager Instance { get; private set; }
     // Start is called before the first frame update
-    [SerializeField] int m_hp = 100;
-    [SerializeField] float m_godTime = 0.4f;
-    [SerializeField] float m_changeTime = 2f;
-    [SerializeField] int m_maxShield = 2;
-    [SerializeField] GameObject m_charactor;
-    [SerializeField] GameObject m_healEffect;
-    [SerializeField] GameObject m_invisible;
-    [SerializeField] GameObject m_dead;
-    [SerializeField] GameObject[] m_weaponImage;
-    [SerializeField] Text m_hptext = null;
-    [SerializeField] Animator m_animator = null;
-    [SerializeField] Image hpslider = null;
-    [SerializeField] Material m_change = null;
-    [SerializeField] Material m_origin = null;
-    [SerializeField] PostEffect postEffect = null;
-    [SerializeField] FrostEffect m_frost = null;
-    [SerializeField] ShieldDisplayController shieldDisplay;
-    [SerializeField] bool equipMode = true;
+    [SerializeField]
+    private int m_hp = 100;
+
+    [SerializeField]
+    private float m_godTime = 0.4f;
+
+    [SerializeField]
+    private float m_changeTime = 2f;
+
+    [SerializeField] 
+    private int m_maxShield = 2;
+
+    [SerializeField]
+    private GameObject m_charactor;
+    [SerializeField]
+    private GameObject m_healEffect;
+    [SerializeField]
+    private GameObject m_invisible;
+
+    [SerializeField]
+    private GameObject m_dead;
+
+    [SerializeField]
+    private GameObject[] m_weaponImage;
+
+    [SerializeField]
+    private Text m_hptext = null;
+
+    [SerializeField]
+    private Animator m_animator = null;
+
+    [SerializeField]
+    private Image hpslider = null;
+
+    [SerializeField]
+    private Material m_change = null;
+
+    [SerializeField]
+    private Material m_origin = null;
+
+    [SerializeField]
+    private PostEffect postEffect = null;
+
+    [SerializeField]
+    private FrostEffect m_frost = null;
+
+    [SerializeField]
+    private ShieldDisplayController shieldDisplay;
+
+    [SerializeField]
+    private bool equipMode = true;
     public GameObject m_reloadImage = null;
     public GameObject m_textBox1 = null;
     public GameObject m_textBox2 = null;
@@ -191,7 +224,6 @@ public class PlayerManager : MonoBehaviour,IDamage
     }
     public void AddDamage(int damage)
     {
-        //Debug.Log(m_hp);
         if (IsInvisible)
         {
             if (ActiveDodge)
@@ -226,12 +258,15 @@ public class PlayerManager : MonoBehaviour,IDamage
                         shieldDisplay.ChangeValues(0);
                         Destroy(GameObject.Find("ShieldPrefab(Clone)"));
                     }
-                    m_animator.Play("Damage", 0);
-                    if(TryGetComponent(out PlayerControll p)) GetComponent<PlayerControll>().BasicHitAttack();
-                    else if(TryGetComponent(out PlayerTutorialControll pl)) GetComponent<PlayerTutorialControll>().BasicHitAttack();
+                    if (TryGetComponent(out PlayerControll p) && damage > 1f)
+                    {
+                        m_animator.Play("Damage", 0);
+                        GetComponent<PlayerControll>().BasicHitAttack();
+                    }
+                    //else if(TryGetComponent(out PlayerTutorialControll pl)) GetComponent<PlayerTutorialControll>().BasicHitAttack();
                 }
                 m_hp -= damage;
-                SoundManager.Instance.PlayPlayerHit();
+                if(damage > 1)SoundManager.Instance.PlayPlayerHit();
             }
 
             DOTween.To(
