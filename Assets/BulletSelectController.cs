@@ -7,7 +7,7 @@ public class BulletSelectController : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("バレット選択UI")]
-    private Image m_image;
+    private GameObject m_image;
 
     [SerializeField]
     [Tooltip("")]
@@ -21,18 +21,30 @@ public class BulletSelectController : MonoBehaviour
 
     private int bulletIndex = 0;
 
-    private bool isSelected = false;
+    private Vector3 origin;
+
+    private bool isEnter = false;
+
     // Start is called before the first frame update
     void Start()
     {
         m_image.gameObject.SetActive(false);
+        origin = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        isSelected = Input.GetButton("Fire3");
-        m_image.gameObject.SetActive(Input.GetButton("Fire3"));
+        if (isEnter) SelectUI(Input.mousePosition);//判定エリアに入ったときに選択関数を呼び出し
+        //if (Input.GetButton("Fire3"))
+        //{
+        //    m_image.SetActive(Input.GetButton("Fire3"));
+        //}
+        //else
+        //{
+        //    m_image.SetActive(false);
+        //}
+        m_image.SetActive(Input.GetButton("Fire3"));//マウスホイールを押している間だけUIを表示
 
     }
 
@@ -45,4 +57,18 @@ public class BulletSelectController : MonoBehaviour
         }
         m_bulletFire.EquipBullet(temp);
     }
+
+    private void SelectUI(Vector3 mousePoint)
+    {
+        var value = GetAngle(mousePoint);
+    }
+
+    private float GetAngle(Vector3 mousePoint)
+    {
+        Vector3 dir = mousePoint - origin;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        return angle > 0f ? angle : angle + 360;
+    }
+
+    public void IsInUIArea(bool isArea) => isEnter = isArea;
 }
