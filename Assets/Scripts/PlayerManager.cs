@@ -7,79 +7,45 @@ using DG.Tweening;
 public class PlayerManager : MonoBehaviour,IDamage
 {
     public static PlayerManager Instance { get; private set; }
-    // Start is called before the first frame update
+
     [SerializeField]
+    [Tooltip("プレイヤーの体力")]
     private int m_hp = 100;
 
     [SerializeField]
+    [Tooltip("回避時の無敵時間")]
     private float m_godTime = 0.4f;
 
     [SerializeField]
+    [Tooltip("回避成功時の無敵時間")]
     private float m_changeTime = 2f;
 
-    [SerializeField] 
-    private int m_maxShield = 2;
-
     [SerializeField]
-    private GameObject m_charactor;
-    [SerializeField]
+    [Tooltip("回復時に発生するエフェクト")]
     private GameObject m_healEffect;
-    [SerializeField]
-    private GameObject m_invisible;
 
     [SerializeField]
+    [Tooltip("死亡時に発生するプレイヤーの死体")]
     private GameObject m_dead;
 
     [SerializeField]
-    private GameObject[] m_weaponImage;
-
-    [SerializeField]
-    private Text m_hptext = null;
-
-    [SerializeField]
+    [Tooltip("プレイヤーのアニメーター")]
     private Animator m_animator = null;
 
     [SerializeField]
+    [Tooltip("体力バー")]
     private Image hpslider = null;
-
-    [SerializeField]
-    private Material m_change = null;
-
-    [SerializeField]
-    private Material m_origin = null;
 
     [SerializeField]
     private PostEffect postEffect = null;
 
-    [SerializeField]
-    private FrostEffect m_frost = null;
-
-    [SerializeField]
-    private ShieldDisplayController shieldDisplay;
-
-    [SerializeField]
-    private bool equipMode = true;
     public GameObject m_reloadImage = null;
     public GameObject m_textBox1 = null;
     public GameObject m_textBox2 = null;
-    /// <summary>
-    /// 武器のNo.
-    /// </summary>
-    private int m_weaponNum = 0;
-    public int shieldNum;
-    private float keyInterval = 0f;
-    private WeaponManager m_weaponManager;
+    
     private int m_maxhp;
-    bool IsInvisible = false;
-    public float m_changeRate = 2f;
+    private bool IsInvisible = false;
     public bool IsAlive = true;
-    public enum WeaponTypes: int
-    {
-        RIFLE,
-        CANNON,
-        SWORD,
-        NUM,
-    }
 
     public enum StanceTypes
     {
@@ -89,139 +55,19 @@ public class PlayerManager : MonoBehaviour,IDamage
 
     public StanceTypes stanceTypes;
 
-    private string[] m_weaponPath = new string[] {
-        "PlayerRifle",
-        "PlayerCannon",
-        "Sword",
-    };
-
     private void Awake()
     {
         Instance = this;
-        shieldNum = 0;
         stanceTypes = StanceTypes.NORMAL;
-
-    }
-    void Start()
-    {
-        m_weaponManager = m_charactor.GetComponent<WeaponManager>();
         m_maxhp = m_hp;
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //m_hptext.text = "HP:" + m_hp.ToString();
-        hpslider.fillAmount = (float)m_hp / m_maxhp;
-        //if (postEffect.enabled)
-        //{
-        //    stanceTypes = StanceTypes.GOD;
-        //}
-        //else
-        //{
-        //    stanceTypes = StanceTypes.NORMAL;
-        //}
-        if (equipMode)
-        {
-            if (Time.time - keyInterval > 0.2f)
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha1) == true)
-                {
-                    keyInterval = Time.time;
-                    FirstWeapon();
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha2) == true)
-                {
-                    keyInterval = Time.time;
-                    SecondWeapon();
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha3) == true)
-                {
-                    keyInterval = Time.time;
-                    ThirdWeapon();
-                }
-            }
-        }
-        else
-        {
-            if (Time.time - keyInterval > 0.2f)
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha1) == true)
-                {
-                    keyInterval = Time.time;
-                    PrevWeapon();
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha2) == true)
-                {
-                    keyInterval = Time.time;
-                    NextWeapon();
-                }
-            }
-        }
-    }
+    //void Update()
+    //{
+    //    hpslider.fillAmount = (float)m_hp / m_maxhp;
+    //}
 
-    public void Damage (int damage)
-    {
-        m_hp -= damage;
-        Debug.Log(m_hp);
-    }
-
-    private void PrevWeapon()
-    {
-        m_weaponNum--;
-        if (m_weaponNum < 0)
-        {
-            m_weaponNum = (int)WeaponTypes.NUM - 1;
-        }
-
-        m_weaponManager.EquipWeapon(m_weaponPath[m_weaponNum]);
-        SetWeaponImage(m_weaponNum);
-    }
-
-    private void NextWeapon()
-    {
-        m_weaponNum++;
-        if (m_weaponNum >= (int)WeaponTypes.NUM)
-        {
-            m_weaponNum = 0;
-        }
-
-        m_weaponManager.EquipWeapon(m_weaponPath[m_weaponNum]);
-        SetWeaponImage(m_weaponNum);
-    }
-
-    private void FirstWeapon()
-    {
-        m_weaponManager.EquipWeapon(m_weaponPath[0]);
-        SetWeaponImage(0);
-    }
-
-    private void SecondWeapon()
-    {
-        m_weaponManager.EquipWeapon(m_weaponPath[1]);
-        SetWeaponImage(1);
-    }
-
-    private void ThirdWeapon()
-    {
-        m_weaponManager.EquipWeapon(m_weaponPath[2]);
-        SetWeaponImage(2);
-    }
-
-    void SetWeaponImage(int weaponNum)
-    {
-        for (int i = 0; i < m_weaponImage.Length; i++)
-        {
-            if (i == weaponNum)
-            {
-                m_weaponImage[i].SetActive(true);
-            }
-            else
-            {
-                m_weaponImage[i].SetActive(false);
-            }
-        }
-    }
     public void AddDamage(int damage)
     {
         if (IsInvisible)
@@ -237,33 +83,14 @@ public class PlayerManager : MonoBehaviour,IDamage
         {
             if(damage < 0)
             {
-                m_hp -= damage;
-                if (m_hp >= m_maxhp) m_hp = m_maxhp;
-                Instantiate(m_healEffect, transform.position, Quaternion.identity);
-                SoundManager.Instance.PlayHeal();
+                Heal(damage);
             }
             else
             {
-                if (shieldDisplay.ShieldValue == 1) shieldNum = m_maxShield;
-                if(shieldNum >= 1)
+                if (TryGetComponent(out PlayerControll p) && damage > 1f)
                 {
-                    shieldNum--;
-                    shieldDisplay.ChangeValues((float)(shieldNum + 1) / (m_maxShield + 1));
-                    damage = (int)(damage * 0.5f);
-                }
-                else
-                {
-                    if (shieldNum == 0)
-                    {
-                        shieldDisplay.ChangeValues(0);
-                        Destroy(GameObject.Find("ShieldPrefab(Clone)"));
-                    }
-                    if (TryGetComponent(out PlayerControll p) && damage > 1f)
-                    {
-                        m_animator.Play("Damage", 0);
-                        GetComponent<PlayerControll>().BasicHitAttack();
-                    }
-                    //else if(TryGetComponent(out PlayerTutorialControll pl)) GetComponent<PlayerTutorialControll>().BasicHitAttack();
+                    m_animator.Play("Damage", 0);
+                    GetComponent<PlayerControll>().BasicHitAttack();
                 }
                 m_hp -= damage;
                 if(damage > 1)SoundManager.Instance.PlayPlayerHit();
@@ -278,22 +105,30 @@ public class PlayerManager : MonoBehaviour,IDamage
         }
         else
         {
+            //死亡時に呼ばれる処理
             DOTween.To(
                 () => hpslider.fillAmount, // getter
                 x => hpslider.fillAmount = x, // setter
                 0, // ターゲットとなる値
                 1f  // 時間（秒）
                 ).SetEase(Ease.OutCubic);
-            var m =Instantiate(m_dead);
+            var m =Instantiate(m_dead,transform.position,transform.rotation);
             GameManager.Instance.GameStatus = GameManager.GameState.PLAYERLOSE;
-            m.transform.position = transform.position;
             gameObject.SetActive(false);
         }
     }
 
+    private void Heal(int damage)
+    {
+        m_hp -= damage;
+        if (m_hp >= m_maxhp) m_hp = m_maxhp;
+        Instantiate(m_healEffect, transform.position, Quaternion.identity);
+        SoundManager.Instance.PlayHeal();
+    }
+
     public void SetInvisible()
     {
-        StartCoroutine("Invisible");
+        StartCoroutine(nameof(Invisible));
     }
 
     bool ActiveDodge = false;
@@ -302,18 +137,14 @@ public class PlayerManager : MonoBehaviour,IDamage
         SoundManager.Instance.PlayDodge();
         IsInvisible = true;
         ActiveDodge = true;
-        GetComponentInChildren<Renderer>().material = m_change;
         yield return new WaitForSeconds(m_godTime);
-        GetComponentInChildren<Renderer>().material = m_origin;
         IsInvisible = false;
         ActiveDodge = false;
     }
     IEnumerator Invisible(float time)
     {
         IsInvisible = true;
-        GetComponentInChildren<Renderer>().material = m_change;
         yield return new WaitForSeconds(time);
-        GetComponentInChildren<Renderer>().material = m_origin;
         IsInvisible = false;
     }
     bool IsGod = false;
@@ -326,19 +157,14 @@ public class PlayerManager : MonoBehaviour,IDamage
         timer = 0;
         StopCoroutine(nameof(Invisible));
         ActiveDodge = false;
-        m_frost.FrostAmount = 1f;
         IsInvisible = true;
-        GetComponentInChildren<Renderer>().material = m_change;
         while (timer < m_changeTime)
         {
-            //Debug.Log($"timer :{timer},IsInvisible: {IsInvisible}");
             timer += 0.02f;
-            m_frost.FrostAmount -= 0.02f / m_changeTime;
             yield return new WaitForSeconds(0.02f);
 
         }
         postEffect.enabled = false;
-        GetComponentInChildren<Renderer>().material = m_origin;
         IsInvisible = false;
         IsActiveCoroutine = false;
     }
