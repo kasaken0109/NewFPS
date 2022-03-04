@@ -14,6 +14,10 @@ public class BulletSelectController : MonoBehaviour
     private Text m_bullet;
 
     [SerializeField]
+    [Tooltip("")]
+    private UISelecter[] m_selecters;
+
+    [SerializeField]
     private BulletFire m_bulletFire = default;
 
     [SerializeField]
@@ -28,6 +32,7 @@ public class BulletSelectController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SelectBullet(0);
         m_image.gameObject.SetActive(false);
         origin = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);
     }
@@ -56,11 +61,19 @@ public class BulletSelectController : MonoBehaviour
             if (item.BulletID == bullet) temp = item;
         }
         m_bulletFire.EquipBullet(temp);
+        for (int i = 0; i < m_selecters.Length; i++)
+        {
+            m_selecters[i].SelectedUI(i == bullet);
+        }
     }
 
     private void SelectUI(Vector3 mousePoint)
     {
         var value = GetAngle(mousePoint);
+        if (value > 330f && value <= 360f || value >= 0 && value < 90f) SelectBullet(0);
+        else if (value >= 90f && value < 210f) SelectBullet(1);
+        else SelectBullet(2);
+                
     }
 
     private float GetAngle(Vector3 mousePoint)
