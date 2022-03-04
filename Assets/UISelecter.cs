@@ -21,7 +21,7 @@ public class UISelecter : MonoBehaviour
     RectTransform rectTransform;
     Image image;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         image = GetComponent<Image>();
@@ -34,7 +34,6 @@ public class UISelecter : MonoBehaviour
     public void SelectedUI(bool isSelected)
     {
         rectTransform.localScale = isSelected ? new Vector3(m_zoomRate, m_zoomRate, 1) : Vector3.one;//選択されたらサイズを拡大
-        image.color = isSelected ? m_highlight : m_normal;//色を協調表示色にする
-        Cursor.visible = isSelected;
+        image.color = isSelected ? m_highlight : m_normal;//色を強調表示色にする
     }
 }
