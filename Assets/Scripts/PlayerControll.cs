@@ -30,6 +30,10 @@ public class PlayerControll : ColliderGenerater
     private float m_jumpPower = 5f;
 
     [SerializeField]
+    [Tooltip("滞空時の水平移動速度の軽減率")]
+    private float m_midairSpeedRate = 0.7f;
+
+    [SerializeField]
     [Tooltip("突進力")]
     private float m_dushPower = 10f;
 
@@ -188,7 +192,7 @@ public class PlayerControll : ColliderGenerater
 
     private void MoveAction()
     {
-        //入力移動処理
+        //地上での入力
         if (IsGrounded())
         {
             if (Input.GetButtonDown("Fire1"))
@@ -205,11 +209,12 @@ public class PlayerControll : ColliderGenerater
                 Dodge();
             }
         }
+        //空中での入力
         else
         {
             m_anim.SetFloat("Speed", 0);
             float veloY = m_rb.velocity.y;
-            m_rb.velocity = new Vector3(m_rb.velocity.x * 0.7f, veloY, m_rb.velocity.z * 0.7f);
+            m_rb.velocity = new Vector3(m_rb.velocity.x * m_midairSpeedRate, veloY, m_rb.velocity.z * m_midairSpeedRate);
             if (Input.GetButton("Fire1"))
             {
                 StartCoroutine(MidAirAttack());
@@ -273,6 +278,7 @@ public class PlayerControll : ColliderGenerater
             m_hit = hit.collider.gameObject;
             m_hit.GetComponentInParent<IDamage>().AddDamage(20);
         }
+        //移動エフェクトを有効にする
         m_rush.SetActive(true);
     }
 
@@ -342,7 +348,7 @@ public class PlayerControll : ColliderGenerater
                 break;
             }
         }
-        m_anim.speed = IsSucceeded ? m_anim.speed*= 1.1f : 1;
+        m_anim.speed = IsSucceeded ? m_anim.speed*= 1.1f : 1;//コンボ成功時に攻撃速度を上昇させる
         IsSucceeded = false;
         m_comboEffect?.SetActive(false);
         yield return new WaitForSeconds(2f);
@@ -371,7 +377,13 @@ public class PlayerControll : ColliderGenerater
 
     public void PlayDodgeSE() => SoundManager.Instance.PlayDodge();
 
+    /// <summary>
+    /// 回避時に発生する画面エフェクトを有効にする
+    /// </summary>
     public void SetBlur() => distortion.active = true;
 
+    /// <summary>
+    /// 回避時に発生する画面エフェクトを無効にする
+    /// </summary>
     public void RemoveBlur() => distortion.active = false;
 }
