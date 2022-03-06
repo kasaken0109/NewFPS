@@ -23,9 +23,6 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     private int m_rate;
 
     [SerializeField]
-    private int m_attackPower = 10;
-
-    [SerializeField]
     private float m_freezeTime = 5f;
 
     [SerializeField]
@@ -81,8 +78,8 @@ public class EnemyBossManager : MonoBehaviour, IDamage
         else
         {
             m_hp = 0;
-            Time.timeScale = 0;
             StopCoroutine(HitStop());
+            Time.timeScale = 1;
             DOTween.To(
                 () => hpSlider.fillAmount, // getter
                 x => hpSlider.fillAmount = x, // setter
@@ -105,7 +102,6 @@ public class EnemyBossManager : MonoBehaviour, IDamage
         var source = GetComponent<Cinemachine.CinemachineImpulseSource>();
         source.GenerateImpulse();
         Time.timeScale = 0.5f;
-        Debug.Log(0.1f * hitSpeed);
         yield return new WaitForSeconds(0.1f * hitSpeed);
         Time.timeScale = 1;
     }
@@ -148,7 +144,6 @@ public class EnemyBossManager : MonoBehaviour, IDamage
         m_animator.SetInteger("AttackType", type);
         yield return new WaitForSeconds(2f);
         IsCritical = false;
-        Debug.Log("Warnimg");
         hitRate = rateTemp;
     }
 

@@ -12,6 +12,11 @@ public class AttackcolliderController : MonoBehaviour
     private int m_attackPower = 15;
 
     [SerializeField]
+    [Tooltip("スタンス値の上昇値")]
+    [Range(-1, 1)]
+    private float m_upStanceValue = 0.1f;
+
+    [SerializeField]
     [Tooltip("衝突時に発生するエフェクト")]
     private GameObject m_hitEffect = null;
 
@@ -44,7 +49,19 @@ public class AttackcolliderController : MonoBehaviour
                 other.gameObject.GetComponentInParent<IDamage>().AddDamage(frostAttack.Damage);
                 Destroy(frostAttack.gameObject);
             }
-            other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
+
+            var stance = GetComponentInParent<PlayerControll>();
+            if (stance)
+            {
+                stance.AddStanceValue(m_upStanceValue);
+                other.gameObject.GetComponentInParent<IDamage>().AddDamage(Mathf.CeilToInt(m_attackPower * (stance.StanceValue >= 0.3f ? (stance.StanceValue >= 0.7 ? 1.5f : 1f) : 0.7f)));
+            }
+            else
+            {
+                var p = other.GetComponentInParent<PlayerControll>();
+                other.gameObject.GetComponentInParent<IDamage>().AddDamage(Mathf.CeilToInt(m_attackPower * (p.StanceValue >= 0.3f ? (p.StanceValue >= 0.7 ? 0.7f : 1f) : 1.3f)));
+            }
+            
             if(m_hit)SoundManager.Instance.PlayHit(m_hit,gameObject.transform.position);
             if(m_hitEffect) Instantiate(m_hitEffect, other.ClosestPoint(transform.position), GameManager.Player.transform.rotation);
             CanHit = false;
