@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-
 
 [RequireComponent(typeof(Rigidbody))]
 
@@ -14,64 +14,32 @@ public class PlayerControll : ColliderGenerater
     public static PlayerControll Instance { get; private set; }
 
     [SerializeField]
-    [Tooltip("動く速さ")]
-    private float m_movingSpeed = 5f;
-
-    [SerializeField]
-    [Tooltip("走る速さ")]
-    private float m_runningSpeed = 8f;
-
-    [SerializeField]
-    [Tooltip("ターンの速さ")]
-    private float m_turnSpeed = 3f;
-
-    [SerializeField]
-    [Tooltip("ジャンプ力")]
-    private float m_jumpPower = 5f;
-
-    [SerializeField]
-    [Tooltip("滞空時の水平移動速度の軽減率")]
-    private float m_midairSpeedRate = 0.7f;
-
-    [SerializeField]
-    [Tooltip("突進力")]
-    private float m_dushPower = 10f;
-
-    [SerializeField]
-    [Tooltip("突進攻撃力")]
-     private int m_dushAttackPower = 15;
-
-    /// <summary>回避距離</summary>
-    [SerializeField]
-    private float m_dodgeLength = 5;
+    [Tooltip("プレイヤーの値の設定、0,１,２要設定")]
+    private PlayerMoveSettings[] m_settings = default;
 
     [SerializeField]
     [Tooltip("接地判定の際、中心 (Pivot) からどれくらいの距離を「接地している」と判定するかの長さ")]
-    float m_isGroundedLength = 1.1f;
-    
+    private float m_isGroundedLength = 1.1f;
+
     [SerializeField]
     [Tooltip("攻撃の当たり判定")]
-    GameObject m_attackCollider = null;
+     private GameObject m_attackCollider = null;
 
     [SerializeField]
     [Tooltip("キック攻撃の当たり判定")]
-    GameObject m_legAttackCollider = null;
+    private GameObject m_legAttackCollider = null;
 
     [SerializeField]
     [Tooltip("コンボ攻撃判定")]
-    GameObject m_comboEffect = null;
+    private GameObject m_comboEffect = null;
 
     [SerializeField]
     [Tooltip("コンボ攻撃成功エフェクト")]
-    GameObject m_successEffect = null;
-
-    [SerializeField]
-    [Tooltip("プレイヤーオブジェクト")]
-    GameObject m_player = null;
+    private GameObject m_successEffect = null;
 
     [SerializeField]
     [Tooltip("スピードアップエフェクト")]
-    GameObject m_speedup = null;
+    private GameObject m_speedup = null;
 
     [SerializeField]
     [Tooltip("ラッシュエフェクト")]
@@ -81,10 +49,6 @@ public class PlayerControll : ColliderGenerater
     Animator m_anim = null;
 
     [SerializeField]
-    [Tooltip("スキルクールダウンタイム")]
-    private float m_skillWaitTime = 1;
-
-    [SerializeField]
     private float m_powerUpRate = 3f;
 
     [SerializeField]
@@ -92,13 +56,19 @@ public class PlayerControll : ColliderGenerater
     private LayerMask m_layerMask = 0;
 
     [SerializeField]
+    [Tooltip("スタンス値のSlider")]
+    private Slider m_slider = default;
+
+    [SerializeField]
     private Volume m_Volume;
 
     private bool IsButtonHold = false;
+    private float stanceValue;
     private Rigidbody m_rb;
     private Vector3 dir;
     private Vector3 velo;
     private Vector3 latestPos;
+    private PlayerMoveSettings m_current;
     /// <summary>照準</summary>
     RectTransform m_crosshairUi = null;
     Ray ray;
@@ -106,6 +76,8 @@ public class PlayerControll : ColliderGenerater
     LensDistortion distortion;
 
     private　bool m_isMoveActive = true;
+
+    public float StanceValue => stanceValue;
     public void SetMoveActive(bool IsMoveActive) { m_isMoveActive = IsMoveActive; }
 
     private void Awake()
@@ -114,8 +86,8 @@ public class PlayerControll : ColliderGenerater
     }
     void Start()
     {
+        stanceValue = 0.5f;
         m_rb = GetComponent<Rigidbody>();
-        m_anim = GetComponent<Animator>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
 
         DisplayEffectInit();
@@ -135,6 +107,7 @@ public class PlayerControll : ColliderGenerater
 
     void Update()
     {
+        SetStance();
         //移動不可の際に
         if (!m_isMoveActive) return;
 
@@ -163,7 +136,16 @@ public class PlayerControll : ColliderGenerater
         MoveAction();
         m_speedup.SetActive(m_rb.velocity.sqrMagnitude >= 100);
 
+        SetStance();
+    }
 
+    private void SetStance()
+    {
+        stanceValue = m_slider.value;
+        if (stanceValue < 0.3) m_current = m_settings[0];
+        else if (stanceValue < 0.7) m_current = m_settings[1];
+        else m_current = m_settings[2];
+        m_anim.runtimeAnimatorController = m_current.Anim;
     }
 
     private void SetPlayerAngle()
@@ -175,9 +157,9 @@ public class PlayerControll : ColliderGenerater
         //ベクトルの大きさが0.01以上の時に向きを変える処理をする
         if (diff.magnitude > 0.01f)
         {
-            transform.rotation = Quaternion.LookRotation(diff); //向きを変更する
+            //transform.rotation = Quaternion.LookRotation(diff); //向きを変更する
             Quaternion targetRotation = Quaternion.LookRotation(dir);
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * m_turnSpeed);  // Slerp を使うのがポイント
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * m_current.TurnSpeed);  // Slerp を使うのがポイント
         }
     }
 
@@ -214,7 +196,7 @@ public class PlayerControll : ColliderGenerater
         {
             m_anim.SetFloat("Speed", 0);
             float veloY = m_rb.velocity.y;
-            m_rb.velocity = new Vector3(m_rb.velocity.x * m_midairSpeedRate, veloY, m_rb.velocity.z * m_midairSpeedRate);
+            m_rb.velocity = new Vector3(m_rb.velocity.x * m_current.MidairSpeedRate, veloY, m_rb.velocity.z * m_current.MidairSpeedRate);
             if (Input.GetButton("Fire1"))
             {
                 StartCoroutine(MidAirAttack());
@@ -239,8 +221,28 @@ public class PlayerControll : ColliderGenerater
 
     private void Dodge()
     {
-        m_anim.SetTrigger("CrouchFlag");
-        m_rb.DOMove(transform.position + transform.forward * m_dodgeLength, 0.5f);
+        if (CanUse)
+        {
+            StartCoroutine(nameof(SetCoolDown), m_current.DodgeCoolDown);
+            m_anim.SetTrigger("CrouchFlag");
+            m_rb.DOMove(transform.position + transform.forward * m_current.DodgeLength, 1f);
+        }
+    }
+
+    public void AddStanceValue(float value)
+    {
+        if (value + stanceValue < 1) stanceValue += value;
+        else stanceValue = 1f;
+        m_slider.value = stanceValue;
+    }
+
+
+    bool CanUse = true;
+    IEnumerator SetCoolDown(float cooldown)
+    {
+        CanUse = false;
+        yield return new WaitForSeconds(cooldown);
+        CanUse = true;
     }
 
     float timer = 0;
@@ -302,8 +304,8 @@ public class PlayerControll : ColliderGenerater
     void Running()
     {
         //入力に応じてスピード、アニメーションを変更する
-        velo = dir.normalized * (Input.GetButton("Splint") ? m_runningSpeed : m_movingSpeed) * m_powerUpRate;
-        m_anim.SetFloat("Speed", (Input.GetButton("Splint") ? m_runningSpeed : m_movingSpeed) * m_powerUpRate);
+        velo = dir.normalized * (Input.GetButton("Splint") ? m_current.RunningSpeed : m_current.MovingSpeed) * m_powerUpRate;
+        m_anim.SetFloat("Speed", (Input.GetButton("Splint") ? m_current.RunningSpeed : m_current.MovingSpeed) * m_powerUpRate);
     }
 
 
