@@ -112,7 +112,7 @@ public class EnemyBossManager : MonoBehaviour, IDamage
         Instance = this;
         maxHp = m_hp;
         mp = m_mp;
-        StartCoroutine(nameof(FrostMode));
+        //StartCoroutine(nameof(FrostMode));
     }
 
     int count = 0;
