@@ -41,8 +41,7 @@ public class EnemyContoroller : MonoBehaviour
 
     public void BasicAttack()
     {
-        Debug.Log("Basic");
-        //this.transform.DOMove(this.transform.position + this.transform.forward * 2, 0.2f);
+        this.transform.DOMove(this.transform.position + this.transform.forward * 2, 0.2f);
         //this.transform.DOMove(gameObject.transform.position + gameObject.transform.forward * 2, 1f);
         //m_rb.velocity = this.transform.forward * 100;
     }
