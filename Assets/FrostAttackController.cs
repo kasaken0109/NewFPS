@@ -40,7 +40,6 @@ public class FrostAttackController : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
-        Debug.Log(damage);
         if (damage < m_damage * 0.1f) return;
         var obj = Instantiate(m_effect,transform.position,Quaternion.identity);
         float size = 0.01f * damage / m_damage;
