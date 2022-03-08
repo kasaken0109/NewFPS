@@ -57,7 +57,7 @@ public class PlayerControll : ColliderGenerater
 
     [SerializeField]
     [Tooltip("スタンス値のSlider")]
-    private Slider m_slider = default;
+    private Image m_slider = default;
 
     [SerializeField]
     private Volume m_Volume;
@@ -141,10 +141,11 @@ public class PlayerControll : ColliderGenerater
 
     private void SetStance()
     {
-        stanceValue = m_slider.value;
-        if (stanceValue < 0.3) m_current = m_settings[0];
-        else if (stanceValue < 0.7) m_current = m_settings[1];
-        else m_current = m_settings[2];
+        stanceValue = m_slider.fillAmount;
+        //if (stanceValue < 0.3) m_current = m_settings[0];
+        //else if (stanceValue < 0.7) m_current = m_settings[1];
+        //else m_current = m_settings[2];
+        m_current = m_settings[1];
         m_anim.runtimeAnimatorController = m_current.Anim;
     }
 
@@ -225,7 +226,15 @@ public class PlayerControll : ColliderGenerater
         {
             StartCoroutine(nameof(SetCoolDown), m_current.DodgeCoolDown);
             m_anim.SetTrigger("CrouchFlag");
-            m_rb.DOMove(transform.position + transform.forward * m_current.DodgeLength, 1f);
+            if (dir.magnitude <= 0.01f)
+            {
+                m_rb.DOMove(transform.position + transform.forward * m_current.DodgeLength, 1f);
+            }
+            else
+            {
+                m_rb.DOMove(transform.position + dir.normalized * m_current.DodgeLength, 1f);
+            }
+            
         }
     }
 
@@ -233,7 +242,7 @@ public class PlayerControll : ColliderGenerater
     {
         if (value + stanceValue < 1) stanceValue += value;
         else stanceValue = 1f;
-        m_slider.value = stanceValue;
+        m_slider.fillAmount = stanceValue;
     }
 
 
@@ -298,14 +307,16 @@ public class PlayerControll : ColliderGenerater
         return isGrounded;
     }
 
+     bool IsRunning = false;
     /// <summary>
     /// 移動状態を制御する
     /// </summary>
     void Running()
     {
+        if (Input.GetButtonDown("Splint")) IsRunning = !IsRunning ? true : false;
         //入力に応じてスピード、アニメーションを変更する
-        velo = dir.normalized * (Input.GetButton("Splint") ? m_current.RunningSpeed : m_current.MovingSpeed) * m_powerUpRate;
-        m_anim.SetFloat("Speed", (Input.GetButton("Splint") ? m_current.RunningSpeed : m_current.MovingSpeed) * m_powerUpRate);
+        velo = dir.normalized * (IsRunning ? m_current.RunningSpeed : m_current.MovingSpeed) * m_powerUpRate;
+        m_anim.SetFloat("Speed", (IsRunning ? m_current.RunningSpeed : m_current.MovingSpeed) * m_powerUpRate);
     }
 
 

@@ -63,10 +63,10 @@ public class PlayerManager : MonoBehaviour,IDamage
 
     }
 
-    //void Update()
-    //{
-    //    hpslider.fillAmount = (float)m_hp / m_maxhp;
-    //}
+    void Update()
+    {
+        hpslider.fillAmount = (float)m_hp / m_maxhp;
+    }
 
     public void AddDamage(int damage)
     {
@@ -164,7 +164,7 @@ public class PlayerManager : MonoBehaviour,IDamage
             yield return new WaitForSeconds(0.02f);
 
         }
-        postEffect.enabled = false;
+        //postEffect.enabled = false;
         IsInvisible = false;
         IsActiveCoroutine = false;
     }
