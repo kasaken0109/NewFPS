@@ -7,44 +7,8 @@ public enum BulletType
 {
     Lay,
     Physics,
+    Skill,
 
-}
-
-[System.Serializable]
-[CreateAssetMenu(menuName = "Bullets/Create Bullet")]
-public class Bullet :ScriptableObject
-{
-    [SerializeField]
-    private GameObject m_bullet;
-
-    [SerializeField]
-    private int m_damage = 1;
-
-    [SerializeField]
-    private float m_delay = 0.2f;
-
-    [SerializeField]
-    [Tooltip("消費するスタンス値")]
-    [Range(-1,1)]
-    private float m_consumeStanceValue;
-
-    [SerializeField]
-    private BulletType m_bulletType = default;
-
-    [SerializeField]
-    private int m_bulletID = 0;
-
-    public GameObject MyBullet => m_bullet;
-
-    public int Damage => m_damage;
-
-    public float ConsumeStanceValue => m_consumeStanceValue;
-
-    public BulletType BulletType => m_bulletType;
-
-    public int BulletID => m_bulletID;
-
-    public float Delay => m_delay;
 }
 
 public class BulletFire : MonoBehaviour
@@ -63,7 +27,7 @@ public class BulletFire : MonoBehaviour
 
     [SerializeField]
     [Tooltip("スタンス")]
-    Slider m_stance = default;
+    Image m_stance = default;
 
     [SerializeField]
     [Tooltip("射程距離")]
@@ -73,17 +37,25 @@ public class BulletFire : MonoBehaviour
     [Tooltip("当たるレイヤー")]
     private LayerMask m_layerMask = 0;
 
-    /// <summary>発射した時の音</summary>
     [SerializeField]
+    [Tooltip("発射した時の音")]
     private AudioClip m_shootSound = null;
-    /// <summary>命中した時の音</summary>
+
     [SerializeField]
+    [Tooltip("命中した時の音")]
     private AudioClip m_hitSound = null;
 
     [SerializeField]
+    [Tooltip("着弾時に発生するエフェクト")]
     private GameObject m_effect = null;
+
     [SerializeField]
+    [Tooltip("")]
     private GameObject m_frostEffect = null;
+
+    [SerializeField]
+    [Tooltip("スタンス値の消費量予測線")]
+    private Image m_line = default;
 
     [SerializeField]
     private PlayerControll m_player;
@@ -104,16 +76,17 @@ public class BulletFire : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_stance.value = 0.5f;
+        m_stance.fillAmount = 0.5f;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (Time.timeScale == 0) return;//一時停止中には射撃不可
+        stanceValue = m_stance.fillAmount;
+        m_line.fillAmount = m_stance.fillAmount - m_equip.ConsumeStanceValue;
 
         Ray ray = Camera.main.ScreenPointToRay(m_crosshairUi.position);
-        transform.LookAt(new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, int.MaxValue));
         Vector3 pos = Camera.main.ScreenToWorldPoint(m_crosshairUi.position);
         RaycastHit hit;
 
@@ -132,45 +105,46 @@ public class BulletFire : MonoBehaviour
                 SoundManager.Instance.PlayShoot();
                 Instantiate(m_equip.MyBullet, m_particleMuzzle.position, Camera.main.transform.rotation);
                 stanceValue -= m_equip.ConsumeStanceValue;
-                m_stance.value = stanceValue;
+                m_stance.fillAmount = stanceValue;
 
-                bool IsHit = Physics.Raycast(ray, out hit, m_shootRange, m_layerMask);
+                if(m_equip.BulletType == BulletType.Lay) hit = RayHit(ray, ref hitObject);
+            }
+        }
+    }
 
-                if (IsHit)
+    private RaycastHit RayHit(Ray ray, ref GameObject hitObject)
+    {
+        RaycastHit hit;
+        bool IsHit = Physics.Raycast(ray, out hit, m_shootRange, m_layerMask);
+
+        if (IsHit)
+        {
+
+            hitPosition = hit.point;    // Ray が当たった場所
+            hitObject = hit.collider.gameObject;    // Ray が洗ったオブジェクト
+
+            if (hitObject)
+            {
+                if (hitObject.tag == "Enemy" || hitObject.tag == "Item")
                 {
-
-                    hitPosition = hit.point;    // Ray が当たった場所
-                    hitObject = hit.collider.gameObject;    // Ray が洗ったオブジェクト
-
-                    if (hitObject)
-                    {
-                        if (hitObject.tag == "Enemy" || hitObject.tag == "Item")
-                        {
-                            IsSounded = !IsSounded ? true : false;
-                            hitObject.GetComponentInParent<IDamage>().AddDamage(m_equip.Damage);
-                            Instantiate(m_effect, hitPosition, Quaternion.identity);
-                            Instantiate(m_frostEffect, hitPosition, Quaternion.identity, hitObject.transform);
-                        }
-                        if (!IsHitSound)
-                        {
-                            PlayHitSound(hitPosition);  // レーザーが当たった場所でヒット音を鳴らす
-                            SoundManager.Instance.PlayFrost();
-                            IsHitSound = true;
-                        }
-                    }
+                    IsSounded = !IsSounded ? true : false;
+                    hitObject.GetComponentInParent<IDamage>().AddDamage(m_equip.Damage);
+                    Instantiate(m_effect, hitPosition, Quaternion.identity);
+                    Instantiate(m_frostEffect, hitPosition, Quaternion.identity, hitObject.transform);
+                }
+                if (!IsHitSound)
+                {
+                    PlayHitSound(hitPosition);  // レーザーが当たった場所でヒット音を鳴らす
+                    SoundManager.Instance.PlayFrost();
+                    IsHitSound = true;
                 }
             }
-            else
-            {
-
-            }
-
         }
+        return hit;
     }
 
     IEnumerator Fireline()
     {
-        float time = 0;
         IsCreate = false;
         yield return new WaitForSeconds(1f);
         SoundManager.Instance.PlayCharge();
@@ -178,13 +152,9 @@ public class BulletFire : MonoBehaviour
         IsCreate = true;
         m_player.StepForward(-10);
         m_anim.Play("Step");
-
     }
 
-    public void EquipBullet(Bullet bullet)
-    {
-        m_equip = bullet;
-    }
+    public void EquipBullet(Bullet bullet) => m_equip = bullet;
 
     /// <summary>
     /// ヒット音を鳴らす
