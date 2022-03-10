@@ -26,6 +26,10 @@ public class Bullet : ScriptableObject
     [SerializeField]
     private int m_bulletID = 0;
 
+    [SerializeField]
+    private string m_name = default;
+
+
     public GameObject MyBullet => m_bullet;
 
     public int Damage => m_damage;
@@ -37,4 +41,6 @@ public class Bullet : ScriptableObject
     public int BulletID => m_bulletID;
 
     public float Delay => m_delay;
+
+    public string Name => m_name;
 }

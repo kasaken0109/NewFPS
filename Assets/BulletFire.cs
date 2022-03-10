@@ -61,6 +61,9 @@ public class BulletFire : MonoBehaviour
     private PlayerControll m_player;
 
     [SerializeField]
+    private Text m_bullet;
+
+    [SerializeField]
     private Animator m_anim;
 
     private Bullet m_equip;
@@ -84,7 +87,8 @@ public class BulletFire : MonoBehaviour
     {
         if (Time.timeScale == 0) return;//一時停止中には射撃不可
         stanceValue = m_stance.fillAmount;
-        m_line.fillAmount = m_stance.fillAmount - m_equip.ConsumeStanceValue;
+        
+        if(m_equip != null)m_line.fillAmount = m_stance.fillAmount - m_equip.ConsumeStanceValue;
 
         Ray ray = Camera.main.ScreenPointToRay(m_crosshairUi.position);
         Vector3 pos = Camera.main.ScreenToWorldPoint(m_crosshairUi.position);
@@ -107,7 +111,8 @@ public class BulletFire : MonoBehaviour
                 stanceValue -= m_equip.ConsumeStanceValue;
                 m_stance.fillAmount = stanceValue;
 
-                if(m_equip.BulletType == BulletType.Lay) hit = RayHit(ray, ref hitObject);
+                if (m_equip.BulletType == BulletType.Lay) hit = RayHit(ray, ref hitObject);
+                else if (m_equip.BulletType == BulletType.Skill) GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().AddDamage(-30);
             }
         }
     }
@@ -154,7 +159,10 @@ public class BulletFire : MonoBehaviour
         m_anim.Play("Step");
     }
 
-    public void EquipBullet(Bullet bullet) => m_equip = bullet;
+    public void EquipBullet(Bullet bullet) {
+        m_equip = bullet;
+        m_bullet.text = "Equip : " + bullet.Name;
+    }
 
     /// <summary>
     /// ヒット音を鳴らす
