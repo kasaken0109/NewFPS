@@ -27,6 +27,8 @@ public class BulletSelectController : MonoBehaviour
 
     private Vector3 origin;
 
+    private Vector3 padOrigin;
+
     private bool isEnter = false;
 
     private bool useGamePads = false;
@@ -37,6 +39,7 @@ public class BulletSelectController : MonoBehaviour
         SelectBullet(0);//弾の選択状態の初期化
         m_image.gameObject.SetActive(false);
         origin = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);//スクリーンの中心座標を設定
+        padOrigin = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
     }
 
     // Update is called once per frame
@@ -48,9 +51,10 @@ public class BulletSelectController : MonoBehaviour
         float hori = Input.GetAxis("Mouse X");
         float vert = Input.GetAxis("Mouse Y");
         Vector3 input = new Vector3(hori, vert, 0);
+        padOrigin = input;
         if (Input.GetButton("Fire3"))
         {
-            if(useGamePads && isEnter) SelectPadUI(input);
+            if(useGamePads) SelectPadUI(input);
             else SelectUI(Input.mousePosition);
         }
         m_image.SetActive(Input.GetButton("Fire3"));//マウスホイールを押している間だけUIを表示
@@ -96,7 +100,8 @@ public class BulletSelectController : MonoBehaviour
     private void SelectPadUI(Vector3 mousePoint)
     {
         //角度をベクトルから計算
-        Vector3 dir = mousePoint;
+        Vector3 dir = mousePoint - padOrigin;
+        Debug.Log(dir);
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
         //角度の値に応じて弾をセット
