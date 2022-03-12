@@ -14,7 +14,7 @@ public class Sword : MonoBehaviour,IWeapon
     {
         rb = GameManager.Instance.m_player.GetComponent<Rigidbody>();
         PlayerManager.Instance.m_reloadImage.SetActive(false);
-        StartCoroutine(nameof(Changeattack));
+        //StartCoroutine(nameof(Changeattack));
     }
 
     IEnumerator Changeattack()
@@ -22,7 +22,7 @@ public class Sword : MonoBehaviour,IWeapon
         float timer = 0;
         while (timer < 0.5f)
         {
-            if (Input.GetButtonDown("Fire1")) GameManager.Instance.m_player.GetComponent<PlayerControll>().DushAttack(10);
+            if (Input.GetButtonDown("Fire1")) GameManager.Instance.m_player.GetComponent<PlayerControll>().StepForward(10);
             timer += 0.01f;
             yield return new WaitForSeconds(0.01f);
         }
