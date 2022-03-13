@@ -18,12 +18,6 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     int index;
     public void Prev()
     {

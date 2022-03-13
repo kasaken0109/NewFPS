@@ -32,8 +32,8 @@ public class GameManager : MonoBehaviour
         {
             case GameState.PLAYERWIN:m_win.SetActive(true);
                 m_gate?.SetActive(true);
-                //Cursor.visible = true;
-                //Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
                 break;
             case GameState.PLAYERLOSE:m_lose.SetActive(true);
                 Cursor.visible = true;
