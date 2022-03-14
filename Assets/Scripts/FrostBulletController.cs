@@ -15,14 +15,12 @@ public class FrostBulletController : MonoBehaviour
     [SerializeField]
     private int m_attackpower = 10;
 
-    private GameObject m_player = null;
     private　bool IsCreateWall;
 
     Vector3 hitPos;
     // Start is called before the first frame update
     void Start()
     {
-        m_player = GameManager.Player.gameObject;
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -51,7 +49,7 @@ public class FrostBulletController : MonoBehaviour
 
         var obj  = Instantiate(IsCreateWall ? m_freeze : m_explosion);
         obj.transform.position = new Vector3(hitPos.x , -1.38f, hitPos.z);
-        Quaternion look = new Quaternion(0, m_player.transform.rotation.y, 0, 0) * obj.transform.rotation;
+        Quaternion look = Quaternion.FromToRotation(transform.forward, transform.forward + transform.up);//Quaternion.AngleAxis(0,transform.forward + transform.up);
         obj.transform.rotation = look;
         SoundManager.Instance.PlayFrostWall();
     }
