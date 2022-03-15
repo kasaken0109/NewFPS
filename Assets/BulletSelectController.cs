@@ -46,7 +46,7 @@ public class BulletSelectController : MonoBehaviour
     void Update()
     {
         var controllerNames = Input.GetJoystickNames();
-        useGamePads = controllerNames.Length > 0 && controllerNames[0] == "" ? false : true;
+        useGamePads = controllerNames.Length == 0 ? false : true;
 
         float hori = Input.GetAxis("Mouse X");
         float vert = Input.GetAxis("Mouse Y");
@@ -85,7 +85,6 @@ public class BulletSelectController : MonoBehaviour
     private void SelectUI(Vector3 mousePoint)
     {
         var value = GetAngle(mousePoint);//角度を取得
-
         //角度の値に応じて弾をセット
         if (value > 330f && value <= 360f || value >= 0 && value < 90f) SelectBullet(0);
         else if (value >= 90f && value < 210f) SelectBullet(1);
@@ -101,7 +100,6 @@ public class BulletSelectController : MonoBehaviour
     {
         //角度をベクトルから計算
         Vector3 dir = mousePoint - padOrigin;
-        Debug.Log(dir);
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
         //角度の値に応じて弾をセット
