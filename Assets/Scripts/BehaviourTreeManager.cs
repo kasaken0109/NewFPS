@@ -73,6 +73,8 @@ namespace BehaviourAI
                 public IConditional Conditional;
                 [SerializeReference, SubclassSelector]
                 public IAction Action;
+                [SerializeReference, SubclassSelector]
+                public IAction FailAction;
             }
         }
 
@@ -123,7 +125,8 @@ namespace BehaviourAI
                 {
                     int r = Random.Range(0,selector.Count);
                     m_id = r;
-                    conditionalN.Set(selector[r], sequenceN, ref state);
+                    conditionalN.Set(selector[m_id], sequenceN, ref state);
+                    //m_id = m_id == selector.Count - 1 ? 0 : m_id++; 
                 }
             }
         }
@@ -162,8 +165,14 @@ namespace BehaviourAI
                 if (sequence.Conditional.Check()) actionN.Set(sequence.Action, behaviour, ref state);
                 else
                 {
-                    sequence.Action.Reset = false;
-                    state = State.None;
+                    if(sequence.FailAction == null)
+                    {
+                        sequence.Action.Reset = false;
+                        state = State.None;
+                    }
+                    else actionN.Set(sequence.FailAction, behaviour, ref state);
+                    //sequence.Action.Reset = false;
+                    //state = State.None;
                 }
             }
         }
