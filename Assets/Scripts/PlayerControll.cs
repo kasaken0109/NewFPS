@@ -234,7 +234,7 @@ public class PlayerControll : ColliderGenerater
             {
                 m_rb.DOMove(transform.position + dir.normalized * m_current.DodgeLength, 1f);
             }
-            
+
         }
     }
 
@@ -304,6 +304,7 @@ public class PlayerControll : ColliderGenerater
         Vector3 end = start + Vector3.down * m_isGroundedLength;  // end: start から真下の地点
         Debug.DrawLine(start, end); // 動作確認用に Scene ウィンドウ上で線を表示する
         bool isGrounded = Physics.Linecast(start, end); // 引いたラインに何かがぶつかっていたら true とする
+        m_anim.SetBool("IsGround", isGrounded);
         return isGrounded;
     }
 

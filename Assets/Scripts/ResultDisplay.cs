@@ -6,9 +6,16 @@ using TMPro;
 
 public class ResultDisplay : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI m_time = null;
-    [SerializeField] TextMeshProUGUI m_rank = null;
-    [SerializeField] GameObject[] m_buttons;
+    [SerializeField]
+    private TextMeshProUGUI m_time = null;
+    [SerializeField]
+    private TextMeshProUGUI m_rank = null;
+    [SerializeField]
+    private GameObject[] m_buttons;
+
+    [SerializeField]
+    private float m_waitDisplay = 1f;
+
     int clearTime;
     int maxTime;
     string rank;
@@ -46,7 +53,7 @@ public class ResultDisplay : MonoBehaviour
     IEnumerator DisplayResult()
     {
         float time = 0;
-        while (time < 3)
+        while (time < m_waitDisplay)
         {
             if (Input.GetButton("Fire1")) break;
             m_time.text = Random.Range(1, 1000).ToString();

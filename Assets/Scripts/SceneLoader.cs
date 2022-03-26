@@ -16,24 +16,11 @@ public class SceneLoader : MonoBehaviour
     {
         Instance = this;
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     IEnumerator Load()
     {
-        //Debug.Log("adsd");
         if (m_isLoading)
         {
-            //Debug.Log("Called");
             while(m_loadPanel.fillAmount < 0.99f)
             {
                 m_loadPanel.fillAmount += 0.02f;
