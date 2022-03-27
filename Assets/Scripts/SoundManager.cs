@@ -17,6 +17,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip m_fireB;
     [SerializeField] AudioClip m_move;
     [SerializeField] AudioClip m_dodge;
+    [SerializeField] AudioClip m_kick;
     [SerializeField] AudioClip m_blizzard;
     [SerializeField] AudioClip m_god;
     [SerializeField] AudioClip m_charge;
@@ -62,6 +63,10 @@ public class SoundManager : MonoBehaviour
     public void PlayRoar()
     {
         source.PlayOneShot(m_roar, m_seVolume * 2);
+    }
+    public void PlayKick()
+    {
+        source.PlayOneShot(m_kick, m_seVolume * 2);
     }
 
     public void PlayMove()

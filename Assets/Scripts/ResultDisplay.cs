@@ -26,7 +26,6 @@ public class ResultDisplay : MonoBehaviour
         clearTime = PlayerPrefs.GetInt("TimeScore");
         maxTime = PlayerPrefs.GetInt("MaxTime");
         clearRank = (clearTime * 10) / maxTime;
-        Debug.Log(clearRank);
         switch (clearRank)
         {
             case 0:rank = "SS";
