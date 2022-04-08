@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using DG.Tweening;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -58,6 +59,14 @@ public class PlayerControll : ColliderGenerater
     [SerializeField]
     [Tooltip("スタンス値のSlider")]
     private Image m_slider = default;
+
+    [SerializeField]
+    [Tooltip("滑空時の処理")]
+    private UnityEvent m_floatAction;
+
+    [SerializeField]
+    [Tooltip("滑空終了時の処理")]
+    private UnityEvent m_stopFloatAction;
 
     [SerializeField]
     private Volume m_Volume;
@@ -196,8 +205,10 @@ public class PlayerControll : ColliderGenerater
         else
         {
             m_anim.SetFloat("Speed", 0);
-            float veloY = m_rb.velocity.y;
-            m_rb.velocity = new Vector3(m_rb.velocity.x * m_current.MidairSpeedRate, veloY, m_rb.velocity.z * m_current.MidairSpeedRate);
+            float veloY = m_rb.velocity.y *(Input.GetButton("Jump") ? m_current.FloatPower : 1);//空中でジャンプキーを押すと滑空出来る
+            if (Input.GetButton("Jump")) m_anim.Play("Idle");
+            var midAirSpeed = Input.GetButton("Jump") ? 1 : m_current.MidairSpeedRate;//滑空時は減速しない
+            m_rb.velocity = new Vector3(m_rb.velocity.x * midAirSpeed, veloY, m_rb.velocity.z * midAirSpeed);
             if (Input.GetButton("Fire1"))
             {
                 StartCoroutine(MidAirAttack());
@@ -206,6 +217,14 @@ public class PlayerControll : ColliderGenerater
             else if (Input.GetButtonUp("Fire1"))
             {
                 IsButtonHold = false;
+            }
+            if (Input.GetButtonDown("Jump"))
+            {
+                AirFloat();
+            }
+            else if(Input.GetButtonUp("Jump"))
+            {
+                m_stopFloatAction?.Invoke();
             }
         }
     }
@@ -218,6 +237,11 @@ public class PlayerControll : ColliderGenerater
         m_rb.DOMoveY(5, 0.5f);
         m_rb.constraints = RigidbodyConstraints.FreezeRotation;
         m_rb.useGravity = true;
+    }
+
+    private void AirFloat()
+    {
+        m_floatAction?.Invoke();
     }
 
     private void Dodge()
