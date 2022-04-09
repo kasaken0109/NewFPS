@@ -222,7 +222,11 @@ public class PlayerControll : ColliderGenerater
             {
                 AirFloat();
             }
-            else if(Input.GetButtonUp("Jump"))
+            else if(Input.GetButton("Jump"))
+            {
+                AddStanceValue(m_current.MidairConsumeRate);
+            }
+            else
             {
                 m_stopFloatAction?.Invoke();
             }
