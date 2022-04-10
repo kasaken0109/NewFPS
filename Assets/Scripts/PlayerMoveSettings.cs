@@ -23,8 +23,17 @@ public class PlayerMoveSettings : ScriptableObject
     private float m_jumpPower = 5f;
 
     [SerializeField]
+    [Tooltip("滑空時のY軸の落下速度の緩和")]
+    [Range(0.01f,0.9f)]
+    private float m_floatPower = 0.2f;
+
+    [SerializeField]
     [Tooltip("滞空時の水平移動速度の軽減率")]
     private float m_midairSpeedRate = 0.7f;
+
+    [SerializeField]
+    [Tooltip("滞空時のMP減少率")]
+    private float m_midairConsumeRate = 0.003f;
 
     [SerializeField]
     [Tooltip("突進力")]
@@ -54,7 +63,11 @@ public class PlayerMoveSettings : ScriptableObject
 
     public float JumpPower => m_jumpPower;
 
+    public float FloatPower => m_floatPower;
+
     public float MidairSpeedRate => m_midairSpeedRate;
+
+    public float MidairConsumeRate => m_midairConsumeRate;
 
     public float DushPower => m_dushPower;
 
