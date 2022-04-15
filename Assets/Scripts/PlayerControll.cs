@@ -89,6 +89,13 @@ public class PlayerControll : ColliderGenerater
     public float StanceValue => stanceValue;
     public void SetMoveActive(bool IsMoveActive) { m_isMoveActive = IsMoveActive; }
 
+    public enum MoveState
+    {
+        OnField,
+        InAir,
+        Stun,
+    }
+
     private void Awake()
     {
         Instance = this;
