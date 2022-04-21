@@ -89,6 +89,25 @@ public class PlayerControll : ColliderGenerater
     public float StanceValue => stanceValue;
     public void SetMoveActive(bool IsMoveActive) { m_isMoveActive = IsMoveActive; }
 
+    #region AnimationHash
+
+    static readonly int SpeedHash = Animator.StringToHash("Speed");
+
+    static readonly int JumpHash = Animator.StringToHash("JumpTrigger");
+
+    static readonly int DodgeHash = Animator.StringToHash("CrouchFlag");
+
+    static readonly int BasicAttackHash = Animator.StringToHash("Basic");
+
+    static readonly int JumpAttackHash = Animator.StringToHash("JumpAttack");
+
+    static readonly int JumpPowerAttackHash = Animator.StringToHash("JumpPowerAttack");
+
+    static readonly int ComboHash = Animator.StringToHash("Combo");
+
+    static readonly int IsGroundedHash = Animator.StringToHash("IsGrounded");
+    #endregion
+
     public enum MoveState
     {
         OnField,
@@ -141,7 +160,7 @@ public class PlayerControll : ColliderGenerater
         {
             // 方向の入力がニュートラルの時は、y 軸方向の速度を保持するだけ
             m_rb.velocity = new Vector3(0f, m_rb.velocity.y, 0f);
-            m_anim.SetFloat("Speed", 0);
+            m_anim.SetFloat(SpeedHash, 0);
         }
         else
         {
@@ -158,9 +177,6 @@ public class PlayerControll : ColliderGenerater
     private void SetStance()
     {
         stanceValue = m_slider.fillAmount;
-        //if (stanceValue < 0.3) m_current = m_settings[0];
-        //else if (stanceValue < 0.7) m_current = m_settings[1];
-        //else m_current = m_settings[2];
         m_current = m_settings[1];
         m_anim.runtimeAnimatorController = m_current.Anim;
     }
@@ -197,7 +213,7 @@ public class PlayerControll : ColliderGenerater
             if (Input.GetButtonDown("Fire1"))
             {
                 //Attack
-                m_anim.Play("Basic");
+                m_anim.Play(BasicAttackHash);
             }
             if (Input.GetButtonDown("Jump"))
             {
@@ -211,7 +227,7 @@ public class PlayerControll : ColliderGenerater
         //空中での入力
         else
         {
-            m_anim.SetFloat("Speed", 0);
+            m_anim.SetFloat(SpeedHash, 0);
             float veloY = m_rb.velocity.y *(Input.GetButton("Jump") ? m_current.FloatPower : 1);//空中でジャンプキーを押すと滑空出来る
             if (Input.GetButton("Jump")) m_anim.Play("Idle");
             var midAirSpeed = Input.GetButton("Jump") ? 1 : m_current.MidairSpeedRate;//滑空時は減速しない
@@ -243,7 +259,7 @@ public class PlayerControll : ColliderGenerater
     private void Jump()
     {
         if (!IsGrounded()) return;
-        m_anim.SetTrigger("JumpFlag");
+        m_anim.SetTrigger(JumpHash);
         m_rb.useGravity = false;
         m_rb.DOMoveY(5, 0.5f);
         m_rb.constraints = RigidbodyConstraints.FreezeRotation;
@@ -260,7 +276,7 @@ public class PlayerControll : ColliderGenerater
         if (CanUse)
         {
             StartCoroutine(nameof(SetCoolDown), m_current.DodgeCoolDown);
-            m_anim.SetTrigger("CrouchFlag");
+            m_anim.SetTrigger(DodgeHash);
             if (dir.magnitude <= 0.01f)
             {
                 m_rb.DOMove(transform.position + transform.forward * m_current.DodgeLength, 1f);
@@ -301,11 +317,11 @@ public class PlayerControll : ColliderGenerater
         }
         if (timer >= 0.3f)
         {
-            m_anim.Play("JumpPowerAttack");
+            m_anim.Play(JumpPowerAttackHash);
         }
         else if (timer != 0)
         {
-            m_anim.Play("JumpAttack");
+            m_anim.Play(JumpAttackHash);
             m_legAttackCollider.SetActive(true);
             yield return new WaitForSeconds(0.5f);
             m_legAttackCollider.SetActive(false);
@@ -339,7 +355,7 @@ public class PlayerControll : ColliderGenerater
         Vector3 end = start + Vector3.down * m_isGroundedLength;  // end: start から真下の地点
         Debug.DrawLine(start, end); // 動作確認用に Scene ウィンドウ上で線を表示する
         bool isGrounded = Physics.Linecast(start, end); // 引いたラインに何かがぶつかっていたら true とする
-        m_anim.SetBool("IsGround", isGrounded);
+        m_anim.SetBool(IsGroundedHash, isGrounded);
         return isGrounded;
     }
 
@@ -352,7 +368,7 @@ public class PlayerControll : ColliderGenerater
         if (Input.GetButtonDown("Splint")) IsRunning = !IsRunning ? true : false;
         //入力に応じてスピード、アニメーションを変更する
         velo = dir.normalized * (IsRunning ? m_current.RunningSpeed : m_current.MovingSpeed) * m_powerUpRate;
-        m_anim.SetFloat("Speed", (IsRunning ? m_current.RunningSpeed : m_current.MovingSpeed) * m_powerUpRate);
+        m_anim.SetFloat(SpeedHash, (IsRunning ? m_current.RunningSpeed : m_current.MovingSpeed) * m_powerUpRate);
     }
 
 
@@ -390,7 +406,7 @@ public class PlayerControll : ColliderGenerater
             timer += 0.01f;
             if (Input.GetButtonDown("Fire1"))
             {
-                m_anim.SetTrigger("Combo");
+                m_anim.SetTrigger(ComboHash);
                 IsSucceeded = true;
                 m_successEffect?.SetActive(true);
                 m_comboEffect?.SetActive(false);
