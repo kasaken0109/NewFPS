@@ -25,6 +25,5 @@ public class GateController : MonoBehaviour
         m_camera?.SetActive(true);
         yield return new WaitForSeconds(1f);
         m_camera?.SetActive(false);
-        //GameManager.Instance.m_player.gameObject.GetComponent<CameraController>().ResetCamera();
     }
 }

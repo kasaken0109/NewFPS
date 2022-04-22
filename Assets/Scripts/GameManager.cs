@@ -5,15 +5,22 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
-    public PlayerManager m_player;
-    [SerializeField] GameObject m_bossEnemy = null;
-    [SerializeField] Transform m_bossSpawn = null;
+    
+    [SerializeField]
+    private GameObject m_bossEnemy = null;
+    [SerializeField]
+    private Transform m_bossSpawn = null;
     public GameObject m_shootweaponImage;
-    [SerializeField] GameObject m_win = null;
-    [SerializeField] GameObject m_gate = null;
-    [SerializeField] GameObject m_lose = null;
+    [SerializeField]
+    private GameObject m_win = null;
+    [SerializeField]
+    private GameObject m_gate = null;
+    [SerializeField]
+    private GameObject m_lose = null;
 
     public static GameManager Instance = null;
+
+    public PlayerManager m_player;
     static public PlayerManager Player => Instance.m_player;
 
     //適当なのでちゃんとしたシングルトンではない
@@ -75,9 +82,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Camera.main.transform.position = pos;
         Camera.main.transform.rotation = rot;
-        //Camera.main.transform.DOMove(pos, 0.5f);
-
-
     }
 
     public void CinemaMode()
@@ -87,10 +91,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SetPlayerCameraInput()
     {
-        //CameraController.Instance.SetMoveActive(false);
         PlayerControll.Instance.SetMoveActive(false);
         yield return new WaitForSeconds(1.5f);
-        //CameraController.Instance.SetMoveActive(true);
         PlayerControll.Instance.SetMoveActive(true);
     }
 }
