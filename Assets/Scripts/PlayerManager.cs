@@ -113,7 +113,7 @@ public class PlayerManager : MonoBehaviour,IDamage
                 1f  // 時間（秒）
                 ).SetEase(Ease.OutCubic);
             var m =Instantiate(m_dead,transform.position,transform.rotation);
-            GameManager.Instance.GameStatus = GameManager.GameState.PLAYERLOSE;
+            GameManager.Instance.SetGameState(GameManager.GameState.PLAYERLOSE);
             gameObject.SetActive(false);
         }
     }
