@@ -2,19 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
-    
+
     [SerializeField]
     private GameObject m_bossEnemy = null;
+
     [SerializeField]
-    private Transform m_bossSpawn = null;
-    public GameObject m_shootweaponImage;
+    [Tooltip("プレイヤーのバーチャルカメラ")]
+    private CinemachineVirtualCamera virtualCamera = default;
+
+    [SerializeField]
+    [Tooltip("メニュー")]
+    private GameObject menu = default;
+
     [SerializeField]
     private GameObject m_win = null;
+
     [SerializeField]
     private GameObject m_gate = null;
+
     [SerializeField]
     private GameObject m_lose = null;
 
@@ -27,22 +36,45 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        PlayerPrefs.SetInt("Bullet1", 4);
-        PlayerPrefs.SetInt("Bullet2", 4);
         PlayerPrefs.SetString("SceneName",SceneManager.GetActiveScene().name);
         PlayerPrefs.Save();
     }
 
-    private void FixedUpdate()
+    private void Update()
+    {
+        if (Input.GetButtonDown("Menu"))
+        {
+            myGameState = !menu.activeInHierarchy ? GameState.STOP : GameState.RESUME;
+            SetGameConnditoin();
+        }
+    }
+
+    private void SetGameConnditoin()
     {
         switch (myGameState)
         {
-            case GameState.PLAYERWIN:m_win.SetActive(true);
+            case GameState.PLAYING:
+                break;
+            case GameState.STOP:
+                Cursor.visible = true;
+                Time.timeScale = 0f;
+                virtualCamera.enabled = false;
+                menu.SetActive(true);
+                break;
+            case GameState.RESUME:
+                Cursor.visible = false;
+                Time.timeScale = 1;
+                virtualCamera.enabled = true;
+                menu.SetActive(false);
+                break;
+            case GameState.PLAYERWIN:
+                m_win.SetActive(true);
                 m_gate?.SetActive(true);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
                 break;
-            case GameState.PLAYERLOSE:m_lose.SetActive(true);
+            case GameState.PLAYERLOSE:
+                m_lose.SetActive(true);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
                 break;
@@ -51,18 +83,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ShakeCamera()
+    public void SetGameState(GameState gameState)
     {
-        StartCoroutine(nameof(FixCameraPos));
+        myGameState = gameState;
+        SetGameConnditoin();
     }
 
     private GameState myGameState;
 
-    public GameState GameStatus
-    {
-        get { return myGameState; }
-        set { myGameState = value; }
-    }
+    public GameState GameStatus => myGameState;
 
     public enum GameState
     {
@@ -72,27 +101,5 @@ public class GameManager : MonoBehaviour
         PLAYERWIN,
         PLAYERLOSE,
 
-    }
-
-    IEnumerator FixCameraPos()
-    {
-        Vector3 pos = Camera.main.transform.position;
-        Quaternion rot = Camera.main.transform.rotation;
-        iTween.ShakePosition(Camera.main.gameObject, iTween.Hash("x", 0.5, "y", 0.5, "time", 1));
-        yield return new WaitForSeconds(1f);
-        Camera.main.transform.position = pos;
-        Camera.main.transform.rotation = rot;
-    }
-
-    public void CinemaMode()
-    {
-        StartCoroutine(nameof(SetPlayerCameraInput));
-    }
-
-    IEnumerator SetPlayerCameraInput()
-    {
-        PlayerControll.Instance.SetMoveActive(false);
-        yield return new WaitForSeconds(1.5f);
-        PlayerControll.Instance.SetMoveActive(true);
     }
 }
