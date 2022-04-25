@@ -50,18 +50,13 @@ public class MenuController : MonoBehaviour
         Time.timeScale = menuFlag ? 1 : 0;
         menu.SetActive(!menuFlag);
         SetCamera(!menuFlag);
-        GameManager.Instance.GameStatus = menuFlag ? GameManager.GameState.PLAYING : GameManager.GameState.STOP;
+        //GameManager.Instance.GameStatus = menuFlag ? GameManager.GameState.PLAYING : GameManager.GameState.STOP;
         menuFlag = menuFlag ? false : true;
     }
 
     public void SetCamera(bool value)
     {
         virtualCamera.enabled = value;
-    }
-
-    public void StartClock()
-    {
-        Time.timeScale = 1;
     }
 
     private void OnDestroy()

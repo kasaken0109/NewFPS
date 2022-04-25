@@ -52,7 +52,7 @@ public class MoveState : StateBase
         while (true)
         {
             //Debug.Log(EnemyManager.Instance.m_froznBody);
-            if (!EnemyBossManager.Instance.m_froznBody.activeSelf)
+            //if (!EnemyBossManager.Instance.m_froznBody.activeSelf)
             {
                 NavMeshHit hit;
                 //if (NavMesh.SamplePosition(m_cachedTargetPosition, out hit, 1.0f, NavMesh.AllAreas))
@@ -77,7 +77,6 @@ public class MoveState : StateBase
                 if (distance <= m_agent.stoppingDistance)
                 {
                     animator.Play("Roar");
-                    EnemyBossManager.Instance.hpSlider.gameObject.SetActive(true);
                     yield return new WaitForSeconds(1f);
                     //GameManager.Instance.m_player.gameObject.GetComponent<CameraController>().ResetCamera();
                     yield return new WaitForSeconds(1f);
@@ -118,7 +117,6 @@ public class MoveState : StateBase
         var source = GetComponentInParent<Cinemachine.CinemachineImpulseSource>();
         source.GenerateImpulse(5);
         SoundManager.Instance.PlayRoar();
-        GameManager.Instance.ShakeCamera();
     }
 
     IEnumerator SpawnWait()
