@@ -35,7 +35,6 @@ public class fire : MonoBehaviour
     {
         m_shootAnim = GetComponent<Animator>();
         m_bulletNum = PlayerPrefs.GetInt("Bullet2");
-        GameManager.Instance.m_shootweaponImage.GetComponent<Image>().fillAmount = 1;
         m_reload = PlayerManager.Instance.m_reloadImage;
         if (m_muzzle == null)
         {
