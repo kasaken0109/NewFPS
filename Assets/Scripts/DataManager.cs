@@ -66,7 +66,7 @@ public static class DataManager
         #if UNITY_EDITOR
             string path = Directory.GetCurrentDirectory();
 #else
-            string paths = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
+            string path = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
 #endif
             FileInfo info = new FileInfo(path + "/" + DATA_FILE_PATH);
         }
