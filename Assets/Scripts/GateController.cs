@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GateController : MonoBehaviour
 {
-    [SerializeField] GameObject m_camera = null;
-    // Start is called before the first frame update
+    [SerializeField]
+    private GameObject m_camera = null;
     void Start()
     {
         StartCoroutine(nameof(ZoomMe));

@@ -15,7 +15,7 @@ public class PlayerControll : ColliderGenerater
     public static PlayerControll Instance { get; private set; }
 
     [SerializeField]
-    [Tooltip("プレイヤーの値の設定、0,１,２要設定")]
+    [Tooltip("プレイヤーの値の設定、0,1,2要設定")]
     private PlayerMoveSettings[] m_settings = default;
 
     [SerializeField]
@@ -47,6 +47,7 @@ public class PlayerControll : ColliderGenerater
     GameObject m_rush = null;
 
     [SerializeField]
+    [Tooltip("アニメーター")]
     Animator m_anim = null;
 
     [SerializeField]
@@ -69,6 +70,7 @@ public class PlayerControll : ColliderGenerater
     private UnityEvent m_stopFloatAction;
 
     [SerializeField]
+    [Tooltip("PostprocessのVolume")]
     private Volume m_Volume;
 
     private bool IsButtonHold = false;
@@ -78,6 +80,7 @@ public class PlayerControll : ColliderGenerater
     private Vector3 velo;
     private Vector3 latestPos;
     private PlayerMoveSettings m_current;
+
     /// <summary>照準</summary>
     RectTransform m_crosshairUi = null;
     Ray ray;
@@ -146,8 +149,6 @@ public class PlayerControll : ColliderGenerater
         //移動不可の際に
         if (!m_isMoveActive) return;
 
-        m_powerUpRate = PlayerManager.Instance.stanceTypes == PlayerManager.StanceTypes.GOD ?
-            2f : 1f;
         //方向の入力を取得し、方向を求める
         float v = Input.GetAxisRaw("Vertical");
         float h = Input.GetAxisRaw("Horizontal");
@@ -256,6 +257,9 @@ public class PlayerControll : ColliderGenerater
         }
     }
 
+    /// <summary>
+    /// ジャンプの挙動を制御する
+    /// </summary>
     private void Jump()
     {
         if (!IsGrounded()) return;
@@ -266,17 +270,26 @@ public class PlayerControll : ColliderGenerater
         m_rb.useGravity = true;
     }
 
+    /// <summary>
+    /// 浮遊開始時に登録された関数を呼び出す
+    /// </summary>
     private void AirFloat()
     {
         m_floatAction?.Invoke();
     }
 
+    /// <summary>
+    /// 回避時の挙動を制御する
+    /// </summary>
     private void Dodge()
     {
         if (CanUse)
         {
+            ///クールダウンの計測を開始
             StartCoroutine(nameof(SetCoolDown), m_current.DodgeCoolDown);
             m_anim.SetTrigger(DodgeHash);
+
+            ///回避時の移動入力に応じて移動距離を変更
             if (dir.magnitude <= 0.01f)
             {
                 m_rb.DOMove(transform.position + transform.forward * m_current.DodgeLength, 1f);
@@ -289,6 +302,10 @@ public class PlayerControll : ColliderGenerater
         }
     }
 
+    /// <summary>
+    /// スキルの発動に必要なエネルギーを追加する
+    /// </summary>
+    /// <param name="value">エネルギーの回収率(0~1)</param>
     public void AddStanceValue(float value)
     {
         if (value + stanceValue < 1) stanceValue += value;
@@ -296,8 +313,13 @@ public class PlayerControll : ColliderGenerater
         m_slider.fillAmount = stanceValue;
     }
 
-
+    [Tooltip("行動出来るかどうか")]
     bool CanUse = true;
+    /// <summary>
+    ///　行動のクールダウンを制御する
+    /// </summary>
+    /// <param name="cooldown">クールダウン時間</param>
+    /// <returns></returns>
     IEnumerator SetCoolDown(float cooldown)
     {
         CanUse = false;
@@ -307,6 +329,10 @@ public class PlayerControll : ColliderGenerater
 
     float timer = 0;
     GameObject m_hit;
+    /// <summary>
+    /// 空中時の攻撃を制御する
+    /// </summary>
+    /// <returns></returns>
     IEnumerator MidAirAttack()
     {
         yield return new WaitForSeconds(0.1f);
@@ -330,8 +356,13 @@ public class PlayerControll : ColliderGenerater
         yield break;
     }
 
+    /// <summary>
+    /// 攻撃判定のある移動処理を行う
+    /// </summary>
+    /// <param name="dushpower">移動距離</param>
     public void StepForward(float dushpower)
     {
+        ///引数分プレイヤーの正面方向に移動
         m_rb.DOMove(transform.position + transform.forward * dushpower, 1);
         bool Ishit = Physics.Raycast(ray, out hit, 15f, m_layerMask);
 
@@ -396,13 +427,18 @@ public class PlayerControll : ColliderGenerater
     }
 
     bool IsSucceeded = false;
+    /// <summary>
+    /// 入力に応じてコンボ攻撃を変化させる
+    /// </summary>
+    /// <returns></returns>
     IEnumerator WaitInput()
     {
         float timer = 0;
+        var wait = new WaitForSeconds(0.01f);//事前キャッシュ
         m_comboEffect?.SetActive(true);
         while(timer < 0.3f)
         {
-            yield return new WaitForSeconds(0.01f);
+            yield return wait;
             timer += 0.01f;
             if (Input.GetButtonDown("Fire1"))
             {
