@@ -65,14 +65,17 @@ public static class DataManager
         {
         #if UNITY_EDITOR
             string path = Directory.GetCurrentDirectory();
-#else
+        #else
             string path = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
-#endif
+        #endif
             FileInfo info = new FileInfo(path + "/" + DATA_FILE_PATH);
+            StreamReader reader = new StreamReader(info.OpenRead());
+            string json = reader.ReadToEnd();
+            data = JsonUtility.FromJson<SaveData>(json);
         }
-        catch
+        catch(Exception e)
         {
-
+            data = new SaveData();
         }
     }
 }
