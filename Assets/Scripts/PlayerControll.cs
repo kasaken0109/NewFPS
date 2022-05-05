@@ -126,8 +126,6 @@ public class PlayerControll : ColliderGenerater
     {
         stanceValue = 0.5f;
         m_rb = GetComponent<Rigidbody>();
-        m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
-
         DisplayEffectInit();
     }
 
@@ -155,7 +153,6 @@ public class PlayerControll : ColliderGenerater
 
         // 入力方向のベクトルを組み立てる
         dir = Vector3.forward * v + Vector3.right * h;
-        ray = Camera.main.ScreenPointToRay(m_crosshairUi.position);
 
         if (dir == Vector3.zero)
         {
@@ -177,7 +174,7 @@ public class PlayerControll : ColliderGenerater
 
     private void SetStance()
     {
-        stanceValue = m_slider.fillAmount;
+        if(m_slider) stanceValue = m_slider.fillAmount;
         m_current = m_settings[1];
         m_anim.runtimeAnimatorController = m_current.Anim;
     }
@@ -357,20 +354,13 @@ public class PlayerControll : ColliderGenerater
     }
 
     /// <summary>
-    /// 攻撃判定のある移動処理を行う
+    /// ステップ移動処理を行う
     /// </summary>
     /// <param name="dushpower">移動距離</param>
     public void StepForward(float dushpower)
     {
         ///引数分プレイヤーの正面方向に移動
         m_rb.DOMove(transform.position + transform.forward * dushpower, 1);
-        bool Ishit = Physics.Raycast(ray, out hit, 15f, m_layerMask);
-
-        if (Ishit)
-        {
-            m_hit = hit.collider.gameObject;
-            m_hit.GetComponentInParent<IDamage>().AddDamage(20);
-        }
         //移動エフェクトを有効にする
         m_rush.SetActive(true);
     }
@@ -448,8 +438,7 @@ public class PlayerControll : ColliderGenerater
                 m_comboEffect?.SetActive(false);
                 break;
             }
-        }
-        m_anim.speed = IsSucceeded ? m_anim.speed*= 1.1f : 1;//コンボ成功時に攻撃速度を上昇させる
+        }   
         IsSucceeded = false;
         m_comboEffect?.SetActive(false);
         yield return new WaitForSeconds(2f);
