@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// 接触判定(攻撃)を制御する
@@ -31,6 +32,22 @@ public class AttackcolliderController : MonoBehaviour
     [Tooltip("攻撃が有効かどうか")]
     private bool CanHit;
 
+    private float attackCorrectionValue = 1f;
+
+    public void StartAttackCorrectionValue(float value, float time)
+    {
+        StopCoroutine(nameof(SetEffectTime));
+        StartCoroutine(SetEffectTime(value, time));
+    }
+
+    IEnumerator SetEffectTime(float value, float time)
+    {
+        var setValue = attackCorrectionValue > value ? attackCorrectionValue : value;
+        attackCorrectionValue = setValue;
+        yield return new WaitForSeconds(time);
+        attackCorrectionValue = 1f;
+    }
+
     private void OnEnable()
     {
         //コライダーがアクティブになったときに攻撃を有効にする
@@ -43,7 +60,6 @@ public class AttackcolliderController : MonoBehaviour
         
         if (other.tag == m_opponentTagName && CanHit)
         {
-            Debug.Log("sss");
             var frostAttack = other.GetComponentInChildren<FrostAttackController>();
             if (frostAttack)
             {
@@ -55,7 +71,7 @@ public class AttackcolliderController : MonoBehaviour
             if (stance)
             {
                 stance.AddStanceValue(m_upStanceValue);
-                other.gameObject.GetComponentInParent<IDamage>().AddDamage(Mathf.CeilToInt(m_attackPower * (stance.StanceValue >= 0.3f ? (stance.StanceValue >= 0.7 ? 1.5f : 1f) : 0.7f)));
+                other.gameObject.GetComponentInParent<IDamage>().AddDamage(Mathf.CeilToInt(m_attackPower * attackCorrectionValue));
             }
             other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
 
