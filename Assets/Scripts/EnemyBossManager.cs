@@ -13,50 +13,58 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     public static EnemyBossManager Instance { get; private set; }
 
     [SerializeField]
+    [Tooltip("HP")]
     private int m_hp = 100;
 
     [SerializeField]
-    private int m_mp = 200;
-
-    [SerializeField]
+    [Tooltip("怯み値")]
     [Range(1, 100)]
     private int m_rate;
 
     [SerializeField]
-    private float m_freezeTime = 5f;
-
-    [SerializeField]
+    [Tooltip("Animator")]
     private Animator m_animator = null;
 
     [SerializeField]
+    [Tooltip("死亡時に発生する死体")]
     private GameObject m_deathBody = null;
 
     [SerializeField]
+    [Tooltip("")]
     private GameObject m_sandEffect = null;
 
-    public GameObject m_hpUI = null;
-    
-    public GameObject m_froznBody = null;
+    [SerializeField]
+    private Image hpSlider;
 
-    public Image hpSlider;
-
-    public bool IsCritical = false;
-
-    ActionCtrl actionCtrl = null;
+    private bool IsCritical = false;
 
     int maxHp;
-    int mp;
     int hitRate = 0;
     int rateTemp;
+    int count = 0;
 
     float hitSpeed = 1f;
 
+    #region EnemyAnimatorHash
+    int hpHash = Animator.StringToHash("HP");
+    int mpHash = Animator.StringToHash("MP");
+
+    #endregion
+
     public void AddDamage(int damage)
     {
-        mp -= (30 - damage);
         hitSpeed = (float)(damage / 10f);
         StopCoroutine(HitStop());
         StartCoroutine(HitStop());
+        if (m_hp < maxHp * 0.5f && count == 0)
+        {
+            StartCoroutine(nameof(DeathCombo));
+        }
+        else if (m_hp < maxHp * 0.2f && count == 1)
+        {
+            StopCoroutine(nameof(DeathCombo));
+            StartCoroutine(nameof(DeathCombo));
+        }
         if (m_hp > damage)
         {
             m_hp -= damage;
@@ -69,7 +77,7 @@ public class EnemyBossManager : MonoBehaviour, IDamage
             hitRate += damage;
             if(hitRate >= m_rate)
             {
-                m_animator.SetInteger("HP", 1);
+                m_animator.SetInteger(hpHash, 1);
                 m_animator.SetTrigger("Hit");
                 hitRate = 0;
             }
@@ -86,9 +94,8 @@ public class EnemyBossManager : MonoBehaviour, IDamage
                 (float)(float)0, // ターゲットとなる値
                 1f  // 時間（秒）
                 ).SetEase(Ease.OutCubic);
-            //Debug.Log("EnemyDeath");
             Instantiate(m_deathBody,this.transform.position,this.transform.rotation);
-            GameManager.Instance.GameStatus = GameManager.GameState.PLAYERWIN;
+            GameManager.Instance.SetGameState(GameManager.GameState.PLAYERWIN);
             Destroy(this.gameObject);
         }
     }
@@ -111,23 +118,6 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     {
         Instance = this;
         maxHp = m_hp;
-        mp = m_mp;
-        //StartCoroutine(nameof(FrostMode));
-    }
-
-    int count = 0;
-    // Update is called once per frame
-    void Update()
-    {
-        if (m_hp < maxHp * 0.5f && count == 0)
-        {
-            StartCoroutine(nameof(DeathCombo));
-        }
-        else if (m_hp < maxHp * 0.2f && count == 1)
-        {
-            StopCoroutine(nameof(DeathCombo));
-            StartCoroutine(nameof(DeathCombo));
-        }
     }
 
     IEnumerator DeathCombo()
@@ -147,31 +137,5 @@ public class EnemyBossManager : MonoBehaviour, IDamage
         hitRate = rateTemp;
     }
 
-    IEnumerator FrostMode()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(0.1f);
-            if(mp <= 0)
-            {
-                m_froznBody.SetActive(true);
-                m_animator.SetBool("IsFreeze",true);
-                yield return new WaitForSeconds(m_freezeTime);
-                m_animator.SetBool("IsFreeze", false);
-                m_froznBody.SetActive(false);
-                mp = m_mp;
-            }
-        }
-    }
-
-    public void SpawnEffects()
-    {
-        //_moveState.SpawnEffect();
-        m_sandEffect.SetActive(true);
-    }
-
-    public void StopPlayer()
-    {
-        GameManager.Instance.CinemaMode();
-    }
+    public void SpawnEffects() => m_sandEffect.SetActive(true);
 }
