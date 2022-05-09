@@ -33,13 +33,18 @@ public class BulletSelectController : MonoBehaviour
 
     private bool useGamePads = false;
 
+    private int equipID = 0;
+
+    private bool IsPreScroll = false;
+
     public List<Bullet> MyBullet { set { m_IDs = value; } }
 
     // Start is called before the first frame update
     void Start()
     {
-        SelectBullet(0);//弾の選択状態の初期化
+        SelectBullet(equipID);//弾の選択状態の初期化
         m_image.gameObject.SetActive(false);
+        IsPreScroll = false;
         origin = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);//スクリーンの中心座標を設定
         padOrigin = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
     }
@@ -54,12 +59,22 @@ public class BulletSelectController : MonoBehaviour
         float vert = Input.GetAxis("Mouse Y");
         Vector3 input = new Vector3(hori, vert, 0);
         padOrigin = input;
-        if (Input.GetButton("Fire3"))
+
+        float scrollValue = Input.mouseScrollDelta.y;//Input.GetAxis("Mouse ScrollWheel");
+        if (Mathf.Abs(scrollValue) < 0.1f) IsPreScroll = false;
+        else
         {
-            if(useGamePads) SelectPadUI(input);
-            else SelectUI(Input.mousePosition);
+            if (IsPreScroll) return;
+            equipID = scrollValue > 0 ? (equipID == 0 ? 2 : equipID - 1) : (equipID == 2 ? 0 : equipID +1);
+            SelectBullet(equipID);
+            IsPreScroll = true;
         }
-        m_image.SetActive(Input.GetButton("Fire3"));//マウスホイールを押している間だけUIを表示
+        //if (Input.GetButton("Fire3"))
+        //{
+        //    if(useGamePads) SelectPadUI(input);
+        //    else SelectUI(Input.mousePosition);
+        //}
+        //m_image.SetActive(Input.GetButton("Fire3"));//マウスホイールを押している間だけUIを表示
         //m_menu.SetCamera(!Input.GetButton("Fire3"));//カメラの機能を切り替える
 
     }
@@ -129,4 +144,9 @@ public class BulletSelectController : MonoBehaviour
     /// </summary>
     /// <param name="isArea"></param>
     public void IsInUIArea(bool isArea) => isEnter = isArea;
+
+    private void OnDestroy()
+    {
+        equipID = 0;
+    }
 }
