@@ -29,11 +29,17 @@ public class PassiveSkill:ScriptableObject
     private string explainText = default;
 
     [SerializeField]
+    [Tooltip("スキル名")]
     private string skillName = default;
 
     [SerializeField]
-    [Tooltip("")]
+    [Tooltip("スキルイメージ")]
     private Sprite image = default;
+
+    [SerializeField]
+    [Tooltip("使用時のエフェクト")]
+    GameObject m_effect = default;
+
     public PassiveType PassiveType => passiveType;
 
     public float EffectableTime => effectableTime;
@@ -47,6 +53,8 @@ public class PassiveSkill:ScriptableObject
     public Sprite ImageBullet => image;
 
     public string SkillName => skillName;
+
+    public GameObject Effect => m_effect;
 }
 
 public enum PassiveType
