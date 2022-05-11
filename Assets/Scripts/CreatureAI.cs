@@ -100,13 +100,13 @@ public class Move : BehaviourAI.IAction
             m_agent.SetDestination((m_chaseTarget == null ? CreatureAI.Target : m_chaseTarget).transform.position);
             m_agent.speed = m_moveSpeed;
             m_anim.SetFloat("Speed", m_moveSpeed);
-            Debug.Log("移動中");
+            //Debug.Log("移動中");
 
             if (Vector3.Distance((m_chaseTarget == null ? CreatureAI.Target : m_chaseTarget).transform.position, m_target.transform.position) < m_agent.stoppingDistance)
             {
                 m_agent.SetDestination(m_target.transform.position);
                 m_anim.SetFloat("Speed", 0);
-                Debug.Log("移動停止");
+                //Debug.Log("移動停止");
                 m_reset = true;
             }
         }
@@ -153,7 +153,7 @@ public class Attack : IAction
             IsAnimate = true;
         }
         
-        Debug.Log("攻撃中");
+        //Debug.Log("攻撃中");
         if (time < m_coolTime)
         {
             time += Time.deltaTime;
@@ -203,7 +203,6 @@ public class CreatureAI : MonoBehaviour, BehaviourAI.IBehaviour
     public static Animator Anim;
 
     public static GameObject Target;
-
 
     public static GameObject Player;
     private void Start()
