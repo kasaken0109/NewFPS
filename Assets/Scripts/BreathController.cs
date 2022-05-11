@@ -9,12 +9,14 @@ public class BreathController : MonoBehaviour
 {
     [SerializeField]
     private float m_speed;
+    [SerializeField]
+    private string m_name = "EnemyBoss";
 
     Rigidbody m_rb;
     // Start is called before the first frame update
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
-        m_rb.velocity = GameObject.Find("EnemyBoss").transform.forward * m_speed;
+        m_rb.velocity = GameObject.Find(m_name).transform.forward * m_speed;
     }
 }
