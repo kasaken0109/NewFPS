@@ -27,9 +27,21 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject m_lose = null;
 
+    [SerializeField]
+    [Tooltip("照準のUI,バレットの参照用")]
+    private RectTransform m_crosshairUi = null;
+
+    [SerializeField]
+    private PlayerManager m_player = default;
+
+    [SerializeField]
+    private TimerManager m_timerManager = default;
+
     public static GameManager Instance = null;
 
-    public PlayerManager m_player;
+    public RectTransform CrosshairUI => m_crosshairUi;
+
+    
     static public PlayerManager Player => Instance.m_player;
 
     //適当なのでちゃんとしたシングルトンではない
@@ -38,6 +50,8 @@ public class GameManager : MonoBehaviour
         Instance = this;
         PlayerPrefs.SetString("SceneName",SceneManager.GetActiveScene().name);
         PlayerPrefs.Save();
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
@@ -57,12 +71,14 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.STOP:
                 Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
                 Time.timeScale = 0f;
                 virtualCamera.enabled = false;
                 menu.SetActive(true);
                 break;
             case GameState.RESUME:
                 Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.None;
                 Time.timeScale = 1;
                 virtualCamera.enabled = true;
                 menu.SetActive(false);
@@ -72,11 +88,13 @@ public class GameManager : MonoBehaviour
                 m_gate?.SetActive(true);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
+                m_timerManager.SaveTime();
                 break;
             case GameState.PLAYERLOSE:
                 m_lose.SetActive(true);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
+                m_timerManager.SaveTime();
                 break;
             default:
                 break;
@@ -88,6 +106,8 @@ public class GameManager : MonoBehaviour
         myGameState = gameState;
         SetGameConnditoin();
     }
+
+    public void SetGameState(int value) => SetGameState((GameState)value);
 
     private GameState myGameState;
 
@@ -101,5 +121,11 @@ public class GameManager : MonoBehaviour
         PLAYERWIN,
         PLAYERLOSE,
 
+    }
+
+    private void OnDestroy()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }
