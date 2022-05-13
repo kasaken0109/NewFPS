@@ -30,20 +30,20 @@ public class EnemyBossManager : MonoBehaviour, IDamage
     private GameObject m_deathBody = null;
 
     [SerializeField]
-    [Tooltip("")]
+    [Tooltip("地面から砂が発生する攻撃のエフェクト")]
     private GameObject m_sandEffect = null;
 
     [SerializeField]
     private Image hpSlider;
 
-    private bool IsCritical = false;
+    private bool IsCritical = false;//特殊攻撃のいフラグ
 
     int maxHp;
-    int hitRate = 0;
+    int hitRate = 0;//怯み値
     int rateTemp;
-    int count = 0;
+    int count = 0;//特殊攻撃の回数
 
-    float hitSpeed = 1f;
+    float hitSpeed = 1f;//ヒットストップのスピード
 
     #region EnemyAnimatorHash
     int hpHash = Animator.StringToHash("HP");
@@ -81,7 +81,6 @@ public class EnemyBossManager : MonoBehaviour, IDamage
                 m_animator.SetTrigger("Hit");
                 hitRate = 0;
             }
-            //Debug.Log($"Hit!:{mp}");
         }
         else
         {
