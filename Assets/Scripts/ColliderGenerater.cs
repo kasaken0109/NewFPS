@@ -17,9 +17,9 @@ public class ColliderGenerater : MonoBehaviour
     }
     public IEnumerator GenerateCollider(GameObject hitCollider ,float waitTime)
     {
-        hitCollider.SetActive(true);
+        hitCollider.gameObject.GetComponent<AttackcolliderController>().SetActiveAttack(true);
         yield return new WaitForSeconds(waitTime);
-        hitCollider.SetActive(false);
+        hitCollider.gameObject.GetComponent<AttackcolliderController>().SetActiveAttack(false);
     }
 
     public void StartActiveCollider(GameObject hitCollider, float waitTime)
