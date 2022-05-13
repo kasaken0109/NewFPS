@@ -34,13 +34,28 @@ public class AttackcolliderController : MonoBehaviour
 
     private float attackCorrectionValue = 1f;
 
+    private float defanceCorrectionValue = 1f;
+
+    private int attackPower = 0;
+
+    public int AttackPower => attackPower;
+
+    private int frostattackPower = 0;
+
+    public void SetActiveAttack(bool value)
+    {
+        attackPower = value ? m_attackPower : 0;
+        frostattackPower = value ? 1 : 0;
+
+        CanHit = value ? true : false;
+    }
     public void StartAttackCorrectionValue(float value, float time)
     {
-        StopCoroutine(nameof(SetEffectTime));
-        StartCoroutine(SetEffectTime(value, time));
+        StopCoroutine(nameof(SetAttackEffectTime));
+        StartCoroutine(SetAttackEffectTime(value, time));
     }
 
-    IEnumerator SetEffectTime(float value, float time)
+    IEnumerator SetAttackEffectTime(float value, float time)
     {
         var setValue = attackCorrectionValue > value ? attackCorrectionValue : value;
         attackCorrectionValue = setValue;
@@ -48,22 +63,30 @@ public class AttackcolliderController : MonoBehaviour
         attackCorrectionValue = 1f;
     }
 
-    private void OnEnable()
+    public void StartDefenceCorrectionValue(float value, float time)
     {
-        //コライダーがアクティブになったときに攻撃を有効にする
-        CanHit = true;
+        StopCoroutine(nameof(SetDefenceEffectTime));
+        StartCoroutine(SetDefenceEffectTime(value, time));
+    }
+
+    IEnumerator SetDefenceEffectTime(float value, float time)
+    {
+        var setValue = defanceCorrectionValue > value ? defanceCorrectionValue : value;
+        defanceCorrectionValue = setValue;
+        yield return new WaitForSeconds(time);
+        attackCorrectionValue = 1f;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Item")) other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
+        if (other.CompareTag("Item")) other.gameObject.GetComponentInParent<IDamage>().AddDamage(attackPower);
         
         if (other.tag == m_opponentTagName && CanHit)
         {
             var frostAttack = other.GetComponentInChildren<FrostAttackController>();
             if (frostAttack)
             {
-                other.gameObject.GetComponentInParent<IDamage>().AddDamage(frostAttack.Damage);
+                other.gameObject.GetComponentInParent<IDamage>().AddDamage(Mathf.CeilToInt(frostattackPower * frostAttack.Damage * attackCorrectionValue) );
                 Destroy(frostAttack.gameObject);
             }
 
@@ -71,10 +94,12 @@ public class AttackcolliderController : MonoBehaviour
             if (stance)
             {
                 stance.AddStanceValue(m_upStanceValue);
-                other.gameObject.GetComponentInParent<IDamage>().AddDamage(Mathf.CeilToInt(m_attackPower * attackCorrectionValue));
+                other.gameObject.GetComponentInParent<IDamage>().AddDamage(Mathf.CeilToInt(attackPower * attackCorrectionValue));
             }
-            other.gameObject.GetComponentInParent<IDamage>().AddDamage(m_attackPower);
-
+            else
+            {
+                other.gameObject.GetComponentInParent<IDamage>().AddDamage(Mathf.CeilToInt(attackPower / defanceCorrectionValue));
+            }
 
             if (m_hit)SoundManager.Instance.PlayHit(m_hit,gameObject.transform.position);
             if(m_hitEffect) Instantiate(m_hitEffect, other.ClosestPoint(transform.position), GameManager.Player.transform.rotation);
