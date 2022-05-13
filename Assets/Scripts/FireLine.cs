@@ -92,15 +92,11 @@ public class FireLine : MonoBehaviour
         GameObject.Find("RifleImage").GetComponent<Image>().fillAmount = 1;
         m_bulletNum = PlayerPrefs.GetInt("Bullet1");
 
-        m_reload = PlayerManager.Instance.m_reloadImage;
-        m_textBox = PlayerManager.Instance.m_textBox1;
         m_text = m_textBox.GetComponent<Text>();
         m_text.text = m_bulletNum + "/" + m_bulletMaxNum;
 
         m_muzzle = GameObject.FindWithTag("Muzzle");
         m_line = m_muzzle.GetComponent<LineRenderer>();
-
-        m_reload = PlayerManager.Instance.m_reloadImage;
         m_reload?.SetActive(false);
         audio = GetComponent<AudioSource>();
         m_crosshairUi = GameObject.Find("Targetaim").GetComponent<RectTransform>();
