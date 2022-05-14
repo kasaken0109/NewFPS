@@ -42,6 +42,11 @@ public class AttackcolliderController : MonoBehaviour
 
     private int frostattackPower = 0;
 
+    private void Start()
+    {
+        CanHit = true;
+        SetActiveAttack(false);
+    }
     public void SetActiveAttack(bool value)
     {
         attackPower = value ? m_attackPower : 0;
@@ -81,7 +86,7 @@ public class AttackcolliderController : MonoBehaviour
     {
         if (other.CompareTag("Item")) other.gameObject.GetComponentInParent<IDamage>().AddDamage(attackPower);
         
-        if (other.tag == m_opponentTagName && CanHit)
+        if (other.CompareTag(m_opponentTagName) && CanHit)
         {
             var frostAttack = other.GetComponentInChildren<FrostAttackController>();
             if (frostAttack)
@@ -91,14 +96,19 @@ public class AttackcolliderController : MonoBehaviour
             }
 
             var stance = GetComponentInParent<PlayerControll>();
+            //stance = stance == null ? GetComponent<PlayerControll>() : stance;
             if (stance)
             {
+                //Debug.Log(other);
                 stance.AddStanceValue(m_upStanceValue);
                 other.gameObject.GetComponentInParent<IDamage>().AddDamage(Mathf.CeilToInt(attackPower * attackCorrectionValue));
             }
             else
             {
-                other.gameObject.GetComponentInParent<IDamage>().AddDamage(Mathf.CeilToInt(attackPower / defanceCorrectionValue));
+                Debug.Log(Mathf.CeilToInt(attackPower / defanceCorrectionValue));
+                var idmg = other.gameObject.GetComponentInParent<IDamage>();
+                idmg = idmg == null ? other.gameObject.GetComponent<IDamage>() : idmg;
+                idmg.AddDamage(Mathf.CeilToInt(attackPower / defanceCorrectionValue));
             }
 
             if (m_hit)SoundManager.Instance.PlayHit(m_hit,gameObject.transform.position);
