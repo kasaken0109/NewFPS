@@ -15,8 +15,8 @@ public class PlayerControll : ColliderGenerater
     public static PlayerControll Instance { get; private set; }
 
     [SerializeField]
-    [Tooltip("プレイヤーの値の設定、0,1,2要設定")]
-    private PlayerMoveSettings[] m_settings = default;
+    [Tooltip("プレイヤーの値の設定")]
+    private PlayerMoveSettings m_settings = default;
 
     [SerializeField]
     [Tooltip("接地判定の際、中心 (Pivot) からどれくらいの距離を「接地している」と判定するかの長さ")]
@@ -96,7 +96,7 @@ public class PlayerControll : ColliderGenerater
 
     static readonly int SpeedHash = Animator.StringToHash("Speed");
 
-    static readonly int JumpHash = Animator.StringToHash("JumpTrigger");
+    static readonly int JumpHash = Animator.StringToHash("JumpFlag");
 
     static readonly int DodgeHash = Animator.StringToHash("CrouchFlag");
 
@@ -109,12 +109,17 @@ public class PlayerControll : ColliderGenerater
     static readonly int ComboHash = Animator.StringToHash("Combo");
 
     static readonly int IsGroundedHash = Animator.StringToHash("IsGrounded");
+
+    static readonly int IsAttackEndHash = Animator.StringToHash("IsAttackEnd");
     #endregion
+
+    Coroutine current;
 
     public enum MoveState
     {
         OnField,
         InAir,
+        Attacking,
         Stun,
     }
 
@@ -175,10 +180,11 @@ public class PlayerControll : ColliderGenerater
     private void SetStance()
     {
         if(m_slider) stanceValue = m_slider.fillAmount;
-        m_current = m_settings[1];
-        m_anim.runtimeAnimatorController = m_current.Anim;
     }
 
+    /// <summary>
+    /// プレイヤーのY軸角度を変更させる
+    /// </summary>
     private void SetPlayerAngle()
     {
         Vector3 diff = transform.position - latestPos;   //前回からどこに進んだかをベクトルで取得
@@ -188,9 +194,8 @@ public class PlayerControll : ColliderGenerater
         //ベクトルの大きさが0.01以上の時に向きを変える処理をする
         if (diff.magnitude > 0.01f)
         {
-            //transform.rotation = Quaternion.LookRotation(diff); //向きを変更する
             Quaternion targetRotation = Quaternion.LookRotation(dir);
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * m_current.TurnSpeed);  // Slerp を使うのがポイント
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * m_settings.TurnSpeed);  // 徐々にプレイヤーを回転させる
         }
     }
 
@@ -226,13 +231,14 @@ public class PlayerControll : ColliderGenerater
         else
         {
             m_anim.SetFloat(SpeedHash, 0);
-            float veloY = m_rb.velocity.y *(Input.GetButton("Jump") ? m_current.FloatPower : 1);//空中でジャンプキーを押すと滑空出来る
+            float veloY = m_rb.velocity.y *(Input.GetButton("Jump") ? m_settings.FloatPower : 1);//空中でジャンプキーを押すと滑空出来る
             if (Input.GetButton("Jump")) m_anim.Play("Idle");
-            var midAirSpeed = Input.GetButton("Jump") ? 1 : m_current.MidairSpeedRate;//滑空時は減速しない
+            var midAirSpeed = Input.GetButton("Jump") ? 1 : m_settings.MidairSpeedRate;//滑空時は減速しない
             m_rb.velocity = new Vector3(m_rb.velocity.x * midAirSpeed, veloY, m_rb.velocity.z * midAirSpeed);
             if (Input.GetButton("Fire1"))
             {
-                StartCoroutine(MidAirAttack());
+                if (current != null) current = null;
+                current = StartCoroutine(MidAirAttack());
                 IsButtonHold = true;
             }
             else if (Input.GetButtonUp("Fire1"))
@@ -245,7 +251,7 @@ public class PlayerControll : ColliderGenerater
             }
             else if(Input.GetButton("Jump"))
             {
-                AddStanceValue(m_current.MidairConsumeRate);
+                AddStanceValue(m_settings.MidairConsumeRate);//浮遊状態の際にはエネルギーを徐々に減少させる
             }
             else
             {
@@ -262,7 +268,7 @@ public class PlayerControll : ColliderGenerater
         if (!IsGrounded()) return;
         m_anim.SetTrigger(JumpHash);
         m_rb.useGravity = false;
-        m_rb.DOMoveY(5, 0.5f);
+        m_rb.DOMoveY(m_settings.JumpPower, 0.2f);
         m_rb.constraints = RigidbodyConstraints.FreezeRotation;
         m_rb.useGravity = true;
     }
@@ -283,17 +289,17 @@ public class PlayerControll : ColliderGenerater
         if (CanUse)
         {
             ///クールダウンの計測を開始
-            StartCoroutine(nameof(SetCoolDown), m_current.DodgeCoolDown);
+            StartCoroutine(nameof(SetCoolDown), m_settings.DodgeCoolDown);
             m_anim.SetTrigger(DodgeHash);
 
             ///回避時の移動入力に応じて移動距離を変更
             if (dir.magnitude <= 0.01f)
             {
-                m_rb.DOMove(transform.position + transform.forward * m_current.DodgeLength, 1f);
+                m_rb.DOMove(transform.position + transform.forward * m_settings.DodgeLength, 1f);
             }
             else
             {
-                m_rb.DOMove(transform.position + dir.normalized * m_current.DodgeLength, 1f);
+                m_rb.DOMove(transform.position + transform.forward * m_settings.DodgeLength * 1.2f, 1f);
             }
 
         }
@@ -332,24 +338,27 @@ public class PlayerControll : ColliderGenerater
     /// <returns></returns>
     IEnumerator MidAirAttack()
     {
-        yield return new WaitForSeconds(0.1f);
+        timer = 0;
+        yield return new WaitForSeconds(0.01f);
         while(IsButtonHold)
         {
             timer += Time.deltaTime;
+            Debug.Log(timer);
             yield return null;
         }
-        if (timer >= 0.3f)
+        if (timer >= 0.5f)
         {
             m_anim.Play(JumpPowerAttackHash);
+            
         }
         else if (timer != 0)
         {
             m_anim.Play(JumpAttackHash);
-            m_legAttackCollider.SetActive(true);
+            m_legAttackCollider.gameObject.GetComponent<AttackcolliderController>().SetActiveAttack(true);
             yield return new WaitForSeconds(0.5f);
-            m_legAttackCollider.SetActive(false);
+            m_legAttackCollider.gameObject.GetComponent<AttackcolliderController>().SetActiveAttack(false);
+            timer = 0;
         }
-        timer = 0;
         yield break;
     }
 
@@ -386,10 +395,13 @@ public class PlayerControll : ColliderGenerater
     /// </summary>
     void Running()
     {
-        if (Input.GetButtonDown("Splint")) IsRunning = !IsRunning ? true : false;
+        //if (Input.GetButtonDown("Splint")) IsRunning = !IsRunning ? true : false;
+        if (Input.GetButton("Splint")) IsRunning = true;
+        else IsRunning = false;
+
         //入力に応じてスピード、アニメーションを変更する
-        velo = dir.normalized * (IsRunning ? m_current.RunningSpeed : m_current.MovingSpeed) * m_powerUpRate;
-        m_anim.SetFloat(SpeedHash, (IsRunning ? m_current.RunningSpeed : m_current.MovingSpeed) * m_powerUpRate);
+        velo = dir.normalized * (IsRunning ? m_settings.RunningSpeed : m_settings.MovingSpeed) * m_powerUpRate;
+        m_anim.SetFloat(SpeedHash, (IsRunning ? m_settings.RunningSpeed : m_settings.MovingSpeed) * m_powerUpRate);
     }
 
 
