@@ -18,5 +18,6 @@ public class BreathController : MonoBehaviour
     {
         m_rb = GetComponent<Rigidbody>();
         m_rb.velocity = GameObject.Find(m_name).transform.forward * m_speed;
+        GetComponent<AttackcolliderController>().SetActiveAttack(true);
     }
 }
