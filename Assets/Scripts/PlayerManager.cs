@@ -38,10 +38,6 @@ public class PlayerManager : MonoBehaviour,IDamage
 
     [SerializeField]
     private PostEffect postEffect = null;
-
-    public GameObject m_reloadImage = null;
-    public GameObject m_textBox1 = null;
-    public GameObject m_textBox2 = null;
     
     private int m_maxhp;
     private bool IsInvisible = false;
@@ -65,11 +61,13 @@ public class PlayerManager : MonoBehaviour,IDamage
 
     void Update()
     {
+        if (!hpslider) return;
         hpslider.fillAmount = (float)m_hp / m_maxhp;
     }
 
     public void AddDamage(int damage)
     {
+        Debug.Log("Hit!!");
         if (IsInvisible)
         {
             if (ActiveDodge)
