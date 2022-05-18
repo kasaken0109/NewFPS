@@ -1173,7 +1173,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Skip
+  m_Text: 
 --- !u!222 &570515607
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6232,6 +6232,7 @@ GameObject:
   - component: {fileID: 869708522}
   - component: {fileID: 869708523}
   - component: {fileID: 869708524}
+  - component: {fileID: 869708525}
   m_Layer: 0
   m_Name: GM
   m_TagString: Untagged
@@ -6289,8 +6290,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LoadSceneName: MainScene
-  m_fadeSpeed: 3
+  m_fadeSpeed: 6
   m_loadPanel: {fileID: 434202198}
+--- !u!114 &869708525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869708521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4d96b204b54ae5409cb58402e2c121c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_buttonField:
+  - m_buttons:
+    - {fileID: 1902769627}
+    - {fileID: 2075793606}
+  arrowValue: 4
 --- !u!1 &993325560 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4722444249757280571, guid: 96cadd5172bcd894fa34ea80d4ce8dce,
@@ -7760,7 +7778,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 21300000, guid: ab81d4efec4ae6d4cbb92175367502a7,
       type: 3}
     m_PressedSprite: {fileID: 21300000, guid: 8d245f28f50bfd941946a133c6d7a828, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: ab81d4efec4ae6d4cbb92175367502a7, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -7916,7 +7934,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 21300000, guid: 0438eeda79eb0cf4e9c96ec9e3c145d0,
       type: 3}
     m_PressedSprite: {fileID: 21300000, guid: 219aefca434b1a14496a681772722690, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: 0438eeda79eb0cf4e9c96ec9e3c145d0, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal

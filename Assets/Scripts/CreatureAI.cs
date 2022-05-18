@@ -186,7 +186,7 @@ public class CheckDistance : BehaviourAI.IConditional
         var dis = Vector3.Distance(m_targetObject.transform.position, (m_target == null ? CreatureAI.Target : m_target).transform.position);
         bool InRange = m_closeDistance < dis && dis < m_farDistance;
         var log = InRange ? "範囲内" : "範囲外";
-        //Debug.Log($"{log}{dis}");
+        Debug.Log($"{log}{dis}");
         return InRange;
     }
 }

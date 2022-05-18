@@ -8,7 +8,7 @@ public class QuestManager : MonoBehaviour
     [SerializeField] QuestPanel[] m_questPanels = null;
     int[] m_questIndex;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         m_questIndex = new int[m_quests.Length];
         for (int i = 0; i < m_questPanels.Length; i++)

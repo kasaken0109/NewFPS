@@ -47,7 +47,7 @@ public class AttackState : StateBase
     int EnterCallback()
     {
         m_animator.SetBool("Attack", true);
-        StartCoroutine(nameof(AttackRoutine));
+        //StartCoroutine(nameof(AttackRoutine));
         if (_opponentTag == "Player")
         {
             var e = GetComponentInParent<EnemyBossManager>();
@@ -60,7 +60,6 @@ public class AttackState : StateBase
     int ExitCallback()
     {
         m_animator.SetBool("Attack", false);
-        StopCoroutine(nameof(AttackRoutine));
         Debug.Log("ExitAttack");
         return 0;
     }
@@ -71,50 +70,5 @@ public class AttackState : StateBase
         m_animator.SetInteger("AttackCombo", value);
     }
 
-    IEnumerator AttackRoutine()
-    {
-        yield return new WaitForFixedUpdate();
-        while (true)
-        {
-            float time = 0f;
-            Vector3 target = m_enemy.transform.position;
-            if (!EnemyBossManager.Instance.m_froznBody.activeSelf)
-            {
-                while (time < 5f)
-                {
-                    target += (GameManager.Player.transform.position - m_enemy.transform.position) * Time.deltaTime / 5f;
-                    m_enemy.transform.LookAt(target);
-                    Debug.Log(time);
-                    time += Time.deltaTime;
-                    yield return new WaitForSeconds(Time.deltaTime);
-                }
-                if (!EnemyBossManager.Instance.IsCritical)
-                {
-                    float distance = Vector3.Distance(GameManager.Player.transform.position, transform.position);
-                    //m_enemy.transform.LookAt(GameManager.Player.transform);
-                    if (distance <= triggerDistance[0])
-                    {
-                        m_animator.SetInteger("AttackType", 0);
-                        SetActionVariable();
-                    }
-                    else
-                    {
-                        if (triggerDistance[1] <= distance)
-                        {
-                            m_animator.SetInteger("AttackType", 2);
-                            SetActionVariable();
-                            breathCount++;
-                        }
-                        else
-                        {
-                            m_animator.SetInteger("AttackType", 1);
-                            SetActionVariable();
-                        }
-                    }
-                }
-            }
-            yield return null;
-        }
-
-    }
+    
 }

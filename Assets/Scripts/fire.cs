@@ -34,8 +34,6 @@ public class fire : MonoBehaviour
     void Start()
     {
         m_shootAnim = GetComponent<Animator>();
-        m_bulletNum = PlayerPrefs.GetInt("Bullet2");
-        m_reload = PlayerManager.Instance.m_reloadImage;
         if (m_muzzle == null)
         {
             m_muzzle = GameObject.FindGameObjectWithTag("Muzzle").transform;
@@ -48,7 +46,7 @@ public class fire : MonoBehaviour
         float timer = 0;
         while (timer < 0.5f)
         {
-            if (Input.GetButtonDown("Fire1")) GameManager.Instance.m_player.GetComponent<PlayerControll>().StepForward(-10);
+            if (Input.GetButtonDown("Fire1")) GameManager.Player.GetComponent<PlayerControll>().StepForward(-10);
             timer += 0.01f;
             yield return new WaitForSeconds(0.01f);
         }
@@ -149,7 +147,7 @@ public class fire : MonoBehaviour
         SoundManager.Instance.PlayCharge();
         yield return new WaitForSeconds(1.5f);
         IsSpecial = true;
-        var player = GameManager.Instance.m_player.gameObject;
+        var player = GameManager.Player.gameObject;
         var playerCol = player.GetComponent<Collider>();
         var m = Instantiate(m_bigWallPrefab);
         m_bulletNum = 0;

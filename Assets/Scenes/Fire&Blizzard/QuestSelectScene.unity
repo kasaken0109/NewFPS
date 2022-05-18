@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -133,6 +133,29 @@ PrefabInstance:
       propertyPath: m_questTitleImage
       value: 
       objectReference: {fileID: 2009319486}
+    - target: {fileID: 4517640361064301081, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 92efec83da3a8f445a2aadc175109ee5,
+        type: 3}
+    - target: {fileID: 4517640361167418657, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1aa8864d539ef6f469e887918e68c383,
+        type: 3}
+    - target: {fileID: 4517640361631411839, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 92efec83da3a8f445a2aadc175109ee5,
+        type: 3}
+    - target: {fileID: 4517640361631411839, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4517640362343407793, guid: 367a72a4263dcd244afa351ff544b155,
         type: 3}
       propertyPath: m_Name
@@ -243,6 +266,23 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4517640362343407795, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8218d6768961d9c4daa8701e13378275,
+        type: 3}
+    - target: {fileID: 4517640362605687090, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 92efec83da3a8f445a2aadc175109ee5,
+        type: 3}
+    - target: {fileID: 6148745132346411062, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 367a72a4263dcd244afa351ff544b155, type: 3}
 --- !u!224 &104633741 stripped
@@ -275,6 +315,23 @@ PrefabInstance:
       propertyPath: m_questTitleImage
       value: 
       objectReference: {fileID: 1008781535}
+    - target: {fileID: 4517640361064301081, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 92efec83da3a8f445a2aadc175109ee5,
+        type: 3}
+    - target: {fileID: 4517640361631411839, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 92efec83da3a8f445a2aadc175109ee5,
+        type: 3}
+    - target: {fileID: 4517640361631411839, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4517640362343407793, guid: 367a72a4263dcd244afa351ff544b155,
         type: 3}
       propertyPath: m_Name
@@ -547,7 +604,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 5c8c4957bc5415b42a5bcbf43dd0e725, type: 3}
+    m_Font: {fileID: 12800000, guid: 92efec83da3a8f445a2aadc175109ee5, type: 3}
     m_FontSize: 78
     m_FontStyle: 0
     m_BestFit: 0
@@ -559,9 +616,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Quest Select
-
-'
+  m_Text: "\u30AF\u30A8\u30B9\u30C8\u9078\u629E\n"
 --- !u!222 &832121131
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -702,11 +757,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_quests:
-  - {fileID: 11400000, guid: 81ab338c56fbe9540ad7a545ff0f546c, type: 2}
-  - {fileID: 11400000, guid: 81ab338c56fbe9540ad7a545ff0f546c, type: 2}
-  - {fileID: 11400000, guid: 81ab338c56fbe9540ad7a545ff0f546c, type: 2}
-  - {fileID: 11400000, guid: 81ab338c56fbe9540ad7a545ff0f546c, type: 2}
-  - {fileID: 11400000, guid: 81ab338c56fbe9540ad7a545ff0f546c, type: 2}
+  - {fileID: 11400000, guid: 34878fe7578ba2d4d9505623e05fc742, type: 2}
+  - {fileID: 11400000, guid: 7a12a0d234166c549ac1b853095ee954, type: 2}
+  - {fileID: 11400000, guid: 2c5b9d34289e0c74d8f3d06cdc4e8685, type: 2}
   m_questPanels:
   - {fileID: 942597617}
   - {fileID: 112898707}
@@ -1985,6 +2038,23 @@ PrefabInstance:
       propertyPath: m_questTitleImage
       value: 
       objectReference: {fileID: 1800842944}
+    - target: {fileID: 4517640361064301081, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 92efec83da3a8f445a2aadc175109ee5,
+        type: 3}
+    - target: {fileID: 4517640361631411839, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 92efec83da3a8f445a2aadc175109ee5,
+        type: 3}
+    - target: {fileID: 4517640361631411839, guid: 367a72a4263dcd244afa351ff544b155,
+        type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4517640362343407793, guid: 367a72a4263dcd244afa351ff544b155,
         type: 3}
       propertyPath: m_Name

@@ -39,26 +39,19 @@ public class EnemyContoroller : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
     }
 
-    public void BasicAttack()
-    {
-        this.transform.DOMove(this.transform.position + this.transform.forward * 2, 0.2f);
-        //this.transform.DOMove(gameObject.transform.position + gameObject.transform.forward * 2, 1f);
-        //m_rb.velocity = this.transform.forward * 100;
-    }
+    public void BasicAttack() => transform.DOMove(transform.position + transform.forward * 2, 0.2f);
 
     public void BasicAttackEffect()
     {
-        var m = Instantiate(m_effect);
-        m.transform.position = m_spwanEffect.position;
-        m.transform.rotation = Quaternion.Euler(0, 0, -90);
+        var effect = Instantiate(m_effect);
+        effect.transform.position = m_spwanEffect.position;
+        effect.transform.rotation = Quaternion.Euler(0, 0, -90);
     }
 
     public void CriticalAttack()
     {
-        //this.transform.DOMove(this.transform.position + this.transform.forward * 2, 0.2f);
         transform.LookAt(GameManager.Player.transform);
-        this.transform.DOMove(gameObject.transform.position + gameObject.transform.forward * 3, 1f);
-        //m_rb.velocity = this.transform.forward * 100;
+        transform.DOMove(gameObject.transform.position + gameObject.transform.forward * 3, 1f);
     }
 
     public void JumpAttack()
@@ -68,11 +61,7 @@ public class EnemyContoroller : MonoBehaviour
         agent.acceleration = 100;
     }
 
-    public void SetPosition()
-    {
-        agent.SetDestination(transform.position);
-    }
-
+    public void SetPosition() => agent.SetDestination(transform.position);
     public void BreathAttack()
     {
         Instantiate(m_breath,m_spwanBreath.position, m_spwanBreath.rotation);
@@ -87,13 +76,11 @@ public class EnemyContoroller : MonoBehaviour
 
     public void JumpAttackEffect()
     {
-        StartCoroutine("WaitNonActive");
-        //iTween.ShakePosition(Camera.main.gameObject, iTween.Hash("x", 0, "y", 1, "time", 1));
+        StartCoroutine(nameof(WaitNonActive));
     }
 
     IEnumerator WaitNonActive()
     {
-        //Debug.Log("Star");
         attackCollider.SetActive(true);
         yield return new WaitForSeconds(m_hitTime);
         attackCollider.SetActive(false);

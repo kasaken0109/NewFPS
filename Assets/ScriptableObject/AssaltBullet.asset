@@ -14,9 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_bullet: {fileID: 1354823903795634764, guid: 0c8239e19677a0b4d8c01323797725c1,
     type: 3}
-  m_damage: 20
+  m_damage: 50
   m_delay: 0.2
   m_consumeStanceValue: 0.1
+  passiveSkill_1: {fileID: 11400000, guid: 26e4f01437b5d5042870378dece52a73, type: 2}
+  passiveSkill_2: {fileID: 11400000, guid: 26e4f01437b5d5042870378dece52a73, type: 2}
   m_bulletType: 0
   m_bulletID: 0
   m_name: SnowBall
+  m_explainText: 
+  m_image: {fileID: 0}

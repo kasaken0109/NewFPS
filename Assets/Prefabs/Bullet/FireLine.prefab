@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1354823903795634765}
   - component: {fileID: 1354823903795634763}
   - component: {fileID: 1354823903795634762}
+  - component: {fileID: 7036663905874000238}
   m_Layer: 8
   m_Name: FireLine
   m_TagString: Untagged
@@ -4812,3 +4813,24 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &7036663905874000238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354823903795634764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a518e4cfe1eabde4e82f31da766f4c29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_shootRange: 50
+  m_layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  m_hitSound: {fileID: 8300000, guid: 202b951c1661d6e4589f332b48beaff3, type: 3}
+  m_effect: {fileID: 8795824752677755220, guid: 8bbaf013061af504b979daf430930d99,
+    type: 3}
+  m_frostEffect: {fileID: 4307484400858114206, guid: be0d5886e6648264580841ccafdfc7cb,
+    type: 3}

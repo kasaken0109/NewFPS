@@ -17,6 +17,10 @@ MonoBehaviour:
   m_damage: 50
   m_delay: 0.2
   m_consumeStanceValue: 0.2
+  passiveSkill_1: {fileID: 11400000, guid: 26e4f01437b5d5042870378dece52a73, type: 2}
+  passiveSkill_2: {fileID: 0}
   m_bulletType: 2
   m_bulletID: 1
   m_name: Heal
+  m_explainText: 
+  m_image: {fileID: 0}

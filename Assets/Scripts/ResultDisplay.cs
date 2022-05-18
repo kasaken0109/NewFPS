@@ -45,6 +45,9 @@ public class ResultDisplay : MonoBehaviour
             case 5:
                 rank = "D";
                 break;
+            default:
+                rank = "Failed...";
+                break;
         }
         StartCoroutine(nameof(DisplayResult));
     }

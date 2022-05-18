@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac1d465a888fb3349bd7f9025a2175af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LoadSceneName: SelectScene
+  m_LoadSceneName: QuestSelectScene
   m_fadeSpeed: 100
   m_loadPanel: {fileID: 1922249460}
 --- !u!1 &188232576
@@ -464,9 +464,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 185f50e5c77695542b4522a6056014dc, type: 2}
   m_sharedMaterial: {fileID: -6710932278198920637, guid: 185f50e5c77695542b4522a6056014dc,
@@ -510,7 +508,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -1115,7 +1113,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: SelectScene
+          m_StringArgument: QuestSelectScene
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &806916116
@@ -1339,6 +1337,7 @@ MonoBehaviour:
   m_buttons:
   - {fileID: 1816042554}
   - {fileID: 806916113}
+  m_waitDisplay: 1
 --- !u!114 &1431741732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2166,7 +2165,7 @@ SpriteRenderer:
   m_Size: {x: 13.5, y: 6.29}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &2034972590

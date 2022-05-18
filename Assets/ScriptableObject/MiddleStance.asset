@@ -15,12 +15,12 @@ MonoBehaviour:
   m_movingSpeed: 6
   m_runningSpeed: 12
   m_turnSpeed: 8
-  m_jumpPower: 5
+  m_jumpPower: 2
   m_floatPower: 0.1
   m_midairSpeedRate: 0.7
-  m_midairConsumeRate: 0.003
-  m_dushPower: 10
+  m_midairConsumeRate: -0.003
+  m_dushPower: 6
   m_dushAttackPower: 15
-  m_dodgeLength: 5
+  m_dodgeLength: 3
   m_dodgeCoolDown: 0.3
   m_anim: {fileID: 9100000, guid: f39771aa59204e84488b661d603be6cd, type: 2}

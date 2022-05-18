@@ -4,15 +4,44 @@ using UnityEngine;
 
 public class SkillBehavior : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public static SkillBehavior Instance { get; private set; }
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField]
+    AttackcolliderController[] m_attackControllers = default;
+
+    [SerializeField]
+    AttackcolliderController[] m_defenceControllers = default;
+    private void Awake()
     {
-        
+        Instance = this;
+    }
+    
+    public void CallPassive(ref PassiveSkill passiveSkill)
+    {
+        switch (passiveSkill.PassiveType)
+        {
+            case PassiveType.AttackBuf:
+                foreach (var item in m_attackControllers)
+                {
+                    item.StartAttackCorrectionValue(passiveSkill.EffectAmount, passiveSkill.EffectableTime);
+                }
+                break;
+            case PassiveType.DefenceBuf:
+                foreach (var item in m_attackControllers)
+                {
+                    item.StartDefenceCorrectionValue(passiveSkill.EffectAmount, passiveSkill.EffectableTime);
+                }
+                break;
+            case PassiveType.SpeedBuf:
+                break;
+            case PassiveType.HealBuf:
+                break;
+            case PassiveType.Stancebuf:
+                break;
+            case PassiveType.AddEffect:
+                break;
+            default:
+                break;
+        }
     }
 }
