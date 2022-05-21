@@ -99,13 +99,11 @@ public class AttackcolliderController : MonoBehaviour
             //stance = stance == null ? GetComponent<PlayerControll>() : stance;
             if (stance)
             {
-                //Debug.Log(other);
                 stance.AddStanceValue(m_upStanceValue);
                 other.gameObject.GetComponentInParent<IDamage>().AddDamage(Mathf.CeilToInt(attackPower * attackCorrectionValue));
             }
             else
             {
-                Debug.Log(Mathf.CeilToInt(attackPower / defanceCorrectionValue));
                 var idmg = other.gameObject.GetComponentInParent<IDamage>();
                 idmg = idmg == null ? other.gameObject.GetComponent<IDamage>() : idmg;
                 idmg.AddDamage(Mathf.CeilToInt(attackPower / defanceCorrectionValue));
