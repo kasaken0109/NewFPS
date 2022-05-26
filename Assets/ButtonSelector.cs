@@ -15,6 +15,9 @@ public class ButtonSelector : MonoBehaviour,IDeselectHandler
 
     Button _button;
     Bullet _set;
+    PassiveSkill _skill;
+
+    public int ID { get; set; }
 
     public Bullet Set => _set;
 
@@ -28,7 +31,8 @@ public class ButtonSelector : MonoBehaviour,IDeselectHandler
     {
         _button = GetComponent<Button>();
         _checkMark.SetActive(false);
-        _button.onClick.AddListener(() => BulletPresenter.Instance.SetExplanation(_set)); 
+        _button.onClick.AddListener(() => InformationPresenter.Instance.SetExplanation(_set));
+        _button.onClick.AddListener(() => InformationPresenter.Instance.SetExplanation(_skill));
     }
 
     public void SetInformation(Bullet bullet)
@@ -36,5 +40,12 @@ public class ButtonSelector : MonoBehaviour,IDeselectHandler
         _bulletImage.sprite = bullet.Image;
         _bulletName.text = bullet.Name;
         _set = bullet;
+    }
+
+    public void SetInformation(PassiveSkill skill)
+    {
+        _bulletImage.sprite = skill.ImageBullet;
+        _bulletName.text = skill.SkillName;
+        _skill = skill;
     }
 }
