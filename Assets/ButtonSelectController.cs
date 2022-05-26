@@ -33,7 +33,6 @@ public class ButtonSelectController : MonoBehaviour
     void Update()
     {
         SetArrowValue();
-        m_buttonField[selectHorizontalID].Buttons[selectVerticalID].Select();
 
     }
 
@@ -78,6 +77,8 @@ public class ButtonSelectController : MonoBehaviour
             default:
                 break;
         }
+        if (m_buttonField[selectHorizontalID].Buttons[selectVerticalID]) m_buttonField[selectHorizontalID].Buttons[selectVerticalID].Select();
+        else ButtonSelect(arrowValue);
     }
 
     public void ButtonSelect(int arrowValue)
