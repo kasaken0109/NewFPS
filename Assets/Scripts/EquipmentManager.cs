@@ -34,16 +34,21 @@ public class EquipmentManager : MonoBehaviour
 
     private int _equipID = 1;
 
-    public void SetEquipments(int equipNum,Bullet bullet)
+    private int _equipSkillID = 1;
+
+    public void SetEquipments(Bullet bullet)
     {
-        Equipments[equipNum - 1] = bullet;
+        Equipments[_equipID - 1] = bullet;
     }
 
-    public void SetSkill(int equipNum,int skillNum, PassiveSkill skill)
+    public void SetSkill(PassiveSkill skill)
     {
-        var equip = Equipments[equipNum - 1];
-        var mySkill = skillNum == 1 ? equip.passiveSkill_1 : equip.passiveSkill_2 = skill;
+        var equip = Equipments[_equipID - 1];
+        var mySkill = _equipSkillID == 1 ? equip.passiveSkill_1 : equip.passiveSkill_2;
+        mySkill = skill;
     }
 
     public void SetEquipID(int value) => _equipID = value;
+
+    public void SetEquipSkillID(int value) => _equipSkillID = value;
 }
