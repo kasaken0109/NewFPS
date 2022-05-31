@@ -38,12 +38,11 @@ public class CameraController : MonoBehaviour
             lockOnId = lockOnId == m_lockOnTargets.Length - 1 ? 0 : lockOnId + 1;
             m_lockOnCamera.LookAt = m_lockOnTargets[lockOnId].transform;
             m_lockOnCamera.Priority = cameraPriority;
-            Debug.Log(lockOnId == m_lockOnTargets.Length - 1);
         }
         else if (Input.GetKeyDown(KeyCode.Z))
         {
             m_playerCamera.transform.LookAt(m_lockOnTargets[lockOnId].transform);
-            //m_playerCamera.GetCinemachineComponent<CinemachinePOV>().GetRecenterTarget();
+            m_playerCamera.GetCinemachineComponent<CinemachinePOV>().GetRecenterTarget();
             m_lockOnCamera.Priority = 0;
             lockOnId = 0;
             m_lockOnTargets = SetSearchTarget("Enemy");
