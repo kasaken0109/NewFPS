@@ -31,8 +31,6 @@ public class ButtonSelector : MonoBehaviour,IDeselectHandler
     {
         _button = GetComponent<Button>();
         _checkMark.SetActive(false);
-        _button.onClick.AddListener(() => InformationPresenter.Instance.SetExplanation(_set));
-        _button.onClick.AddListener(() => InformationPresenter.Instance.SetExplanation(_skill));
     }
 
     public void SetInformation(Bullet bullet)
@@ -40,6 +38,9 @@ public class ButtonSelector : MonoBehaviour,IDeselectHandler
         _bulletImage.sprite = bullet.Image;
         _bulletName.text = bullet.Name;
         _set = bullet;
+        if(!_button) _button = GetComponent<Button>();
+        _button.onClick.AddListener(() => InformationPresenter.Instance.SetExplanation(_set));
+        _button.onClick.AddListener(() => EquipmentManager.Instance.SetEquipments(_set));
     }
 
     public void SetInformation(PassiveSkill skill)
@@ -47,5 +48,13 @@ public class ButtonSelector : MonoBehaviour,IDeselectHandler
         _bulletImage.sprite = skill.ImageBullet;
         _bulletName.text = skill.SkillName;
         _skill = skill;
+        if (!_button) _button = GetComponent<Button>();
+        _button.onClick.AddListener(() => InformationPresenter.Instance.SetExplanation(_skill));
+        _button.onClick.AddListener(() => EquipmentManager.Instance.SetSkill(_skill));
+    }
+
+    public void SetBullet()
+    {
+        EquipmentManager.Instance.SetEquipments(_set);
     }
 }
