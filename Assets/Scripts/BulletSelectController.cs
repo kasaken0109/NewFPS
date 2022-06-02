@@ -6,16 +6,8 @@ using UnityEngine.UI;
 public class BulletSelectController : MonoBehaviour
 {
     [SerializeField]
-    [Tooltip("バレット選択UI")]
-    private GameObject m_image;
-
-    [SerializeField]
     [Tooltip("強調表示するUIに付属するクラス")]
-    private UISelecter[] m_selecters;
-
-    [SerializeField]
-    [Tooltip("メニューコントローラー")]
-    private MenuController m_menu;
+    private UISelecter[] _selecters;
 
     [SerializeField]
     [Tooltip("射撃を管理するクラス")]
@@ -25,58 +17,55 @@ public class BulletSelectController : MonoBehaviour
     [Tooltip("弾を設定するリスト")]
     private List<Bullet> m_IDs;
 
+    [SerializeField]
+    private Animator _anim;
+
     private Vector3 origin;
 
     private Vector3 padOrigin;
-
-    private bool isEnter = false;
-
-    private bool useGamePads = false;
 
     private int equipID = 0;
 
     private bool IsPreScroll = false;
 
+    private bool IsPush = false;
+
+
     public List<Bullet> MyBullet { set { m_IDs = value; } }
+
+    private int[] bulletIDs;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
+        EquipBullets();
+        bulletIDs = new int[3] {0,1,2};
         SelectBullet(equipID);//弾の選択状態の初期化
-        m_image.gameObject.SetActive(false);
         IsPreScroll = false;
-        origin = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);//スクリーンの中心座標を設定
-        padOrigin = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
     }
 
     // Update is called once per frame
     void Update()
     {
-        var controllerNames = Input.GetJoystickNames();
-        useGamePads = controllerNames.Length == 0 ? false : true;
-
-        float hori = Input.GetAxis("Mouse X");
-        float vert = Input.GetAxis("Mouse Y");
-        Vector3 input = new Vector3(hori, vert, 0);
-        padOrigin = input;
-
+        if (Input.GetButtonDown("Fire3"))
+        {
+            Debug.Log("hannou");
+            IsPush = IsPush ? false : true;
+            _anim.SetBool("IsPush", IsPush);
+        }
+        if (!IsPush) return;
         float scrollValue = Input.mouseScrollDelta.y;//Input.GetAxis("Mouse ScrollWheel");
         if (Mathf.Abs(scrollValue) < 0.1f) IsPreScroll = false;
         else
         {
             if (IsPreScroll) return;
+            SetBulletIDs(scrollValue > 0);
             equipID = scrollValue > 0 ? (equipID == 0 ? 2 : equipID - 1) : (equipID == 2 ? 0 : equipID +1);
             SelectBullet(equipID);
             IsPreScroll = true;
         }
-        //if (Input.GetButton("Fire3"))
-        //{
-        //    if(useGamePads) SelectPadUI(input);
-        //    else SelectUI(Input.mousePosition);
-        //}
-        //m_image.SetActive(Input.GetButton("Fire3"));//マウスホイールを押している間だけUIを表示
-        //m_menu.SetCamera(!Input.GetButton("Fire3"));//カメラの機能を切り替える
-
     }
 
     public void SelectBullet(int bullet)
@@ -89,9 +78,9 @@ public class BulletSelectController : MonoBehaviour
         m_bulletFire.EquipBullet(temp);
 
         //選択されているUI部分を強調表示する
-        for (int i = 0; i < m_selecters.Length; i++)
+        for (int i = 0; i < _selecters.Length; i++)
         {
-            m_selecters[i].SelectedUI(i == bullet);
+            _selecters[i].SelectedUI(i == bullet);
         }
     }
 
@@ -140,10 +129,24 @@ public class BulletSelectController : MonoBehaviour
     }
 
     /// <summary>
-    /// EventTrigger用　判定エリアに入った時に呼び出される
+    /// EquipmentManegerに設定されている装備を選択
     /// </summary>
-    /// <param name="isArea"></param>
-    public void IsInUIArea(bool isArea) => isEnter = isArea;
+    private void EquipBullets()
+    {
+        var equipM = EquipmentManager.Instance;
+        for (int i = 0;i < m_IDs.Count;i++) m_IDs[i] = equipM.Equipments[i] ? equipM.Equipments[i] : m_IDs[i];
+    }
+
+    private void SetBulletIDs(bool isUp)
+    {
+        var change = isUp ? -1 : 1;
+        for (int i = 0; i < bulletIDs.Length; i++)
+        {
+            bulletIDs[i] = bulletIDs[i] + change;
+            if (bulletIDs[i] >= bulletIDs.Length) bulletIDs[i] = 0;
+            if (bulletIDs[i] < 0) bulletIDs[i] = bulletIDs.Length - 1;
+        }
+    }
 
     private void OnDestroy()
     {

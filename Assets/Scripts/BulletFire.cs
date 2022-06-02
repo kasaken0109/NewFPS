@@ -35,17 +35,12 @@ public class BulletFire : MonoBehaviour
     private Text m_bullet;
 
     [SerializeField]
-    private Animator m_anim;
-
-    [SerializeField]
     private PassiveDisplayController m_passiveDisplay = default;
 
     private Bullet m_equip;
 
     private float stanceValue = 0.5f;
 
-
-    Vector3 hitPosition;
     float consumeValue;
     // Start is called before the first frame update
     void Start()
@@ -79,7 +74,6 @@ public class BulletFire : MonoBehaviour
             //パッシブ用のコストがある場合パッシブを発動
             if(stanceValue >= consumeValue - m_equip.ConsumeStanceValue)
             {
-                Debug.Log("Consume");
                 CallPassiveInstance(m_equip.passiveSkill_1);
                 CallPassiveInstance(m_equip.passiveSkill_2);
             }
@@ -91,7 +85,7 @@ public class BulletFire : MonoBehaviour
         if (passiveSkill != null)
         {
             SkillBehavior.Instance.CallPassive(ref passiveSkill);
-            var obj = Instantiate(passiveSkill.Effect, m_passiveEffectPoint.position, Quaternion.identity);
+            var obj = Instantiate(passiveSkill.Effect, m_passiveEffectPoint.position, Quaternion.identity,m_passiveEffectPoint);
             var particle = obj.GetComponent<ParticleSystem>().main;
             particle.duration = passiveSkill.EffectableTime;
             stanceValue -= passiveSkill.ConsumeCost;
@@ -104,7 +98,6 @@ public class BulletFire : MonoBehaviour
 
         //パッシブスキルセット時のコストを計算
         consumeValue = m_equip.ConsumeStanceValue + (m_equip.PassiveSkill1 != null ? m_equip.PassiveSkill1.ConsumeCost : 0)
-            + (m_equip.PassiveSkill2 != null ? m_equip.PassiveSkill2.ConsumeCost : 0);
-
+            + (m_equip.PassiveSkill2 != null ? m_equip.PassiveSkill2.ConsumeCost : 0);    
     }
 }
