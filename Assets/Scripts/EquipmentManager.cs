@@ -20,16 +20,18 @@ public class EquipmentManager : MonoBehaviour
                var gm = GameObject.Find("GM");
                 if (!gm) gm = new GameObject("GM");
                 instance = gm.AddComponent<EquipmentManager>();
+                DontDestroyOnLoad(instance);
             }
             return instance;
         }
     }
 
-    [SerializeField]
-    private BulletList _bullets = default;
+    //[SerializeField]
+    //private BulletList _bullets = default;
 
-    public BulletList Bullets => _bullets;
+    //public BulletList Bullets => _bullets;
 
+    [HideInInspector]
     public Bullet[] Equipments = new Bullet[3];
 
     private int _equipID = 1;
@@ -44,11 +46,19 @@ public class EquipmentManager : MonoBehaviour
     public void SetSkill(PassiveSkill skill)
     {
         var equip = Equipments[_equipID - 1];
-        var mySkill = _equipSkillID == 1 ? equip.passiveSkill_1 : equip.passiveSkill_2;
-        mySkill = skill;
+        if(_equipSkillID == 1) equip.passiveSkill_1 = skill;
+        else
+        {
+            equip.passiveSkill_2 = skill;
+        }
     }
 
     public void SetEquipID(int value) => _equipID = value;
 
     public void SetEquipSkillID(int value) => _equipSkillID = value;
+
+    private void Awake()
+    {
+        Debug.Log(Equipments[0]);
+    }
 }
