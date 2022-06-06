@@ -20,6 +20,8 @@ public class BulletSelectController : MonoBehaviour
     [SerializeField]
     private Animator _anim;
 
+    private BulletSelectDisplay bulletDisplay;
+
     private Vector3 origin;
 
     private Vector3 padOrigin;
@@ -40,9 +42,12 @@ public class BulletSelectController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        bulletDisplay = GetComponent<BulletSelectDisplay>();
+        bulletDisplay.BulletInformationInit(EquipmentManager.Instance.Equipments);
         EquipBullets();
         bulletIDs = new int[3] {0,1,2};
         SelectBullet(equipID);//弾の選択状態の初期化
+        bulletDisplay.MoveSelectFrame(equipID);
         IsPreScroll = false;
     }
 
@@ -51,31 +56,36 @@ public class BulletSelectController : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire3"))
         {
-            Debug.Log("hannou");
             IsPush = IsPush ? false : true;
             _anim.SetBool("IsPush", IsPush);
         }
         if (!IsPush) return;
-        float scrollValue = Input.mouseScrollDelta.y;//Input.GetAxis("Mouse ScrollWheel");
-        if (Mathf.Abs(scrollValue) < 0.1f) IsPreScroll = false;
+        float scrollValue = Input.mouseScrollDelta.normalized.y;//Input.GetAxis("Mouse ScrollWheel");
+        if (Mathf.Abs(scrollValue) < 0.5f) IsPreScroll = false;
         else
         {
             if (IsPreScroll) return;
-            SetBulletIDs(scrollValue > 0);
-            equipID = scrollValue > 0 ? (equipID == 0 ? 2 : equipID - 1) : (equipID == 2 ? 0 : equipID +1);
-            SelectBullet(equipID);
+            SelectBullet(scrollValue);
             IsPreScroll = true;
         }
     }
 
+    private void SelectBullet(float scrollValue)
+    {
+        equipID = scrollValue > 0 ? (equipID == 0 ? 2 : equipID - 1) : (equipID == 2 ? 0 : equipID + 1);
+        SelectBullet(equipID);
+        bulletDisplay.MoveSelectFrame(equipID);
+        if (!m_IDs[equipID]) SelectBullet(scrollValue);
+    }
+
     public void SelectBullet(int bullet)
     {
-        Bullet temp = default;
-        foreach (var item in m_IDs)
-        {
-            if (item.BulletID == bullet) temp = item;//IDが一致したら同一とみなす
-        }
-        m_bulletFire.EquipBullet(temp);
+        //Bullet temp = default;
+        //foreach (var item in m_IDs)
+        //{
+        //    if (item.BulletID == bullet) temp = item;//IDが一致したら同一とみなす
+        //}
+        m_bulletFire.EquipBullet(EquipmentManager.Instance.Equipments[bullet]);
 
         //選択されているUI部分を強調表示する
         for (int i = 0; i < _selecters.Length; i++)
