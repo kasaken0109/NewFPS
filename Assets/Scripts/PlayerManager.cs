@@ -67,7 +67,6 @@ public class PlayerManager : MonoBehaviour,IDamage
 
     public void AddDamage(int damage)
     {
-        Debug.Log("Hit!!");
         if (IsInvisible)
         {
             if (ActiveDodge)
@@ -151,7 +150,6 @@ public class PlayerManager : MonoBehaviour,IDamage
     IEnumerator GodTime()
     {
         SoundManager.Instance.PlayFrost();
-        AchivementManager.Instance.DodgeCount++;
         timer = 0;
         StopCoroutine(nameof(Invisible));
         ActiveDodge = false;

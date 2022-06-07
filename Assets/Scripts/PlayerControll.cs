@@ -231,7 +231,7 @@ public class PlayerControll : ColliderGenerater
         else
         {
             m_anim.SetFloat(SpeedHash, 0);
-            float veloY = m_rb.velocity.y *(Input.GetButton("Jump") ? m_settings.FloatPower : 1);//空中でジャンプキーを押すと滑空出来る
+            float veloY = m_rb.velocity.y;// *(Input.GetButton("Jump") ? m_settings.FloatPower : 1);//空中でジャンプキーを押すと滑空出来る
             if (Input.GetButton("Jump")) m_anim.Play("Idle");
             var midAirSpeed = Input.GetButton("Jump") ? 1 : m_settings.MidairSpeedRate;//滑空時は減速しない
             m_rb.velocity = new Vector3(m_rb.velocity.x * midAirSpeed, veloY, m_rb.velocity.z * midAirSpeed);
@@ -245,18 +245,18 @@ public class PlayerControll : ColliderGenerater
             {
                 IsButtonHold = false;
             }
-            if (Input.GetButtonDown("Jump"))
-            {
-                AirFloat();
-            }
-            else if(Input.GetButton("Jump"))
-            {
-                AddStanceValue(m_settings.MidairConsumeRate);//浮遊状態の際にはエネルギーを徐々に減少させる
-            }
-            else
-            {
-                m_stopFloatAction?.Invoke();
-            }
+            //if (Input.GetButtonDown("Jump"))
+            //{
+            //    AirFloat();
+            //}
+            //else if(Input.GetButton("Jump"))
+            //{
+            //    AddStanceValue(m_settings.MidairConsumeRate);//浮遊状態の際にはエネルギーを徐々に減少させる
+            //}
+            //else
+            //{
+            //    m_stopFloatAction?.Invoke();
+            //}
         }
     }
 
@@ -343,7 +343,6 @@ public class PlayerControll : ColliderGenerater
         while(IsButtonHold)
         {
             timer += Time.deltaTime;
-            Debug.Log(timer);
             yield return null;
         }
         if (timer >= 0.5f)
