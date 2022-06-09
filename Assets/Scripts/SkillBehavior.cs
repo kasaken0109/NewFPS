@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SkillBehavior : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class SkillBehavior : MonoBehaviour
 
     [SerializeField]
     AttackcolliderController[] m_defenceControllers = default;
+
+    [SerializeField]
+    UnityEvent _speedBuf;
     private void Awake()
     {
         Instance = this;
@@ -20,7 +24,7 @@ public class SkillBehavior : MonoBehaviour
     {
         switch (passiveSkill.PassiveType)
         {
-            case PassiveType.AttackBuf:
+            case PassiveType.SwordAttackBuf:
                 foreach (var item in m_attackControllers)
                 {
                     item.StartAttackCorrectionValue(passiveSkill.EffectAmount, passiveSkill.EffectableTime);
@@ -32,13 +36,16 @@ public class SkillBehavior : MonoBehaviour
                     item.StartDefenceCorrectionValue(passiveSkill.EffectAmount, passiveSkill.EffectableTime);
                 }
                 break;
-            case PassiveType.SpeedBuf:
+            case PassiveType.MoveSpeedBuf:
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControll>().SpeedStart(passiveSkill.EffectableTime,passiveSkill.EffectAmount);
                 break;
-            case PassiveType.HealBuf:
+            case PassiveType.AttackSpeedBuf:
                 break;
-            case PassiveType.Stancebuf:
+            case PassiveType.BulletAttackBuf:
                 break;
-            case PassiveType.AddEffect:
+            case PassiveType.DodgeDistanceBuf:
+                break;
+            case PassiveType.AttackReachBuf:
                 break;
             default:
                 break;

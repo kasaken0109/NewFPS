@@ -399,8 +399,8 @@ public class PlayerControll : ColliderGenerater
         else IsRunning = false;
 
         //入力に応じてスピード、アニメーションを変更する
-        velo = dir.normalized * (IsRunning ? m_settings.RunningSpeed : m_settings.MovingSpeed) * m_powerUpRate;
-        m_anim.SetFloat(SpeedHash, (IsRunning ? m_settings.RunningSpeed : m_settings.MovingSpeed) * m_powerUpRate);
+        velo = dir.normalized * (IsRunning ? m_settings.RunningSpeed : m_settings.MovingSpeed) * speedRate;
+        m_anim.SetFloat(SpeedHash, (IsRunning ? m_settings.RunningSpeed : m_settings.MovingSpeed) * speedRate);
     }
 
 
@@ -454,6 +454,19 @@ public class PlayerControll : ColliderGenerater
         m_comboEffect?.SetActive(false);
         yield return new WaitForSeconds(2f);
         m_successEffect?.SetActive(false);
+    }
+
+    private float speedRate = 1;
+    IEnumerator SpeedUp(float time,float value)
+    {
+        speedRate = value;
+        yield return new WaitForSeconds(time);
+        speedRate = 1;
+    }
+
+    public void SpeedStart(float time, float value)
+    {
+        StartCoroutine(SpeedUp(time,value));
     }
 
     /// <summary>
