@@ -59,10 +59,12 @@ public class PassiveSkill:ScriptableObject
 
 public enum PassiveType
 {
-    AttackBuf,
+    SwordAttackBuf,
     DefenceBuf,
-    SpeedBuf,
-    HealBuf,
-    Stancebuf,
-    AddEffect,
+    MoveSpeedBuf,
+    AttackSpeedBuf,
+    BulletAttackBuf,
+    DodgeDistanceBuf,
+    DodgeTimeBuf,
+    AttackReachBuf,
 }
