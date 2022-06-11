@@ -34,7 +34,7 @@ public class AttackcolliderController : MonoBehaviour
 
     private float attackCorrectionValue = 1f;
 
-    private float defanceCorrectionValue = 1f;
+    private float defenceCorrectionValue = 1f;
 
     private int attackPower = 0;
 
@@ -76,8 +76,8 @@ public class AttackcolliderController : MonoBehaviour
 
     IEnumerator SetDefenceEffectTime(float value, float time)
     {
-        var setValue = defanceCorrectionValue > value ? defanceCorrectionValue : value;
-        defanceCorrectionValue = setValue;
+        var setValue = defenceCorrectionValue > value ? defenceCorrectionValue : value;
+        defenceCorrectionValue = setValue;
         yield return new WaitForSeconds(time);
         attackCorrectionValue = 1f;
     }
@@ -96,7 +96,6 @@ public class AttackcolliderController : MonoBehaviour
             }
 
             var stance = GetComponentInParent<PlayerControll>();
-            //stance = stance == null ? GetComponent<PlayerControll>() : stance;
             if (stance)
             {
                 stance.AddStanceValue(m_upStanceValue);
@@ -106,10 +105,10 @@ public class AttackcolliderController : MonoBehaviour
             {
                 var idmg = other.gameObject.GetComponentInParent<IDamage>();
                 idmg = idmg == null ? other.gameObject.GetComponent<IDamage>() : idmg;
-                idmg.AddDamage(Mathf.CeilToInt(attackPower / defanceCorrectionValue));
+                idmg.AddDamage(Mathf.CeilToInt(attackPower / defenceCorrectionValue));
             }
 
-            if (m_hit)SoundManager.Instance.PlayHit(m_hit,gameObject.transform.position);
+            if(m_hit)SoundManager.Instance.PlayHit(m_hit,gameObject.transform.position);
             if(m_hitEffect) Instantiate(m_hitEffect, other.ClosestPoint(transform.position), GameManager.Player.transform.rotation);
             CanHit = false;
         }
