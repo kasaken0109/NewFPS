@@ -11,7 +11,11 @@ public class TimerManager : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("クエストの制限時間")]
-    private float timeLimit = 20f;
+    private int timeLimit = 180;
+
+    [SerializeField]
+    [Tooltip("時間切れの警告時間")]
+    private int timeWarning = 20;
 
     [SerializeField]
     [Tooltip("残り時間の表示テキスト")]
@@ -26,6 +30,8 @@ public class TimerManager : MonoBehaviour
     
     Animation m_anim = null;
     int maxTimeLimit;
+    bool isPlaying = false;
+    public bool IsPlaying { set => isPlaying = value; }
     // Start is called before the first frame update
     void Start()
     {
@@ -48,29 +54,24 @@ public class TimerManager : MonoBehaviour
         maxTimeLimit = (int)timeLimit;
     }
 
-    // Update is called once per frame
-    void Update()
+     public IEnumerator TimeUpdate()
     {
-        m_timeText.text = "制限時間：" + Mathf.CeilToInt(timeLimit);
-        if (GameManager.Instance.GameStatus == GameManager.GameState.PLAYING || GameManager.Instance.GameStatus == GameManager.GameState.RESUME)
+        m_timeText.text = "制限時間：" + timeLimit;
+        while (timeLimit > 0)
         {
-            timeLimit -= Time.deltaTime;
-        }
-
-        //残り時間が少ない時
-        if (timeLimit <= 10f)
-        {
-            //アニメーションとフォントの色を変え、警告
-            m_timeText.color = Color.red;
-            m_anim.Play();
-
-            //タイムアップ時にゲームオーバー
-            if (timeLimit <= 0)
+            if (isPlaying)
             {
-                m_timeText.text = "のこり時間：" + 0;
-                GameManager.Instance.SetGameState(GameManager.GameState.PLAYERLOSE);
+                timeLimit--;
+                yield return new WaitForSeconds(1);
+            }
+            if (timeLimit <= timeWarning)
+            {
+                //アニメーションとフォントの色を変え、警告
+                m_timeText.color = Color.red;
+                m_anim.Play();
             }
         }
+        GameManager.Instance.SetGameState(GameManager.GameState.PLAYERLOSE);
     }
 
     /// <summary>
