@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public enum BulletType
 {
     Lay,
-    Physics,
+    NonBullet,
     Skill,
 }
 
@@ -32,7 +32,7 @@ public class BulletFire : MonoBehaviour
     private PlayerControll m_player;
 
     [SerializeField]
-    private Text m_bullet;
+    private BulletInformation m_bullet;
 
     [SerializeField]
     private PassiveDisplayController m_passiveDisplay = default;
@@ -58,25 +58,34 @@ public class BulletFire : MonoBehaviour
 
         if (Input.GetButtonDown("Fire2"))
         {
-            SoundManager.Instance.StopSE();
+            ShootBullet();
+        }
+    }
 
-            //銃弾を生成
-            if (stanceValue >= m_equip.ConsumeStanceValue)
-            {
-                SoundManager.Instance.PlayShoot();
-                var instance = Instantiate(m_equip.MyBullet, m_particleMuzzle.position, Camera.main.transform.rotation);
-                stanceValue -= m_equip.ConsumeStanceValue;
-                m_stance.fillAmount = stanceValue;
+    private void ShootBullet()
+    {
+        SoundManager.Instance.StopSE();
 
-                if (m_equip.BulletType == BulletType.Lay) instance.GetComponent<BulletLaserController>().Damage = m_equip.Damage;
-                else if (m_equip.BulletType == BulletType.Skill) FindObjectOfType<PlayerManager>().AddDamage(-30);
-            }
-            //パッシブ用のコストがある場合パッシブを発動
-            if(stanceValue >= consumeValue - m_equip.ConsumeStanceValue)
+        //銃弾を生成
+        if (stanceValue >= m_equip.ConsumeStanceValue)
+        {
+            SoundManager.Instance.PlayShoot();
+            var instance = Instantiate(m_equip.MyBullet, m_particleMuzzle.position, Camera.main.transform.rotation);
+            stanceValue -= m_equip.ConsumeStanceValue;
+            m_stance.fillAmount = stanceValue;
+
+            if (m_equip.BulletType == BulletType.Lay && instance.GetComponent<BulletLaserController>()) instance.GetComponent<BulletLaserController>().Damage = Mathf.CeilToInt(m_equip.Damage * addDamageRate);
+            if (m_equip.BulletType == BulletType.Skill)
             {
-                CallPassiveInstance(m_equip.passiveSkill_1);
-                CallPassiveInstance(m_equip.passiveSkill_2);
+                FindObjectOfType<PlayerManager>().AddDamage(Mathf.CeilToInt(m_equip.Damage * addDamageRate));
+                Destroy(instance, 5);
             }
+        }
+        //パッシブ用のコストがある場合パッシブを発動
+        if (stanceValue >= consumeValue - m_equip.ConsumeStanceValue)
+        {
+            CallPassiveInstance(m_equip.passiveSkill_1);
+            CallPassiveInstance(m_equip.passiveSkill_2);
         }
     }
 
@@ -94,10 +103,25 @@ public class BulletFire : MonoBehaviour
 
     public void EquipBullet(Bullet bullet) {
         m_equip = bullet;
-        m_bullet.text = bullet.Name;
+        m_bullet._NameDisplay.text = bullet.Name;
+        m_bullet._skill1Display.sprite = bullet.passiveSkill_1 ?bullet.passiveSkill_1.ImageBullet : null;
+        m_bullet._skill2Display.sprite = bullet.passiveSkill_2 ? bullet.passiveSkill_2.ImageBullet:null;
 
         //パッシブスキルセット時のコストを計算
         consumeValue = m_equip.ConsumeStanceValue + (m_equip.PassiveSkill1 != null ? m_equip.PassiveSkill1.ConsumeCost : 0)
             + (m_equip.PassiveSkill2 != null ? m_equip.PassiveSkill2.ConsumeCost : 0);    
+    }
+
+    private float addDamageRate = 1;
+    IEnumerator UpDamage(float time, float value)
+    {
+        addDamageRate = value;
+        yield return new WaitForSeconds(time);
+        addDamageRate = 1;
+    }
+
+    public void SetUpDamage(float time, float value)
+    {
+        StartCoroutine(UpDamage(time, value));
     }
 }

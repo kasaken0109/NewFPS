@@ -5,27 +5,34 @@ using UnityEngine;
 public class BulletLaserController : MonoBehaviour
 {
     [Tooltip("照準のUI")]
-    private RectTransform m_crosshairUi = null;
+    private RectTransform _crosshairUi = null;
 
     [SerializeField]
     [Tooltip("射程距離")]
-    private float m_shootRange = 50f;
+    private float _shootRange = 50f;
+
+    [SerializeField]
+    private float _speed = 3f;
 
     [SerializeField]
     [Tooltip("当たるレイヤー")]
-    private LayerMask m_layerMask = 0;
+    private LayerMask _layerMask = 0;
 
     [SerializeField]
     [Tooltip("命中した時の音")]
-    private AudioClip m_hitSound = null;
+    private AudioClip _hitSound = null;
 
     [SerializeField]
     [Tooltip("着弾時に発生するエフェクト")]
-    private GameObject m_effect = null;
+    private GameObject _effect = null;
 
     [SerializeField]
     [Tooltip("")]
-    private GameObject m_frostEffect = null;
+    private GameObject _frostEffect = null;
+
+    [SerializeField]
+    [Tooltip("")]
+    private BulletSetting _bulletSetting = default;
 
     private int damage;
 
@@ -37,50 +44,54 @@ public class BulletLaserController : MonoBehaviour
     private RaycastHit hit;
     private Vector3 hitPosition;
     private bool EndHit = false;
+    private ParticleSystem _particle;
+    private Rigidbody _rb;
+    GameObject hitObject = null;    // Ray が当たったオブジェクト
+    Ray ray;
+    Vector3 bulletOrigin;
     // Start is called before the first frame update
     void Start()
     {
-        m_crosshairUi = GameManager.Instance.CrosshairUI;
+        bulletOrigin = transform.position;
+        _particle = GetComponentInChildren<ParticleSystem>();
+        _rb = GetComponent<Rigidbody>();
+        _rb.velocity = new Vector3(0, 0, _speed);
+        _crosshairUi = GameManager.Instance.CrosshairUI;
         EndHit = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(m_crosshairUi.position);
-
-        GameObject hitObject = null;    // Ray が当たったオブジェクト
-
+        ray = Camera.main.ScreenPointToRay(_crosshairUi.position);
         if(!EndHit)hit = RayHit(ray, ref hitObject);
     }
 
     private RaycastHit RayHit(Ray ray, ref GameObject hitObject)
     {
         EndHit = true;
-        bool IsHit = Physics.Raycast(ray, out hit, m_shootRange, m_layerMask);
+        bool IsHit = Physics.Raycast(ray, out hit, _shootRange, _layerMask);
 
         if (IsHit)
         {
-
             hitPosition = hit.point;    // Ray が当たった場所
             hitObject = hit.collider.gameObject;    // Ray が洗ったオブジェクト
 
-            if (hitObject)
+            if (!hitObject) hit = default;
+            if (_bulletSetting.HasCriticalDistance) damage = Mathf.CeilToInt(Mathf.Abs(Vector3.Distance(bulletOrigin,hitPosition) - _shootRange) /_shootRange * _bulletSetting.ReduceDamagePerDistance * damage); 
+            if (hitObject.CompareTag("Enemy") || hitObject.CompareTag("Item"))
             {
-                if (hitObject.CompareTag("Enemy") || hitObject.CompareTag("Item"))
-                {
-                    IsSounded = !IsSounded ? true : false;
-                    hitObject.GetComponentInParent<IDamage>().AddDamage(damage);
-                    Debug.Log(damage);
-                    Instantiate(m_effect, hitPosition, Quaternion.identity);
-                    Instantiate(m_frostEffect, hitPosition, Quaternion.identity, hitObject.transform);
-                }
-                if (!IsHitSound)
-                {
-                    PlayHitSound(hitPosition);  // レーザーが当たった場所でヒット音を鳴らす
-                    SoundManager.Instance.PlayFrost();
-                    IsHitSound = true;
-                }
+                IsSounded = !IsSounded ? true : false;
+                hitObject.GetComponentInParent<IDamage>().AddDamage(damage);
+                Instantiate(_effect, hitPosition, Quaternion.identity);
+                Instantiate(_frostEffect, hitPosition, Quaternion.identity, hitObject.transform);
+                Destroy(this.gameObject,1);
+            }
+            if (!IsHitSound)
+            {
+                PlayHitSound(hitPosition);  // レーザーが当たった場所でヒット音を鳴らす
+                SoundManager.Instance.PlayFrost();
+                IsHitSound = true;
             }
         }
         return hit;
@@ -92,6 +103,6 @@ public class BulletLaserController : MonoBehaviour
     /// <param name="position">音を鳴らす場所</param>
     private void PlayHitSound(Vector3 position)
     {
-        if (m_hitSound) AudioSource.PlayClipAtPoint(m_hitSound, position, 0.1f);
+        if (_hitSound) AudioSource.PlayClipAtPoint(_hitSound, position, 0.1f);
     }
 }
