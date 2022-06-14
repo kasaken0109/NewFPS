@@ -295,11 +295,11 @@ public class PlayerControll : ColliderGenerater
             ///回避時の移動入力に応じて移動距離を変更
             if (dir.magnitude <= 0.01f)
             {
-                m_rb.DOMove(transform.position + transform.forward * m_settings.DodgeLength, 1f);
+                m_rb.DOMove(transform.position + transform.forward * m_settings.DodgeLength *dodgeDistanceRate,1f);
             }
             else
             {
-                m_rb.DOMove(transform.position + transform.forward * m_settings.DodgeLength * 1.2f, 1f);
+                m_rb.DOMove(transform.position + transform.forward * m_settings.DodgeLength * 1.2f * dodgeDistanceRate, 1f);
             }
 
         }
@@ -457,7 +457,7 @@ public class PlayerControll : ColliderGenerater
     }
 
     private float speedRate = 1;
-    IEnumerator SpeedUp(float time,float value)
+    IEnumerator SpeedUp(float time, float value)
     {
         speedRate = value;
         yield return new WaitForSeconds(time);
@@ -466,7 +466,33 @@ public class PlayerControll : ColliderGenerater
 
     public void SpeedStart(float time, float value)
     {
-        StartCoroutine(SpeedUp(time,value));
+        StartCoroutine(SpeedUp(time, value));
+    }
+
+    private float dodgeDistanceRate = 1;
+    IEnumerator DodgeDistanceUp(float time, float value)
+    {
+        dodgeDistanceRate = value;
+        yield return new WaitForSeconds(time);
+        dodgeDistanceRate = 1;
+    }
+
+    public void SetDodgeDistanceUp(float time, float value)
+    {
+        StartCoroutine(DodgeDistanceUp(time, value));
+    }
+
+    private float attackspeedRate = 1;
+    IEnumerator AttackspeedRateUp(float time, float value)
+    {
+        m_anim.speed = value;
+        yield return new WaitForSeconds(time);
+        m_anim.speed = 1;
+    }
+
+    public void SetAttackspeedRateUp(float time, float value)
+    {
+        StartCoroutine(AttackspeedRateUp(time, value));
     }
 
     /// <summary>
