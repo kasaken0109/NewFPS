@@ -44,7 +44,6 @@ public class GameManager : MonoBehaviour
     
     static public PlayerManager Player => Instance.m_player;
 
-    //適当なのでちゃんとしたシングルトンではない
     void Awake()
     {
         Instance = this;
@@ -67,11 +66,15 @@ public class GameManager : MonoBehaviour
     {
         switch (myGameState)
         {
+            case GameState.START:
+                StartCoroutine(m_timerManager.TimeUpdate());
+                break;
             case GameState.PLAYING:
                 break;
             case GameState.STOP:
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
+                m_timerManager.IsPlaying = false;
                 Time.timeScale = 0f;
                 virtualCamera.enabled = false;
                 menu.SetActive(true);
@@ -79,6 +82,7 @@ public class GameManager : MonoBehaviour
             case GameState.RESUME:
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.None;
+                m_timerManager.IsPlaying = false;
                 Time.timeScale = 1;
                 virtualCamera.enabled = true;
                 menu.SetActive(false);
@@ -115,6 +119,7 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
+        START,
         PLAYING,
         STOP,
         RESUME,

@@ -33,8 +33,12 @@ public class PlayerManager : MonoBehaviour,IDamage
     private Animator m_animator = null;
 
     [SerializeField]
-    [Tooltip("体力バー")]
+    [Tooltip("体力赤バー")]
     private Image hpslider = null;
+
+    [SerializeField]
+    [Tooltip("体力緑バー")]
+    private Image hpsliderGreen = null;
 
     [SerializeField]
     private PostEffect postEffect = null;
@@ -42,6 +46,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     private int m_maxhp;
     private bool IsInvisible = false;
     public bool IsAlive = true;
+    private PlayerControll _playerControll;
 
     public enum StanceTypes
     {
@@ -56,24 +61,14 @@ public class PlayerManager : MonoBehaviour,IDamage
         Instance = this;
         stanceTypes = StanceTypes.NORMAL;
         m_maxhp = m_hp;
+        _playerControll = GetComponent<PlayerControll>();
 
-    }
-
-    void Update()
-    {
-        if (!hpslider) return;
-        hpslider.fillAmount = (float)m_hp / m_maxhp;
     }
 
     public void AddDamage(int damage)
     {
         if (IsInvisible)
         {
-            if (ActiveDodge)
-            {
-                StopCoroutine("GodTime");
-                StartCoroutine("GodTime");
-            }
             if (damage > 0) return;
         }
         if (m_hp > damage)
@@ -84,31 +79,44 @@ public class PlayerManager : MonoBehaviour,IDamage
             }
             else
             {
-                if (TryGetComponent(out PlayerControll p) && damage > 1f)
+                if (damage > 1f)
                 {
                     m_animator.Play("Damage", 0);
-                    GetComponent<PlayerControll>().BasicHitAttack();
+                     _playerControll.BasicHitAttack();
                 }
                 m_hp -= damage;
                 if(damage > 1)SoundManager.Instance.PlayPlayerHit();
             }
+            //Debug.Log($"UIComplete:{hpslider.fillAmount * 100}%");
 
-            DOTween.To(
-                () => hpslider.fillAmount, // getter
-                x => hpslider.fillAmount = x, // setter
-                (float)(float)m_hp / m_maxhp, // ターゲットとなる値
-                1f  // 時間（秒）
-                ).SetEase(Ease.OutCubic);
+            hpsliderGreen.DOFillAmount((float)m_hp / m_maxhp,
+                0f).OnComplete(() =>
+                {
+                    //Debug.Log($"Complete:{(float)m_hp / m_maxhp*100}%");
+
+                    hpslider.DOFillAmount((float)m_hp / m_maxhp,
+                        1f).OnComplete(() => {
+                            //Debug.Log("AllComplete");
+                            //Debug.Log($"UIComplete:{hpslider.fillAmount * 100}%");
+                        });
+                }
+            );
+
         }
         else
         {
-            //死亡時に呼ばれる処理
-            DOTween.To(
-                () => hpslider.fillAmount, // getter
-                x => hpslider.fillAmount = x, // setter
-                0, // ターゲットとなる値
-                1f  // 時間（秒）
-                ).SetEase(Ease.OutCubic);
+            hpsliderGreen.DOFillAmount(0,
+                0f).OnComplete(() =>
+                {
+                    //Debug.Log($"Complete:{(float)m_hp / m_maxhp*100}%");
+
+                    hpslider.DOFillAmount(0,
+                        1f).OnComplete(() => {
+                            //Debug.Log("AllComplete");
+                            //Debug.Log($"UIComplete:{hpslider.fillAmount * 100}%");
+                        });
+                }
+            );
             var m =Instantiate(m_dead,transform.position,transform.rotation);
             GameManager.Instance.SetGameState(GameManager.GameState.PLAYERLOSE);
             gameObject.SetActive(false);
@@ -137,6 +145,20 @@ public class PlayerManager : MonoBehaviour,IDamage
         yield return new WaitForSeconds(m_godTime);
         IsInvisible = false;
         ActiveDodge = false;
+    }
+
+    private float dodgeRate = 1f;
+
+    IEnumerator DodgeRate(float time,float value)
+    {
+        dodgeRate = value;
+        yield return new WaitForSeconds(time);
+        dodgeRate = 1f;
+    }
+
+    public void SetDodgeRate(float time, float value)
+    {
+        StartCoroutine(DodgeRate(time, value));
     }
     IEnumerator Invisible(float time)
     {
