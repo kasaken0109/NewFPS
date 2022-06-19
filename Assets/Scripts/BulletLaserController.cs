@@ -78,14 +78,15 @@ public class BulletLaserController : MonoBehaviour
             hitObject = hit.collider.gameObject;    // Ray が洗ったオブジェクト
 
             if (!hitObject) hit = default;
-            if (_bulletSetting.HasCriticalDistance) damage = Mathf.CeilToInt(Mathf.Abs(Vector3.Distance(bulletOrigin,hitPosition) - _shootRange) /_shootRange * _bulletSetting.ReduceDamagePerDistance * damage); 
+            if (_bulletSetting.HasCriticalDistance) damage = Mathf.CeilToInt((1 - Mathf.Abs(Vector3.Distance(bulletOrigin,hitPosition) - _bulletSetting.CriticalDistance) / _bulletSetting.CriticalDistance * _bulletSetting.ReduceDamagePerDistance) * damage);
+            
             if (hitObject.CompareTag("Enemy") || hitObject.CompareTag("Item"))
             {
-                IsSounded = !IsSounded ? true : false;
+                IsSounded = !IsSounded;
                 hitObject.GetComponentInParent<IDamage>().AddDamage(damage);
                 Instantiate(_effect, hitPosition, Quaternion.identity);
-                Instantiate(_frostEffect, hitPosition, Quaternion.identity, hitObject.transform);
-                Destroy(this.gameObject,1);
+                if(_frostEffect)Instantiate(_frostEffect, hitPosition, Quaternion.identity, hitObject.transform);
+                Destroy(this.gameObject,0.5f);
             }
             if (!IsHitSound)
             {

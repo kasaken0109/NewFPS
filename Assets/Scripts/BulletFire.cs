@@ -55,14 +55,9 @@ public class BulletFire : MonoBehaviour
         stanceValue = m_stance.fillAmount;
 
         if(m_equip != null)m_line.fillAmount = m_stance.fillAmount - consumeValue;
-
-        if (Input.GetButtonDown("Fire2"))
-        {
-            ShootBullet();
-        }
     }
 
-    private void ShootBullet()
+    public void ShootBullet()
     {
         SoundManager.Instance.StopSE();
 
